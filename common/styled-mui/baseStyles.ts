@@ -34,8 +34,8 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
             display: 'inline',
           },
           '& input[type="checkbox"]': {
-            display: 'block',
-            transform: 'translateY(2px)',
+            // display: 'block',
+            transform: 'translateY(4px)',
             marginBottom: '10px',
           },
         },

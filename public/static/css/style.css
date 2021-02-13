@@ -388,7 +388,7 @@ h1 {
   margin-right: 0;
 }
 
-.description-markdown input[type='checkbox'],
+/* .description-markdown input[type='checkbox'],
 .description-markdown input[type='checkbox']::before,
 .description-markdown input[type='checkbox']::after {
   all: unset;
@@ -438,4 +438,4 @@ h1 {
   left: calc(55px + 0px);
   background: #63cdff;
   box-shadow: 0 0 5px #13b3ff, 0 0 15px #13b3ff;
-}
+} */
