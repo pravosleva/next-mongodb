@@ -1,5 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
 
+- [Stack](#stack)
 - [Roadmap](#roadmap)
 - [API](#api)
 - [Getting Started](#getting-started)
@@ -12,6 +13,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [Deploy on ZEIT Now](#deploy-on-zeit-now)
 
 > https://github.com/typicode/husky/issues/326#issuecomment-692317612
+
+## stack
+
+- react@16.13.1
+- next@9.3.6
+- express@4.17.1
+- socket.io@3.0.4
+- @material-ui/core@4.11.2
 
 ## roadmap
 
