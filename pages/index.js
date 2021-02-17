@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
-import { Card, Icon, Input, Label, Pagination, Rating } from 'semantic-ui-react'
+import { Card, Icon, Input, Label, Rating } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
 import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/context'
@@ -15,6 +15,7 @@ import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
+import { Sample0 } from '~/common/styled-mui/custom-pagination'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -88,14 +89,27 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
           </Label>
         </div>
         {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-          <Pagination
-            defaultActivePage={page}
-            ellipsisItem={null}
-            firstItem={null}
-            lastItem={null}
-            siblingRange={1}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
+          // <Pagination
+          //   defaultActivePage={page}
+          //   ellipsisItem={null}
+          //   firstItem={null}
+          //   lastItem={null}
+          //   siblingRange={1}
+          //   totalPages={totalPages}
+          //   onPageChange={handlePageChange}
+          // />
+          <Sample0
+            page={page}
+            defaultPage={page}
+            hideNextButton={page >= totalPages}
+            hidePrevButton={page <= 1}
+            onChange={(_e, page) => {
+              handlePageChange(_e, { activePage: page })
+            }}
+            boundaryCount={3}
+            color="primary"
+            count={totalPages}
+            variant="otlined"
           />
         )}
       </div>
@@ -179,20 +193,23 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
           </div>
         </div>
       </div>
-      {/* state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
+      {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
         <div className="standard-container search-wrapper">
-          <Pagination
-            // boundaryRange={0}
-            defaultActivePage={page}
-            ellipsisItem={null}
-            firstItem={null}
-            lastItem={null}
-            siblingRange={1}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
+          <Sample0
+            page={page}
+            defaultPage={page}
+            hideNextButton={page >= totalPages}
+            hidePrevButton={page <= 1}
+            onChange={(_e, page) => {
+              handlePageChange(_e, { activePage: page })
+            }}
+            boundaryCount={3}
+            color="primary"
+            count={totalPages}
+            variant="otlined"
           />
         </div>
-      ) */}
+      )}
     </div>
   )
 }
