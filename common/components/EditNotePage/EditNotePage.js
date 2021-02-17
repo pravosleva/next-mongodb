@@ -127,7 +127,7 @@ export const EditNotePage = ({ note }) => {
   return (
     <Container maxWidth="md" className={baseClasses.noPaddingMobile}>
       <Box my={4} className={baseClasses.noMarginTopBottomMobile}>
-        <h1 className="white">
+        <h1>
           <span style={{ marginRight: '15px' }}>Edit</span>
           <Rating onRate={handleSetRate} maxRating={5} defaultRating={form.priority} disabled={isSubmitting} />
         </h1>

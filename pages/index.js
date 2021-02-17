@@ -8,9 +8,11 @@ import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/c
 import { useWindowSize } from '~/common/hooks'
 import { EmptyTemplate } from '~/common/components/EmptyTemplate'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
-import MuiButton from '@material-ui/core/Button'
+import { Button as MuiButton, TextField } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
+import CloseIcon from '@material-ui/icons/Close'
+import AutorenewIcon from '@material-ui/icons/Autorenew'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
@@ -51,25 +53,61 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
   const router = useRouter()
 
   return (
-    <div style={{ marginTop: '20px' }}>
+    <div style={{ marginTop: '20px 0 60px 0' }}>
       <div className="standard-container search-wrapper">
         {isMobile && (
           <>
-            <div>
-              <Input
-                loading={isLoading}
-                disabled={isLoading}
-                iconPosition="left"
-                placeholder="Search by title..."
+            <div
+              style={{
+                // border: '1px solid red',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <TextField
+                label="Title"
+                variant="outlined"
+                value={state.searchByTitle}
+                fullWidth
+                type="text"
+                // placeholder="Search by title..."
+                autoComplete="off"
                 onChange={(e) => {
                   handleSearchByTitleSetText(e.target.value)
                 }}
-                value={state.searchByTitle}
-                action={{ icon: 'close', onClick: handleSearchByTitleClear }}
               />
+              {!!state.searchByTitle && (
+                <div
+                  style={{
+                    marginLeft: '8px',
+                    minWidth: '40px',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: '2px dashed white',
+                    cursor: 'pointer',
+                  }}
+                  onClick={handleSearchByTitleClear}
+                >
+                  {isLoading ? <AutorenewIcon /> : <CloseIcon />}
+                </div>
+              )}
             </div>
-            <div>
-              <Input
+            <div
+              style={{
+                // border: '1px solid red',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              {/* <Input
                 loading={isLoading}
                 disabled={isLoading}
                 iconPosition="left"
@@ -79,7 +117,38 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
                 }}
                 value={state.searchByDescription}
                 action={{ icon: 'close', onClick: handleSearchByDescriptionClear }}
+              /> */}
+              <TextField
+                variant="outlined"
+                label="Description"
+                value={state.searchByDescription}
+                fullWidth
+                type="text"
+                // placeholder="Search by description..."
+                autoComplete="off"
+                onChange={(e) => {
+                  handleSearchByDescriptionSetText(e.target.value)
+                }}
               />
+              {!!state.searchByDescription && (
+                <div
+                  style={{
+                    marginLeft: '8px',
+                    minWidth: '40px',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: '2px dashed white',
+                    cursor: 'pointer',
+                  }}
+                  onClick={handleSearchByDescriptionClear}
+                >
+                  {isLoading ? <AutorenewIcon /> : <CloseIcon />}
+                </div>
+              )}
             </div>
           </>
         )}

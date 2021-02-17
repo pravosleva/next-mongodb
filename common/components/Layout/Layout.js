@@ -37,7 +37,12 @@ export const Layout = ({ children }) => {
         options={{ showSpinner: true }}
       />
       <Navbar />
-      <div className={clsx({ 'bg-fixed': !isTheNotePage, 'bg-fixed_the-note-page': isTheNotePage })} />
+      <div
+        className={clsx({
+          // 'bg-fixed': !isTheNotePage,
+          'bg-fixed_the-note-page': isTheNotePage,
+        })}
+      />
       {children}
       {router.pathname !== '/new' && <SpeedDial />}
       <style jsx global>{`
