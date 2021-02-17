@@ -48,12 +48,12 @@ class HttpClientSingletone {
     }
   }
   responseDataHandlerAfterHttpErrorHandler(dataValidator) {
-    return (res) => {
-      if (!dataValidator(res)) {
+    return (resData) => {
+      if (!dataValidator(resData)) {
         throw new Error('Data is incorrect')
       }
       try {
-        return { isOk: true, res }
+        return { isOk: true, res: resData }
       } catch (err) {
         throw new Error(err.message)
       }
