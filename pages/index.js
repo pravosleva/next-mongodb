@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react'
-import Link from 'next/link'
+// import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { Card, Icon, Input, Label, Rating } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
@@ -98,19 +98,21 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
           //   totalPages={totalPages}
           //   onPageChange={handlePageChange}
           // />
-          <Sample0
-            page={page}
-            defaultPage={page}
-            hideNextButton={page >= totalPages}
-            hidePrevButton={page <= 1}
-            onChange={(_e, page) => {
-              handlePageChange(_e, { activePage: page })
-            }}
-            boundaryCount={3}
-            color="primary"
-            count={totalPages}
-            variant="otlined"
-          />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Sample0
+              page={page}
+              defaultPage={page}
+              hideNextButton={page >= totalPages}
+              hidePrevButton={page <= 1}
+              onChange={(_e, page) => {
+                handlePageChange(_e, { activePage: page })
+              }}
+              boundaryCount={3}
+              color="primary"
+              count={totalPages}
+              variant="otlined"
+            />
+          </div>
         )}
       </div>
       {/* <div style={{ border: '1px solid red' }}>
