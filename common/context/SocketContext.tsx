@@ -46,7 +46,7 @@ type TGeo = {
   region?: string
   timezone?: string
 }
-type TUserData = {
+type TUserDetails = {
   success: boolean
   ip: string
   geo: TGeo
@@ -87,30 +87,27 @@ export const SocketContextProvider = ({ children }: any) => {
       console.log(globalState.activeNote)
 
       // -- Get my IP:
-      const tstGeoRes: TUserData = await httpClient.getMyIP()
-      const { success, geo, ip } = tstGeoRes
+      const userDetails: TUserDetails = await httpClient.getMyIP()
+      const { success, geo, ip } = userDetails
 
-      console.log(tstGeoRes)
-      if (!!geo) {
+      console.log(userDetails)
+      if (success && !!geo) {
         const geoInfo = getInfoByGeo(geo)
-        if (success)
-          addDefaultNotif({
-            type: 'info',
-            title: ip,
-            message: !!geo && !!geoInfo ? `Предположительно, ${geoInfo}` : 'Не удалось определить детали',
-          })
+        addDefaultNotif({
+          title: ip,
+          message: !!geoInfo ? geoInfo : 'Не удалось определить детали',
+        })
       }
       // --
 
       // -- Update active note if necessary:
       if (!!globalState.activeNote?._id) {
         // TODO: Request activeNote._id should be requested
-        console.log('TODO: Request activeNote._id')
-        console.log(globalState.activeNote._id)
+        console.log(`NOTE: Request for globalState.activeNote._id (${globalState.activeNote._id}) required`)
 
         handleGetNote(globalState.activeNote._id)
           .then((res) => {
-            console.log('Received:')
+            // console.log('Received:')
             console.log(res)
             handleSetAsActiveNote(res)
           })
