@@ -21,12 +21,12 @@ const geoipLiteMW = require('./express-tools/middlewares/geoip-lite')
 
 const _customIO = socketLogic(io)
 
+app.use('*', requestIpMW, geoipLiteMW)
+// NOTE: For example: const ip = req.clientIp; const geo = req.geo;
+
 nextApp
   .prepare()
   .then(() => {
-    app.use('*', requestIpMW, geoipLiteMW)
-    // NOTE: For example: const ip = req.clientIp; const geo = req.geo;
-
     /**
      * Router Middleware
      * Router - /e-api/*
