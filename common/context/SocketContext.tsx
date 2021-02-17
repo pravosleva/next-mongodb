@@ -35,6 +35,32 @@ function reducer(state: any, action: any) {
 
 const firstRendersToSkip: number = 1
 
+type TGeo = {
+  area?: number
+  city?: string
+  country?: string
+  eu?: string
+  ll?: number[]
+  metro?: number
+  range?: number[]
+  region?: string
+  timezone?: string
+}
+type TUserData = {
+  success: boolean
+  ip: string
+  geo: TGeo
+}
+const getInfoByGeo = (geo: TGeo): string => {
+  let result = []
+  const fieldsForTry = ['country', 'region', 'city']
+
+  // @ts-ignore
+  for (const value of fieldsForTry) if (!!geo[value]) result.push(geo[value])
+
+  return result.join(', ')
+}
+
 export const SocketContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const isClient = useMemo(() => typeof window !== 'undefined', [typeof window])
@@ -61,15 +87,19 @@ export const SocketContextProvider = ({ children }: any) => {
       console.log(globalState.activeNote)
 
       // -- Get my IP:
-      const tstRes = await httpClient.getMyIP()
+      const tstGeoRes: TUserData = await httpClient.getMyIP()
+      const { success, geo, ip } = tstGeoRes
 
-      console.log(tstRes)
-      if (!!tstRes.success && !!tstRes.ip)
-        addDefaultNotif({
-          type: 'info',
-          title: tstRes.ip,
-          message: 'Your IP',
-        })
+      console.log(tstGeoRes)
+      if (!!geo) {
+        const geoInfo = getInfoByGeo(geo)
+        if (success)
+          addDefaultNotif({
+            type: 'info',
+            title: ip,
+            message: !!geo && !!geoInfo ? `Предположительно, ${geoInfo}` : 'Не удалось определить детали',
+          })
+      }
       // --
 
       // -- Update active note if necessary:

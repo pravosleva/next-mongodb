@@ -9,6 +9,7 @@ const stateMap = new Map<string, IConnectionData>() // NOTE: key - socketId
 
 export function socketLogic(io: any) {
   io.on('connection', function (socket: any) {
+    // TODO: This ip detector does not works and unused!
     const ip = socket.conn.remoteAddress // Or socket.handshake.address?
     let eventOnConnect: IConnectSelf
 
