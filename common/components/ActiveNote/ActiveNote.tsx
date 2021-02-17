@@ -29,23 +29,6 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   const baseClasses = useBaseStyles()
   const classes = useStyles()
   const { description, priority, title, _id } = useFreshNote(initialNote)
-  // const { description, priority, title, _id } = note
-
-  // Links should be opened in new tab:
-  // useEffect(() => {
-  //   const descriptionMarkdown = document.querySelector('.description-markdown')
-
-  //   if (typeof window !== 'undefined') {
-  //     if (!!descriptionMarkdown) descriptionMarkdown?.addEventListener('click', openLinkInNewTab)
-  //   }
-  //   return () => {
-  //     if (typeof window !== 'undefined') {
-  //       if (!!descriptionMarkdown) descriptionMarkdown?.removeEventListener('click', openLinkInNewTab)
-  //     }
-  //   }
-  // }, [])
-  // const handleSetRate = (e, { rating, maxRating }) => {}
-  // const { height } = useWindowSize()
   const router = useRouter()
   const { isLogged } = useAuthContext()
 
@@ -124,16 +107,10 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
 }
 
 function areEqual(prevProps: any, nextProps: any) {
-  /*
-  возвращает true, если nextProps рендерит
-  тот же результат что и prevProps,
-  иначе возвращает false
-  */
+  // NOTE: return true, if render unnecessary
   return (
     (!!prevProps.note?._id && !nextProps.note?._id) ||
     (prevProps.note._id === nextProps.note._id && prevProps.note.updatedAt === nextProps.note.updatedAt)
   )
 }
 export const ActiveNote = memo(MyComponent, areEqual)
-
-// export const ActiveNote = MyComponent

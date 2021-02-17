@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { Button, Form, Loader } from 'semantic-ui-react'
+import { Form, Loader } from 'semantic-ui-react'
 import { useRouter } from 'next/router'
 import { useWindowSize } from 'react-use'
 import MarkdownIt from 'markdown-it'
@@ -11,9 +11,11 @@ import Container from '@material-ui/core/Container'
 // See also: https://github.com/hadnazzar/nextjs-with-material-ui/blob/master/pages/about.js
 import Box from '@material-ui/core/Box'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
-import FormGroup from '@material-ui/core/FormGroup'
+import { FormGroup, Button } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Checkbox } from '@material-ui/core'
+import { ThemedButton } from '~/common/styled-mui/custom-button'
+import clsx from 'clsx'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 const mdParser = new MarkdownIt({
@@ -136,11 +138,13 @@ export const EditNotePage = ({ note }) => {
       ) : (
         <Form onSubmit={handleSubmit}>
           {isLogged && (
-            <Box my={4} className={baseClasses.btnsBox}>
-              <Button type="submit">Update</Button>
+            <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+              <ThemedButton type="submit" color="red" variant="contained">
+                Update
+              </ThemedButton>
             </Box>
           )}
-          <Box my={4}>
+          <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
             <Form.Input
               fluid
               error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
@@ -151,7 +155,7 @@ export const EditNotePage = ({ note }) => {
               onChange={handleChange}
             />
           </Box>
-          <Box my={4}>
+          <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
             <MDEditor
               value={form.description}
               style={{ minHeight }}
@@ -172,8 +176,10 @@ export const EditNotePage = ({ note }) => {
             />
           </Box>
           {isLogged && (
-            <Box my={4} className={baseClasses.btnsBox}>
-              <Button type="submit">Update</Button>
+            <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+              <ThemedButton type="submit" color="red" variant="contained">
+                Update
+              </ThemedButton>
               <FormGroup>
                 <FormControlLabel
                   control={

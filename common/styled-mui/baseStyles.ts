@@ -8,8 +8,16 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     btnsBox: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      '& > *:not(:last-child)': {
+        marginRight: theme.spacing(1),
+      },
+    },
+    standardMobileResponsiveBlock: {
       [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(1, 2, 1, 2),
+        padding: theme.spacing(0, 1, 0, 1),
       },
     },
     noMarginTopBottomMobile: {

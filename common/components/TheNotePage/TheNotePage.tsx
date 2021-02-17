@@ -1,19 +1,23 @@
 import fetch from 'isomorphic-unfetch'
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { Confirm, Button, Loader } from 'semantic-ui-react'
+import { Confirm, Loader } from 'semantic-ui-react'
 // import { Button as MuiButton } from '@material-ui/core'
 import { ActiveNote } from '~/common/components/ActiveNote'
 import { useAuthContext } from '~/common/context'
 import Container from '@material-ui/core/Container'
 // See also: https://github.com/hadnazzar/nextjs-with-material-ui/blob/master/pages/about.js
-import Box from '@material-ui/core/Box'
+import { Box, Button } from '@material-ui/core'
 // import Button from '@material-ui/core/Button'
 // import { useStyles } from './styles'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { theNotePageRenderers } from '~/common/react-markdown-renderers'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
+import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
+import { ThemedButton } from '~/common/styled-mui/custom-button'
+import clsx from 'clsx'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -59,11 +63,11 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const { isLogged } = useAuthContext()
   const MemoizedBtnsBox = useMemo(
     () => (
-      <Box my={4} className={baseClasses.btnsBox}>
-        <Button basic color="red" onClick={handleOpen}>
+      <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+        <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
           Delete
-        </Button>
-        <Button basic color="green" onClick={handleEdit}>
+        </ThemedButton>
+        <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
           Edit
         </Button>
         {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
