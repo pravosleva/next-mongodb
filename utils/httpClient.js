@@ -65,9 +65,8 @@ class HttpClientSingletone {
   }
 
   async getNotes(url) {
-    if (!!this.getNotesCancelTokenSource) {
-      this.getNotesCancelTokenSource.cancel('axios request cancelled')
-    }
+    if (!!this.getNotesCancelTokenSource) this.getNotesCancelTokenSource.cancel('axios request cancelled')
+
     const source = createCancelTokenSource()
     this.getNotesCancelTokenSource = source
 
@@ -103,9 +102,8 @@ class HttpClientSingletone {
   }
 
   async getNote(id) {
-    if (!!this.getNoteCancelTokenSource) {
-      this.getNoteCancelTokenSource.cancel('axios request cancelled')
-    }
+    if (!!this.getNoteCancelTokenSource) this.getNoteCancelTokenSource.cancel('axios request cancelled')
+
     const source = createCancelTokenSource()
     this.getNoteCancelTokenSource = source
 
@@ -137,9 +135,8 @@ class HttpClientSingletone {
   }
 
   async getMyIP(url = '/common/my-ip') {
-    if (!!this.getMyIPCancelTokenSource) {
-      this.getMyIPCancelTokenSource.cancel('axios request cancelled')
-    }
+    if (!!this.getMyIPCancelTokenSource) this.getMyIPCancelTokenSource.cancel('axios request cancelled')
+
     const source = createCancelTokenSource()
     this.getMyIPCancelTokenSource = source
 
