@@ -2,7 +2,10 @@ import { actionTypes as eTypes } from './actionTypes'
 import { IConnectUserBroadcast, IDisconnectUserBroadcast, IConnectSelf } from './interfaces'
 
 // Fake DB
-const stateMap = new Map()
+interface IConnectionData {
+  ip: string
+}
+const stateMap = new Map<string, IConnectionData>() // NOTE: key - socketId
 
 export function socketLogic(io: any) {
   io.on('connection', function (socket: any) {
@@ -15,7 +18,7 @@ export function socketLogic(io: any) {
     // console.log('=== Somebody connected ===')
     const body0: IConnectSelf = {
       data: {
-        msg: `${socket.id}; ${ip}`,
+        msg: `socket id: ${socket.id}`, // ip
         socketId: socket.id,
         ip,
         totalConnections: stateMap.size,
@@ -25,10 +28,10 @@ export function socketLogic(io: any) {
     socket.join(socket.id)
 
     try {
-      stateMap.set(socket.id, ip)
+      stateMap.set(socket.id, { ip })
       const body1: IConnectUserBroadcast = {
         data: {
-          msg: `${socket.id}; ${ip}`,
+          msg: `socket id: ${socket.id}`, // ip
           socketId: socket.id,
           ip,
           totalConnections: stateMap.size,
@@ -46,7 +49,7 @@ export function socketLogic(io: any) {
       stateMap.delete(socket.id)
       const body2: IDisconnectUserBroadcast = {
         data: {
-          msg: `socketId: ${socket.id}`,
+          msg: `socket id: ${socket.id}`,
           socketId: socket.id,
           ip,
           totalConnections: stateMap.size,
