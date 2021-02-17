@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 // import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
-import { Card, Icon, Input, Label, Rating } from 'semantic-ui-react'
+import { Card, Icon, Label, Rating } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
 import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/context'
@@ -53,7 +53,7 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
   const router = useRouter()
 
   return (
-    <div style={{ marginTop: '20px 0 60px 0' }}>
+    <div style={{ margin: '20px 0px 60px 0px' }}>
       <div className="standard-container search-wrapper">
         {isMobile && (
           <>
@@ -266,19 +266,21 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
       </div>
       {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
         <div className="standard-container search-wrapper">
-          <Sample0
-            page={page}
-            defaultPage={page}
-            hideNextButton={page >= totalPages}
-            hidePrevButton={page <= 1}
-            onChange={(_e, page) => {
-              handlePageChange(_e, { activePage: page })
-            }}
-            boundaryCount={3}
-            color="primary"
-            count={totalPages}
-            variant="otlined"
-          />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Sample0
+              page={page}
+              defaultPage={page}
+              hideNextButton={page >= totalPages}
+              hidePrevButton={page <= 1}
+              onChange={(_e, page) => {
+                handlePageChange(_e, { activePage: page })
+              }}
+              boundaryCount={3}
+              color="primary"
+              count={totalPages}
+              variant="otlined"
+            />
+          </div>
         </div>
       )}
     </div>
