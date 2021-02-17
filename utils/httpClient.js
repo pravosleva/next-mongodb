@@ -9,6 +9,7 @@ axiosRetry(axios, { retries: 5 })
 const createCancelTokenSource = () => new axios.CancelToken.source()
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
+const NEXT_APP_EXPRESS_API_ENDPOINT = process.env.NEXT_APP_EXPRESS_API_ENDPOINT
 
 class HttpClientSingletone {
   static _instance = new HttpClientSingletone()
@@ -19,10 +20,14 @@ class HttpClientSingletone {
     }
     this.getNotesCancelTokenSource = null
     this.getNoteCancelTokenSource = null
+    this.getMyIPCancelTokenSource = null
     this.axiosInstance = axios.create({
       baseURL: `${NEXT_APP_API_ENDPOINT}/`,
       // timeout: 1000,
       // headers: { 'X-Custom-Header': 'foobar' },
+    })
+    this.axiosEApiInstance = axios.create({
+      baseURL: `${NEXT_APP_EXPRESS_API_ENDPOINT}/`,
     })
   }
 
@@ -66,7 +71,7 @@ class HttpClientSingletone {
     const source = createCancelTokenSource()
     this.getNotesCancelTokenSource = source
 
-    const response = await this.axiosInstance({
+    const result = await this.axiosInstance({
       method: 'GET',
       url,
       // mode: 'cors',
@@ -88,13 +93,13 @@ class HttpClientSingletone {
       })
 
     this.getNotesCancelTokenSource = null
-    if (response.isOk) {
-      return Promise.resolve(response.res)
+    if (result.isOk) {
+      return Promise.resolve(result.res)
     }
-    if (response.res instanceof HttpError) {
-      return Promise.reject(response.res.getErrorMsg())
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
     }
-    return Promise.reject(this.getErrorMsg(response.res))
+    return Promise.reject(this.getErrorMsg(result.res))
   }
 
   async getNote(id) {
@@ -104,7 +109,7 @@ class HttpClientSingletone {
     const source = createCancelTokenSource()
     this.getNoteCancelTokenSource = source
 
-    const response = await this.axiosInstance({
+    const result = await this.axiosInstance({
       method: 'GET',
       url: `/notes/${id}`,
       // mode: 'cors',
@@ -122,13 +127,47 @@ class HttpClientSingletone {
       })
 
     this.getNoteCancelTokenSource = null
-    if (response.isOk) {
-      return Promise.resolve(response.res.data)
+    if (result.isOk) {
+      return Promise.resolve(result.res.data)
     }
-    if (response.res instanceof HttpError) {
-      return Promise.reject(response.res.getErrorMsg())
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
     }
-    return Promise.reject(this.getErrorMsg(response.res))
+    return Promise.reject(this.getErrorMsg(result.res))
+  }
+
+  async getMyIP(url = '/common/my-ip') {
+    if (!!this.getMyIPCancelTokenSource) {
+      this.getMyIPCancelTokenSource.cancel('axios request cancelled')
+    }
+    const source = createCancelTokenSource()
+    this.getMyIPCancelTokenSource = source
+
+    const result = await this.axiosEApiInstance({
+      method: 'GET',
+      url,
+      // mode: 'cors',
+      cancelToken: this.getMyIPCancelTokenSource.token,
+    })
+      .then(httpErrorHandler)
+      .then(this.responseDataHandlerAfterHttpErrorHandler(({ ip, success }) => success && !!ip))
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled', err.message)
+        } else {
+          console.log(err)
+        }
+        return { isOk: false, res: err }
+      })
+
+    this.getMyIPCancelTokenSource = null
+    if (result.isOk) {
+      return Promise.resolve(result.res)
+    }
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
+    }
+    return Promise.reject(this.getErrorMsg(result.res))
   }
 }
 

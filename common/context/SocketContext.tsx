@@ -56,9 +56,23 @@ export const SocketContextProvider = ({ children }: any) => {
     return res
   }
   const handleMeConnected = useCallback(
-    (arg: IConnectSelf, socket: any) => {
+    async (arg: IConnectSelf, socket: any) => {
       console.log('--- activeNote')
       console.log(globalState.activeNote)
+
+      // -- Get my IP:
+      const tstRes = await httpClient.getMyIP()
+
+      console.log(tstRes)
+      if (!!tstRes.success && !!tstRes.ip)
+        addDefaultNotif({
+          type: 'info',
+          title: tstRes.ip,
+          message: 'Your IP',
+        })
+      // --
+
+      // -- Update active note if necessary:
       if (!!globalState.activeNote?._id) {
         // TODO: Request activeNote._id should be requested
         console.log('TODO: Request activeNote._id')
@@ -80,6 +94,7 @@ export const SocketContextProvider = ({ children }: any) => {
             console.log(err)
           })
       }
+      // --
 
       // console.log(arg)
       addDefaultNotif({

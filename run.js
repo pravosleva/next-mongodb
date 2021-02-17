@@ -16,12 +16,17 @@ const io = require('socket.io')(server)
 const nextApp = next({ dev: isDev })
 const nextHanlder = nextApp.getRequestHandler()
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
+const requestIp = require('request-ip')
+const geoipLiteMW = require('./express-tools/middlewares/geoip-lite')
 
 const _customIO = socketLogic(io)
 
 nextApp
   .prepare()
   .then(() => {
+    app.use(requestIp.mw()) // NOTE: For example: const ip = req.clientIp;
+    app.use('*', geoipLiteMW)
+
     /**
      * Router Middleware
      * Router - /e-api/*
