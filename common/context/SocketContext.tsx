@@ -83,7 +83,7 @@ export const SocketContextProvider = ({ children }: any) => {
 
       // console.log(arg)
       addDefaultNotif({
-        title: 'Me connected',
+        title: `Me connected (online: ${arg.data.totalConnections})`,
         message: arg.data.msg,
         type: 'success',
       })
@@ -157,11 +157,11 @@ export const SocketContextProvider = ({ children }: any) => {
     // console.log(arg)
     try {
       const {
-        data: { msg },
+        data: { msg, totalConnections },
       } = arg
 
       addDefaultNotif({
-        title: 'Somebody connected',
+        title: `Somebody connected (online: ${totalConnections})`,
         message: msg,
         type: 'info',
       })
@@ -173,11 +173,11 @@ export const SocketContextProvider = ({ children }: any) => {
     // console.log(arg)
     try {
       const {
-        data: { msg },
+        data: { msg, totalConnections },
       } = arg
 
       addDefaultNotif({
-        title: 'Somebody disconnected',
+        title: `Somebody disconnected (online: ${totalConnections})`,
         message: msg,
         type: 'info',
       })
