@@ -63,20 +63,22 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const { isLogged } = useAuthContext()
   const MemoizedBtnsBox = useMemo(
     () => (
-      <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
-        <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
-          Delete
-        </ThemedButton>
-        <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
-          Edit
-        </Button>
-        {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
+      <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+        <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+          <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
+            Delete
+          </ThemedButton>
+          <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
+            Edit
+          </Button>
+          {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
           Edit
         </MuiButton>
         <MuiButton color="secondary" variant="outlined" onClick={handleEdit}>
           Edit
         </MuiButton> */}
-      </Box>
+        </Box>
+      </div>
     ),
     [handleOpen, handleEdit]
   )
@@ -88,7 +90,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         {isDeleting ? (
           <Loader active />
         ) : (
-          <div>
+          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
             {!!note && (
               <ActiveNote
                 note={note}
