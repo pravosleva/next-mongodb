@@ -86,7 +86,6 @@
     "slugify": "^1.4.6",
     "socket.io": "^3.0.4",
     "socket.io-client": "^3.0.4",
-    "user-ip": "^1.0.1",
     "yarn": "^1.22.10"
   },
   "devDependencies": {

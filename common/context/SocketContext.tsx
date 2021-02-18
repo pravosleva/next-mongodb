@@ -51,7 +51,9 @@ type TUserDetails = {
   ip: string
   geo: TGeo
 }
-const getInfoByGeo = (geo: TGeo): string => {
+const getInfoByGeo = (geo?: TGeo): string => {
+  if (!geo) return 'Не удалось определить детали'
+
   let result = []
   const fieldsForTry = ['country', 'region', 'city']
 
@@ -83,19 +85,22 @@ export const SocketContextProvider = ({ children }: any) => {
   }
   const handleMeConnected = useCallback(
     async (arg: IConnectSelf, socket: any) => {
-      console.log('--- activeNote')
-      console.log(globalState.activeNote)
+      // console.log('--- activeNote')
+      // console.log(globalState.activeNote)
 
       // -- Get my IP:
       const userDetails: TUserDetails = await httpClient.getMyIP()
       const { success, geo, ip } = userDetails
 
       console.log(userDetails)
-      if (success && !!geo) {
+      if (success && !!ip) {
         const geoInfo = getInfoByGeo(geo)
         addDefaultNotif({
           title: ip,
-          message: !!geoInfo ? geoInfo : 'Не удалось определить детали',
+          message: geoInfo,
+          dismiss: {
+            duration: 10000,
+          },
         })
       }
       // --
@@ -127,7 +132,7 @@ export const SocketContextProvider = ({ children }: any) => {
       addDefaultNotif({
         title: `Me connected (online: ${arg.data.totalConnections})`,
         message: arg.data.msg,
-        type: 'success',
+        // type: 'success',
       })
       dispatch({ type: evt.ME_CONNECTED, payload: socket })
     },
@@ -162,7 +167,7 @@ export const SocketContextProvider = ({ children }: any) => {
 
       addDefaultNotif({
         title: 'Updated',
-        message: `${_id}`,
+        message: _id,
         type: 'info',
       })
       dispatch({ type: 'REFRESH_UPDATED_NOTE', payload: arg.data })

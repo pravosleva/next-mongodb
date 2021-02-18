@@ -19,6 +19,38 @@ import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 
+const InputFieldFlexContainer = ({ children }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }}
+  >
+    {children}
+  </div>
+)
+const CloseBtn = ({ children, onClick }) => (
+  <div
+    onClick={onClick}
+    style={{
+      marginLeft: '8px',
+      minWidth: '35px',
+      width: '35px',
+      height: '35px',
+      borderRadius: '50%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      border: '2px dashed #fff',
+      cursor: 'pointer',
+    }}
+  >
+    {children}
+  </div>
+)
+
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
 const Index = ({ notes: initNotes, pagination: initPag }) => {
@@ -57,16 +89,9 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
       <div className="standard-container search-wrapper">
         {isMobile && (
           <>
-            <div
-              style={{
-                // border: '1px solid red',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
+            <InputFieldFlexContainer>
               <TextField
+                size="small"
                 label="Title"
                 variant="outlined"
                 value={state.searchByTitle}
@@ -79,46 +104,12 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
                 }}
               />
               {!!state.searchByTitle && (
-                <div
-                  style={{
-                    marginLeft: '8px',
-                    minWidth: '40px',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    border: '2px dashed white',
-                    cursor: 'pointer',
-                  }}
-                  onClick={handleSearchByTitleClear}
-                >
-                  {isLoading ? <AutorenewIcon /> : <CloseIcon />}
-                </div>
+                <CloseBtn onClick={handleSearchByTitleClear}>{isLoading ? <AutorenewIcon /> : <CloseIcon />}</CloseBtn>
               )}
-            </div>
-            <div
-              style={{
-                // border: '1px solid red',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              {/* <Input
-                loading={isLoading}
-                disabled={isLoading}
-                iconPosition="left"
-                placeholder="Search by description..."
-                onChange={(e) => {
-                  handleSearchByDescriptionSetText(e.target.value)
-                }}
-                value={state.searchByDescription}
-                action={{ icon: 'close', onClick: handleSearchByDescriptionClear }}
-              /> */}
+            </InputFieldFlexContainer>
+            <InputFieldFlexContainer>
               <TextField
+                size="small"
                 variant="outlined"
                 label="Description"
                 value={state.searchByDescription}
@@ -131,25 +122,11 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
                 }}
               />
               {!!state.searchByDescription && (
-                <div
-                  style={{
-                    marginLeft: '8px',
-                    minWidth: '40px',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    border: '2px dashed white',
-                    cursor: 'pointer',
-                  }}
-                  onClick={handleSearchByDescriptionClear}
-                >
+                <CloseBtn onClick={handleSearchByDescriptionClear}>
                   {isLoading ? <AutorenewIcon /> : <CloseIcon />}
-                </div>
+                </CloseBtn>
               )}
-            </div>
+            </InputFieldFlexContainer>
           </>
         )}
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -158,15 +135,6 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
           </Label>
         </div>
         {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-          // <Pagination
-          //   defaultActivePage={page}
-          //   ellipsisItem={null}
-          //   firstItem={null}
-          //   lastItem={null}
-          //   siblingRange={1}
-          //   totalPages={totalPages}
-          //   onPageChange={handlePageChange}
-          // />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Sample0
               page={page}
@@ -304,7 +272,7 @@ Index.getInitialProps = async (ctx) => {
   const res = await fetch(`${NEXT_APP_API_ENDPOINT}/notes?limit=${defaultPaginationData.limit}`, { headers })
   const { data, pagination } = await res.json()
 
-  return { notes: data, pagination }
+  return { notes: data || [], pagination }
 }
 
 export default Index
