@@ -17,6 +17,19 @@ const EXPRESS_JWT_MAXAGE_IN_DAYS = !!process.env.EXPRESS_JWT_MAXAGE_IN_DAYS
   : 1
 const JWT_SECRET = process.env.JWT_SECRET || 'randomString'
 
+// --- SIGNUP
+const isSignUpEnabled = process.env.EXPRESS_IS_USER_SIGNUP_ENABLED === '1'
+const isSignUpEnabledMW = (_req, res, next) => {
+  if (isSignUpEnabled) {
+    next()
+  } else {
+    res.status(500).json({
+      message: 'SingUp isnt enabled by env',
+    })
+  }
+}
+// ---
+
 // Create application/json parser
 const jsonParser = bodyParser.json()
 
@@ -28,6 +41,7 @@ const jsonParser = bodyParser.json()
 
 router.post(
   '/signup',
+  isSignUpEnabledMW,
   jsonParser,
   [
     body('username', 'Please Enter a Valid Username').not().isEmpty(),
@@ -35,6 +49,7 @@ router.post(
     body('password', 'Please enter a valid password').isLength({
       min: 6,
     }),
+    // NOTE: https://express-validator.github.io/docs/
   ],
   async (req, res) => {
     const errors = validationResult(req)
