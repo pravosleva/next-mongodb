@@ -28,7 +28,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: theme.spacing(2),
       right: 'calc(100vw/2) !important',
       // transform: 'translateX(28px)',
-      transform: 'translateX(28px)',
+      transform: 'translateX(50%)',
     },
   })
 )

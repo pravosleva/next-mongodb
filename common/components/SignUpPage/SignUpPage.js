@@ -1,13 +1,16 @@
 /* eslint-disable no-console */
-import { useState, useMemo } from 'react'
-import { Button, Form, Loader, Message } from 'semantic-ui-react'
+import { useState, useMemo, useCallback } from 'react'
+import { Form, Loader, Message } from 'semantic-ui-react'
 import { validate } from './validate'
 import { useRouter } from 'next/router'
+import { ThemedButton } from '~/common/styled-mui/custom-button'
 
 const NEXT_APP_EXPRESS_API_ENDPOINT = process.env.NEXT_APP_EXPRESS_API_ENDPOINT
 
+const initialState = { username: '', email: '', password: '' }
+
 export const SignUpPage = () => {
-  const [form, setForm] = useState({ username: '', email: '', password: '' })
+  const [form, setForm] = useState(initialState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
   const router = useRouter()
@@ -73,6 +76,10 @@ export const SignUpPage = () => {
       [e.target.name]: e.target.value,
     })
   }
+  const handleDismiss = useCallback(() => {
+    setForm(initialState)
+    setErrors({})
+  }, [setForm, setErrors])
 
   return (
     <div className="form-container">
@@ -111,13 +118,13 @@ export const SignUpPage = () => {
               value={form.password}
               onChange={handleChange}
             />
-            <Button type="submit" disabled={isSubmitting || !isCorrect}>
+            <ThemedButton disabled={isSubmitting || !isCorrect} type="submit" color="red" variant="contained">
               Sign In
-            </Button>
+            </ThemedButton>
           </Form>
         )}
         {!!errors.response && (
-          <Message negative>
+          <Message negative onDismiss={handleDismiss}>
             <Message.Header>Error</Message.Header>
             <p>{errors.response}</p>
           </Message>
