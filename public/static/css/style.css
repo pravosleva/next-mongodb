@@ -70,18 +70,6 @@ body .bg-fixed_the-note-page {
 h1 {
   text-align: center;
 }
-.standard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 0 10px 0;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-@media (max-width: 1199px) {
-  .standard-container {
-    padding: 10px;
-  }
-}
 
 .no-padded {
   padding: 0;

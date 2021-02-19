@@ -8,7 +8,7 @@ import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/c
 import { useWindowSize } from '~/common/hooks'
 import { EmptyTemplate } from '~/common/components/EmptyTemplate'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
-import { Button as MuiButton, TextField } from '@material-ui/core'
+import { Button as MuiButton, Box, Container, TextField } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
 import CloseIcon from '@material-ui/icons/Close'
@@ -85,8 +85,8 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
   const router = useRouter()
 
   return (
-    <div style={{ margin: '20px 0px 60px 0px' }}>
-      <div className="standard-container search-wrapper">
+    <>
+      <div className="search-wrapper">
         {isMobile && (
           <>
             <InputFieldFlexContainer>
@@ -129,27 +129,30 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
             </InputFieldFlexContainer>
           </>
         )}
+
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Label>
             <Icon name="file" /> {totalNotes}
           </Label>
         </div>
         {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Sample0
-              page={page}
-              defaultPage={page}
-              hideNextButton={page >= totalPages}
-              hidePrevButton={page <= 1}
-              onChange={(_e, page) => {
-                handlePageChange(_e, { activePage: page })
-              }}
-              boundaryCount={3}
-              color="primary"
-              count={totalPages}
-              variant="otlined"
-            />
-          </div>
+          <Box m={1}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Sample0
+                page={page}
+                defaultPage={page}
+                hideNextButton={page >= totalPages}
+                hidePrevButton={page <= 1}
+                onChange={(_e, page) => {
+                  handlePageChange(_e, { activePage: page })
+                }}
+                boundaryCount={3}
+                color="primary"
+                count={totalPages}
+                variant="otlined"
+              />
+            </div>
+          </Box>
         )}
       </div>
       {/* <div style={{ border: '1px solid red' }}>
@@ -160,7 +163,7 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
         </pre>
       </div> */}
       <MobileDialogIfNecessary />
-      <div className="main standard-container">
+      <div className="main">
         <div className="active-note-external-sticky-wrapper">
           {!!activeNote ? (
             <ActiveNote note={activeNote} key={activeNote._id} isTagsNessesary shouldTitleBeTruncated />
@@ -168,90 +171,90 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
             <EmptyTemplate />
           )}
         </div>
-        <div>
-          <div className="grid wrapper">
-            {notes.map((note) => {
-              const isActive = !!activeNote?._id && activeNote._id === note._id
+        <div className="grid wrapper">
+          {notes.map((note) => {
+            const isActive = !!activeNote?._id && activeNote._id === note._id
 
-              return (
-                <div
-                  key={note._id}
-                  className={clsx({ 'active-card-wrapper': isActive, 'private-card-wrapper': note.isPrivate })}
-                >
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>
-                        <div onClick={() => handleSetAsActiveNote(note)} className="note-title-wrapper">
-                          <b>
-                            {note.title}
-                            {!!note.id ? (
-                              <span>
-                                {' '}
-                                <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
-                              </span>
-                            ) : null}
-                          </b>
-                        </div>
-                      </Card.Header>
-                    </Card.Content>
-                    {isMobile && (
-                      <Card.Content extra className={baseClasses.actionsBoxRight}>
-                        <Tags title={note.title} />
-                        {isLogged && (
-                          <MuiButton
-                            // disabled={isNotesLoading}
-                            variant="outlined"
-                            size="small"
-                            color="secondary"
-                            onClick={() => {
-                              router.push(`/notes/${note._id}/edit`)
-                            }}
-                            startIcon={<EditIcon />}
-                          >
-                            Edit
-                          </MuiButton>
-                        )}
+            return (
+              <div
+                key={note._id}
+                className={clsx({ 'active-card-wrapper': isActive, 'private-card-wrapper': note.isPrivate })}
+              >
+                <Card>
+                  <Card.Content>
+                    <Card.Header>
+                      <div onClick={() => handleSetAsActiveNote(note)} className="note-title-wrapper">
+                        <b>
+                          {note.title}
+                          {!!note.id ? (
+                            <span>
+                              {' '}
+                              <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
+                            </span>
+                          ) : null}
+                        </b>
+                      </div>
+                    </Card.Header>
+                  </Card.Content>
+                  {isMobile && (
+                    <Card.Content extra className={baseClasses.actionsBoxRight}>
+                      <Tags title={note.title} />
+                      {isLogged && (
                         <MuiButton
                           // disabled={isNotesLoading}
-                          variant="contained"
+                          variant="outlined"
                           size="small"
-                          color="primary"
+                          color="secondary"
                           onClick={() => {
-                            router.push(`/notes/${note._id}`)
+                            router.push(`/notes/${note._id}/edit`)
                           }}
-                          startIcon={<ArrowForwardIcon />}
+                          startIcon={<EditIcon />}
                         >
-                          View
+                          Edit
                         </MuiButton>
-                      </Card.Content>
-                    )}
-                  </Card>
-                </div>
-              )
-            })}
-          </div>
+                      )}
+                      <MuiButton
+                        // disabled={isNotesLoading}
+                        variant="contained"
+                        size="small"
+                        color="primary"
+                        onClick={() => {
+                          router.push(`/notes/${note._id}`)
+                        }}
+                        startIcon={<ArrowForwardIcon />}
+                      >
+                        View
+                      </MuiButton>
+                    </Card.Content>
+                  )}
+                </Card>
+              </div>
+            )
+          })}
         </div>
       </div>
       {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-        <div className="standard-container search-wrapper">
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Sample0
-              page={page}
-              defaultPage={page}
-              hideNextButton={page >= totalPages}
-              hidePrevButton={page <= 1}
-              onChange={(_e, page) => {
-                handlePageChange(_e, { activePage: page })
-              }}
-              boundaryCount={3}
-              color="primary"
-              count={totalPages}
-              variant="otlined"
-            />
-          </div>
+        <div className="search-wrapper">
+          <Box m={1}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Sample0
+                page={page}
+                defaultPage={page}
+                hideNextButton={page >= totalPages}
+                hidePrevButton={page <= 1}
+                onChange={(_e, page) => {
+                  handlePageChange(_e, { activePage: page })
+                }}
+                boundaryCount={3}
+                color="primary"
+                count={totalPages}
+                variant="otlined"
+              />
+            </div>
+          </Box>
         </div>
       )}
-    </div>
+    </>
   )
 }
 

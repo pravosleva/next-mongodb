@@ -125,7 +125,7 @@ export const EditNotePage = ({ note }) => {
   const minHeight = useMemo(() => (width > 767 ? '450px' : '300px'), [width])
 
   return (
-    <Container maxWidth="md" className={baseClasses.noPaddingMobile}>
+    <div className={baseClasses.noPaddingMobile}>
       <Box my={4} className={baseClasses.noMarginTopBottomMobile}>
         <h1>
           <span style={{ marginRight: '15px' }}>Edit</span>
@@ -192,6 +192,6 @@ export const EditNotePage = ({ note }) => {
           )}
         </Form>
       )}
-    </Container>
+    </div>
   )
 }

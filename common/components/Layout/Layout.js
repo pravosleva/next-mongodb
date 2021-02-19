@@ -3,16 +3,23 @@ import { Navbar } from './components/Navbar'
 import NextNProgress from 'nextjs-progressbar'
 // <NextNProgress color="#FFF" startPosition={0.3} stopDelayMs={200} height={2} options={{ showSpinner: false }} />
 import { theme, md } from '~/common/styled-mui/theme'
+import { Container } from '@material-ui/core'
 import {
   // ScrollTopButton,
   SpeedDial,
 } from './components'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import { Footer } from './components/Footer'
+import { useStyles } from './styles'
+// import { useBaseStyles } from '~/common/styled-mui/baseStyles'
+// const baseClasses = useBaseStyles()
+// baseClasses.noPaddingMobile
 
 export const Layout = ({ children }) => {
   const router = useRouter()
   const isTheNotePage = router.pathname === '/notes/[id]'
+  const classes = useStyles()
 
   return (
     <>
@@ -37,13 +44,21 @@ export const Layout = ({ children }) => {
         options={{ showSpinner: true }}
       />
       <Navbar />
-      <div
+      {/* <div
         className={clsx({
-          // 'bg-fixed': !isTheNotePage,
           'bg-fixed_the-note-page': isTheNotePage,
         })}
-      />
-      {children}
+      /> */}
+      <Container
+        style={{
+          border: '1px solid transparent',
+        }}
+        maxWidth="md"
+        className={clsx(classes.minimalHeightSetting)}
+      >
+        <div style={{ margin: '50px 0px 50px 0px' }}>{children}</div>
+      </Container>
+      <Footer />
       {router.pathname !== '/new' && <SpeedDial />}
       <style jsx global>{`
         #nprogress .spinner {

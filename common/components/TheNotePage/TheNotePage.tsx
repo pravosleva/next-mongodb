@@ -5,7 +5,6 @@ import { Confirm, Loader } from 'semantic-ui-react'
 // import { Button as MuiButton } from '@material-ui/core'
 import { ActiveNote } from '~/common/components/ActiveNote'
 import { useAuthContext } from '~/common/context'
-import Container from '@material-ui/core/Container'
 // See also: https://github.com/hadnazzar/nextjs-with-material-ui/blob/master/pages/about.js
 import { Box, Button } from '@material-ui/core'
 // import Button from '@material-ui/core/Button'
@@ -63,7 +62,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const { isLogged } = useAuthContext()
   const MemoizedBtnsBox = useMemo(
     () => (
-      <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+      <div style={{ margin: '0 auto' }}>
         <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
           <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
             Delete
@@ -84,7 +83,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   )
 
   return (
-    <Container maxWidth="md" className={baseClasses.noPaddingMobile}>
+    <div className={baseClasses.noPaddingMobile}>
       {isLogged && !isDeleting && MemoizedBtnsBox}
       <Box my={4} className={baseClasses.noMarginTopBottomMobile}>
         {isDeleting ? (
@@ -113,6 +112,6 @@ export const TheNotePage = ({ initNote: note }: any) => {
         <Confirm open={confirm} onCancel={handleClose} onConfirm={handleDelete} />
       </Box>
       {isLogged && !isDeleting && MemoizedBtnsBox}
-    </Container>
+    </div>
   )
 }

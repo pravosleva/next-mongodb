@@ -10,5 +10,5 @@ export const CodeRendererMaterialDark = ({ language, value }: any) => {
 }
 
 export const CodeRendererMaterialOceanic = ({ language, value }: any) => {
-  return <SyntaxHighlighter showLineNumbers={true} style={materialOceanic} language={language} children={value} />
+  return <SyntaxHighlighter showLineNumbers={false} style={materialOceanic} language={language} children={value} />
 }
