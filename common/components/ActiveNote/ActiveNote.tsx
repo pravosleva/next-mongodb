@@ -34,27 +34,35 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
 
   return (
     <div className={clsx('todo-item', baseClasses.customizableListingWrapper)}>
-      <div style={{ marginBottom: '5px', userSelect: 'none' }}>
+      <div style={{ marginBottom: '0px', userSelect: 'none' }}>
         <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
       </div>
       {!!_id && (
-        <div style={{ userSelect: 'none' }}>
-          <div style={{ marginBottom: '10px', userSelect: 'none' }}>
-            <Rating key={priority} maxRating={5} rating={priority} disabled />
-          </div>
-          <div style={{ borderBottom: '2px solid lightgray' }} />
+        <div
+          style={{
+            userSelect: 'none',
+            // border: '1px solid transparent',
+            minHeight: '40px',
+            height: '40px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '2px solid lightgray',
+          }}
+        >
+          <Rating key={priority} maxRating={5} rating={priority} disabled />
         </div>
       )}
       {!!description &&
         (!!descriptionRenderer ? (
-          <>{descriptionRenderer({ description })}</>
+          descriptionRenderer({ description })
         ) : (
           <Scrollbars
             autoHeight
             autoHeightMin={500}
             // autoHeightMax={!!height ? (height || 0) - 180 : 200}
             // This will activate auto hide
-            // autoHide
+            autoHide
             // Hide delay in ms
             // autoHideTimeout={1000}
             // Duration for hide animation in ms.

@@ -128,7 +128,7 @@ h1 {
 .wrapper {
   /* max-width: calc(100vw - 490px); */
   /* padding: 0 16px; */
-  margin: auto;
+  /* margin: auto; */
 }
 .search-wrapper {
   margin: 0 auto;
@@ -268,8 +268,8 @@ h1 {
 }
 
 .description-markdown {
-  padding-top: 15px;
-  padding-bottom: 20px;
+  padding-top: 24px;
+  padding-bottom: 24px;
   white-space: pre-wrap;
   overflow-y: auto;
 }

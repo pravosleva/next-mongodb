@@ -6,9 +6,9 @@ export const Footer = () => {
 
   return (
     <Container maxWidth="md" className={classes.container}>
-      <div style={{ borderTop: '1px solid lightgray' }}>
-        <Box m={2}>2021</Box>
-      </div>
+      <Box p={2} style={{ borderTop: '1px solid lightgray' }}>
+        2021
+      </Box>
     </Container>
   )
 }

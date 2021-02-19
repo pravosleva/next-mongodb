@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { Button, Form, Loader, Message } from 'semantic-ui-react'
+import { Form, Loader, Message } from 'semantic-ui-react'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '~/common/context'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Checkbox } from '@material-ui/core'
+import { ThemedButton } from '~/common/styled-mui/custom-button'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -113,9 +114,9 @@ const NewNote = () => {
             />
             {isLogged && (
               <>
-                <Button disabled={isSubmitting || !isCorrect} type="submit">
+                <ThemedButton disabled={isSubmitting || !isCorrect} type="submit" color="red" variant="contained">
                   Create
-                </Button>
+                </ThemedButton>
                 <FormGroup>
                   <FormControlLabel
                     control={

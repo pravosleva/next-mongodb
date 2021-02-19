@@ -12,14 +12,13 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { Footer } from './components/Footer'
 import { useStyles } from './styles'
-// import { useBaseStyles } from '~/common/styled-mui/baseStyles'
-// const baseClasses = useBaseStyles()
-// baseClasses.noPaddingMobile
+import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 
 export const Layout = ({ children }) => {
   const router = useRouter()
   const isTheNotePage = router.pathname === '/notes/[id]'
   const classes = useStyles()
+  const baseClasses = useBaseStyles()
 
   return (
     <>
@@ -44,17 +43,14 @@ export const Layout = ({ children }) => {
         options={{ showSpinner: true }}
       />
       <Navbar />
-      {/* <div
-        className={clsx({
-          'bg-fixed_the-note-page': isTheNotePage,
-        })}
-      /> */}
       <Container
         style={{
           border: '1px solid transparent',
         }}
         maxWidth="md"
-        className={clsx(classes.minimalHeightSetting)}
+        className={clsx(classes.minimalHeightSetting, {
+          [baseClasses.noPaddingMobile]: isTheNotePage,
+        })}
       >
         <div style={{ margin: '50px 0px 50px 0px' }}>{children}</div>
       </Container>
@@ -65,7 +61,7 @@ export const Layout = ({ children }) => {
           display: block;
           position: fixed;
           z-index: 1031;
-          right: 15px;
+          right: 8px;
         }
         @media (min-width: ${md + 1}px) {
           #nprogress .spinner {
