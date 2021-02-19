@@ -1,4 +1,4 @@
-export { useAuthContext } from '~/common/context/AuthContext'
+export { useAuthContext } from '~/common/context'
 export * from './useDebounce'
 export * from './useGlobalAppContext'
 export * from './useSocketContext'
