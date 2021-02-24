@@ -8,7 +8,7 @@ import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/c
 import { useWindowSize } from '~/common/hooks'
 import { EmptyTemplate } from '~/common/components/EmptyTemplate'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
-import { Button as MuiButton, Box, Container, TextField } from '@material-ui/core'
+import { Button as MuiButton, Box, TextField } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
 import CloseIcon from '@material-ui/icons/Close'
