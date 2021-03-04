@@ -28,12 +28,12 @@ interface IProps {
 const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, shouldTitleBeTruncated }: IProps) => {
   const baseClasses = useBaseStyles()
   const classes = useStyles()
-  const { description, priority, title, _id } = useFreshNote(initialNote)
+  const { description, priority, title, _id, isPrivate } = useFreshNote(initialNote)
   const router = useRouter()
   const { isLogged } = useAuthContext()
 
   return (
-    <div className={clsx('todo-item', baseClasses.customizableListingWrapper)}>
+    <div className={clsx('todo-item', baseClasses.customizableListingWrapper, { 'todo-item_private': isPrivate })}>
       <div style={{ marginBottom: '0px', userSelect: 'none' }}>
         <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
       </div>

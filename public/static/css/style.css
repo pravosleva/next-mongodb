@@ -168,11 +168,19 @@ h1 {
   border: 2px solid #fff;
 }
 .active-card-wrapper > .ui.card {
-  border: 2px solid #3882c4;
+  border: 2px solid #fe7f2d;
 }
 .private-card-wrapper > .ui.card {
   /* border: 2px dashed red; */
-  background: linear-gradient(45deg, #ffe1a8 30%, #ffbf69 90%);
+  /* background: linear-gradient(45deg, #ffe1a8 30%, #ffbf69 90%); */
+  background: linear-gradient(45deg, #ff8e53 30%, #ffbf69 90%);
+}
+.private-card-wrapper > .ui.card .note-title-wrapper {
+  color: #fff !important;
+}
+
+.active-card-wrapper.private-card-wrapper > .ui.card {
+  border: 2px solid #ff8e53;
 }
 
 .navbar {
@@ -266,6 +274,10 @@ h1 {
 
 .todo-item {
   cursor: default;
+  border-top: 8px solid #3882c4;
+}
+.todo-item_private {
+  border-top: 8px solid red;
 }
 
 .description-markdown {
