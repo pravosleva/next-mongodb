@@ -1,19 +1,55 @@
 import { useEffect, useRef, useMemo } from 'react'
-import Link from 'next/link'
+// import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
-import { Card, Icon, Input, Label, Pagination, Rating } from 'semantic-ui-react'
+import { Card, Icon, Label, Rating } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
 import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/context'
 import { useWindowSize } from '~/common/hooks'
 import { EmptyTemplate } from '~/common/components/EmptyTemplate'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
-import MuiButton from '@material-ui/core/Button'
+import { Button as MuiButton, Box, TextField } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
+import CloseIcon from '@material-ui/icons/Close'
+import AutorenewIcon from '@material-ui/icons/Autorenew'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
+import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
+import { Sample0 } from '~/common/styled-mui/custom-pagination'
+
+const InputFieldFlexContainer = ({ children }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }}
+  >
+    {children}
+  </div>
+)
+const CloseBtn = ({ children, onClick }) => (
+  <div
+    onClick={onClick}
+    style={{
+      marginLeft: '8px',
+      minWidth: '35px',
+      width: '35px',
+      height: '35px',
+      borderRadius: '50%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      border: '2px dashed #fff',
+      cursor: 'pointer',
+    }}
+  >
+    {children}
+  </div>
+)
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -49,53 +85,74 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
   const router = useRouter()
 
   return (
-    <div style={{ marginTop: '20px' }}>
-      <div className="standard-container search-wrapper">
+    <>
+      <div className="search-wrapper">
         {isMobile && (
           <>
-            <div>
-              <Input
-                loading={isLoading}
-                disabled={isLoading}
-                iconPosition="left"
-                placeholder="Search by title..."
+            <InputFieldFlexContainer>
+              <TextField
+                size="small"
+                label="Title"
+                variant="outlined"
+                value={state.searchByTitle}
+                fullWidth
+                type="text"
+                // placeholder="Search by title..."
+                autoComplete="off"
                 onChange={(e) => {
                   handleSearchByTitleSetText(e.target.value)
                 }}
-                value={state.searchByTitle}
-                action={{ icon: 'close', onClick: handleSearchByTitleClear }}
               />
-            </div>
-            <div>
-              <Input
-                loading={isLoading}
-                disabled={isLoading}
-                iconPosition="left"
-                placeholder="Search by description..."
+              {!!state.searchByTitle && (
+                <CloseBtn onClick={handleSearchByTitleClear}>{isLoading ? <AutorenewIcon /> : <CloseIcon />}</CloseBtn>
+              )}
+            </InputFieldFlexContainer>
+            <InputFieldFlexContainer>
+              <TextField
+                size="small"
+                variant="outlined"
+                label="Description"
+                value={state.searchByDescription}
+                fullWidth
+                type="text"
+                // placeholder="Search by description..."
+                autoComplete="off"
                 onChange={(e) => {
                   handleSearchByDescriptionSetText(e.target.value)
                 }}
-                value={state.searchByDescription}
-                action={{ icon: 'close', onClick: handleSearchByDescriptionClear }}
               />
-            </div>
+              {!!state.searchByDescription && (
+                <CloseBtn onClick={handleSearchByDescriptionClear}>
+                  {isLoading ? <AutorenewIcon /> : <CloseIcon />}
+                </CloseBtn>
+              )}
+            </InputFieldFlexContainer>
           </>
         )}
+
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Label>
             <Icon name="file" /> {totalNotes}
           </Label>
         </div>
         {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-          <Pagination
-            defaultActivePage={page}
-            ellipsisItem={null}
-            firstItem={null}
-            lastItem={null}
-            siblingRange={1}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <Box m={1}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Sample0
+                page={page}
+                defaultPage={page}
+                hideNextButton={page >= totalPages}
+                hidePrevButton={page <= 1}
+                onChange={(_e, page) => {
+                  handlePageChange(_e, { activePage: page })
+                }}
+                boundaryCount={3}
+                color="primary"
+                count={totalPages}
+                variant="otlined"
+              />
+            </div>
+          </Box>
         )}
       </div>
       {/* <div style={{ border: '1px solid red' }}>
@@ -106,7 +163,7 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
         </pre>
       </div> */}
       <MobileDialogIfNecessary />
-      <div className="main standard-container">
+      <div className="main">
         <div className="active-note-external-sticky-wrapper">
           {!!activeNote ? (
             <ActiveNote note={activeNote} key={activeNote._id} isTagsNessesary shouldTitleBeTruncated />
@@ -114,90 +171,111 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
             <EmptyTemplate />
           )}
         </div>
-        <div>
-          <div className="grid wrapper">
-            {notes.map((note) => {
-              const isActive = !!activeNote?._id && activeNote._id === note._id
+        <div className="grid wrapper">
+          {notes.map((note) => {
+            const isActive = !!activeNote?._id && activeNote._id === note._id
 
-              return (
-                <div key={note._id} className={clsx({ 'active-card-wrapper': isActive })}>
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>
-                        <div onClick={() => handleSetAsActiveNote(note)} className="note-title-wrapper">
-                          <b>
-                            {note.title}
-                            {!!note.id ? (
-                              <span>
-                                {' '}
-                                <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
-                              </span>
-                            ) : null}
-                          </b>
-                        </div>
-                      </Card.Header>
-                    </Card.Content>
-                    {isMobile && (
-                      <Card.Content extra className={baseClasses.actionsBoxRight}>
-                        <Tags title={note.title} />
-                        {isLogged && (
-                          <MuiButton
-                            // disabled={isNotesLoading}
-                            variant="outlined"
-                            size="small"
-                            color="secondary"
-                            onClick={() => {
-                              router.push(`/notes/${note._id}/edit`)
-                            }}
-                            startIcon={<EditIcon />}
-                          >
-                            Edit
-                          </MuiButton>
-                        )}
+            return (
+              <div
+                key={note._id}
+                className={clsx({ 'active-card-wrapper': isActive, 'private-card-wrapper': note.isPrivate })}
+              >
+                <Card>
+                  <Card.Content>
+                    <Card.Header>
+                      <div onClick={() => handleSetAsActiveNote(note)} className="note-title-wrapper">
+                        <b>
+                          {note.title}
+                          {!!note.id ? (
+                            <span>
+                              {' '}
+                              <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
+                            </span>
+                          ) : null}
+                        </b>
+                      </div>
+                    </Card.Header>
+                  </Card.Content>
+                  {isMobile && (
+                    <Card.Content extra className={baseClasses.actionsBoxRight}>
+                      <Tags title={note.title} />
+                      {isLogged && (
                         <MuiButton
                           // disabled={isNotesLoading}
-                          variant="contained"
+                          variant="outlined"
                           size="small"
-                          color="primary"
+                          color="secondary"
                           onClick={() => {
-                            router.push(`/notes/${note._id}`)
+                            router.push(`/notes/${note._id}/edit`)
                           }}
-                          startIcon={<ArrowForwardIcon />}
+                          startIcon={<EditIcon />}
                         >
-                          View
+                          Edit
                         </MuiButton>
-                      </Card.Content>
-                    )}
-                  </Card>
-                </div>
-              )
-            })}
-          </div>
+                      )}
+                      <MuiButton
+                        // disabled={isNotesLoading}
+                        variant="contained"
+                        size="small"
+                        color="primary"
+                        onClick={() => {
+                          router.push(`/notes/${note._id}`)
+                        }}
+                        startIcon={<ArrowForwardIcon />}
+                      >
+                        View
+                      </MuiButton>
+                    </Card.Content>
+                  )}
+                </Card>
+              </div>
+            )
+          })}
         </div>
       </div>
-      {/* state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-        <div className="standard-container search-wrapper">
-          <Pagination
-            // boundaryRange={0}
-            defaultActivePage={page}
-            ellipsisItem={null}
-            firstItem={null}
-            lastItem={null}
-            siblingRange={1}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+      {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
+        <div className="search-wrapper">
+          <Box m={1}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Sample0
+                page={page}
+                defaultPage={page}
+                hideNextButton={page >= totalPages}
+                hidePrevButton={page <= 1}
+                onChange={(_e, page) => {
+                  handlePageChange(_e, { activePage: page })
+                }}
+                boundaryCount={3}
+                color="primary"
+                count={totalPages}
+                variant="otlined"
+              />
+            </div>
+          </Box>
         </div>
-      ) */}
-    </div>
+      )}
+    </>
   )
 }
 
-Index.getInitialProps = async () => {
-  const res = await fetch(`${NEXT_APP_API_ENDPOINT}/api/notes?limit=${defaultPaginationData.limit}`)
+Index.getInitialProps = async (ctx) => {
+  const headers = getStandardHeadersByCtx(ctx)
+
+  // const me = await fetch(`${NEXT_APP_EXPRESS_API_ENDPOINT}/users/me`, {
+  //   method: 'GET',
+  //   headers,
+  // })
+  //   .then((res) => {
+  //     if (!res.ok) throw new Error(res.status)
+  //     return res.json()
+  //   })
+  //   .then((json) => ({ isOk: true, json }))
+  //   .catch((err) => ({ isOk: false }))
+
+  const res = await fetch(`${NEXT_APP_API_ENDPOINT}/notes?limit=${defaultPaginationData.limit}`, { headers })
   const { data, pagination } = await res.json()
 
-  return { notes: data, pagination }
+  return { notes: data || [], pagination }
 }
 
 export default Index

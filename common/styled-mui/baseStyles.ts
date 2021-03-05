@@ -8,8 +8,16 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     btnsBox: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      '& > *:not(:last-child)': {
+        marginRight: theme.spacing(2),
+      },
+    },
+    standardMobileResponsiveBlock: {
       [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(1, 2, 1, 2),
+        padding: theme.spacing(0, 1, 0, 1),
       },
     },
     noMarginTopBottomMobile: {
@@ -28,18 +36,20 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
 
       '& ul, ol': {
         '& > li': {
+          marginBottom: '10px',
           paddingLeft: '5px',
           '& > p': {
             display: 'inline',
           },
-          '& input': {
-            transform: 'translateY(-10px)',
-            border: '1px solid red !important',
+          '& input[type="checkbox"]': {
+            // display: 'block',
+            transform: 'translateY(4px)',
+            marginBottom: '10px',
           },
         },
-        '& > li:not(:last-child)': {
-          marginBottom: '10px',
-        },
+        // '& > li:not(:last-child)': {
+        //   marginBottom: '15px',
+        // },
       },
 
       /*

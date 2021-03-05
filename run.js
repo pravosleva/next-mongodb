@@ -16,8 +16,13 @@ const io = require('socket.io')(server)
 const nextApp = next({ dev: isDev })
 const nextHanlder = nextApp.getRequestHandler()
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
+const ipDetectorMW = require('./express-tools/middlewares/ip-detector')
+const geoipLiteMW = require('./express-tools/middlewares/geoip-lite')
 
 const _customIO = socketLogic(io)
+
+app.use('*', ipDetectorMW, geoipLiteMW)
+// NOTE: For example: const ip = req.clientIp; const geo = req.geo;
 
 nextApp
   .prepare()

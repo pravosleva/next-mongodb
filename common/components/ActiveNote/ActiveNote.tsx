@@ -28,50 +28,41 @@ interface IProps {
 const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, shouldTitleBeTruncated }: IProps) => {
   const baseClasses = useBaseStyles()
   const classes = useStyles()
-  const { description, priority, title, _id } = useFreshNote(initialNote)
-  // const { description, priority, title, _id } = note
-
-  // Links should be opened in new tab:
-  // useEffect(() => {
-  //   const descriptionMarkdown = document.querySelector('.description-markdown')
-
-  //   if (typeof window !== 'undefined') {
-  //     if (!!descriptionMarkdown) descriptionMarkdown?.addEventListener('click', openLinkInNewTab)
-  //   }
-  //   return () => {
-  //     if (typeof window !== 'undefined') {
-  //       if (!!descriptionMarkdown) descriptionMarkdown?.removeEventListener('click', openLinkInNewTab)
-  //     }
-  //   }
-  // }, [])
-  // const handleSetRate = (e, { rating, maxRating }) => {}
-  // const { height } = useWindowSize()
+  const { description, priority, title, _id, isPrivate } = useFreshNote(initialNote)
   const router = useRouter()
   const { isLogged } = useAuthContext()
 
   return (
-    <div className={clsx('todo-item', baseClasses.customizableListingWrapper)}>
-      <div style={{ marginBottom: '5px', userSelect: 'none' }}>
+    <div className={clsx('todo-item', baseClasses.customizableListingWrapper, { 'todo-item_private': isPrivate })}>
+      <div style={{ marginBottom: '0px', userSelect: 'none' }}>
         <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
       </div>
       {!!_id && (
-        <div style={{ userSelect: 'none' }}>
-          <div style={{ marginBottom: '10px', userSelect: 'none' }}>
-            <Rating key={priority} maxRating={5} rating={priority} disabled />
-          </div>
-          <div style={{ borderBottom: '2px solid lightgray' }} />
+        <div
+          style={{
+            userSelect: 'none',
+            // border: '1px solid transparent',
+            minHeight: '40px',
+            height: '40px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '2px solid lightgray',
+          }}
+        >
+          <Rating key={priority} maxRating={5} rating={priority} disabled />
         </div>
       )}
       {!!description &&
         (!!descriptionRenderer ? (
-          <>{descriptionRenderer({ description })}</>
+          descriptionRenderer({ description })
         ) : (
           <Scrollbars
             autoHeight
             autoHeightMin={500}
             // autoHeightMax={!!height ? (height || 0) - 180 : 200}
             // This will activate auto hide
-            // autoHide
+            autoHide
             // Hide delay in ms
             // autoHideTimeout={1000}
             // Duration for hide animation in ms.
@@ -124,16 +115,10 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
 }
 
 function areEqual(prevProps: any, nextProps: any) {
-  /*
-  возвращает true, если nextProps рендерит
-  тот же результат что и prevProps,
-  иначе возвращает false
-  */
+  // NOTE: return true, if render unnecessary
   return (
     (!!prevProps.note?._id && !nextProps.note?._id) ||
     (prevProps.note._id === nextProps.note._id && prevProps.note.updatedAt === nextProps.note.updatedAt)
   )
 }
 export const ActiveNote = memo(MyComponent, areEqual)
-
-// export const ActiveNote = MyComponent

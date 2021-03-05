@@ -3,6 +3,12 @@ import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      [theme.breakpoints.up('sm')]: {
+        height: '64px',
+      },
+      [theme.breakpoints.down('xs')]: {
+        height: '56px',
+      },
       '& > div:not(:last-child)': {
         marginRight: theme.spacing(2),
       },
@@ -11,7 +17,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     toolbar: {
-      // padding: 0,
+      // [theme.breakpoints.down('xs')]: {
+      padding: 0,
+      // },
     },
     grow: {
       flexGrow: 1,

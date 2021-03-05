@@ -1,31 +1,11 @@
 import { forwardRef, useMemo, useCallback } from 'react'
-import {
-  // Accordion,
-  // AccordionSummary,
-  // AccordionDetails,
-  // AccordionActions,
-  Button as MuiButton,
-  // Checkbox,
-  // CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  // DialogTitle,
-  // Divider,
-  // FormControl,
-  // FormControlLabel,
-  // FormGroup,
-  // TextField,
-  // withStyles,
-  // Typography,
-  // Grid,
-} from '@material-ui/core'
+import { Button as MuiButton, Dialog, DialogActions, DialogContent } from '@material-ui/core'
 import Slide from '@material-ui/core/Slide'
 import { useFreshNote, useGlobalAppContext, useWindowSize } from '~/common/hooks'
 import { ActiveNote } from './ActiveNote'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
-import { theNotePageRenderers } from '~/common/react-markdown-renderers'
+import { dialogRenderers } from '~/common/react-markdown-renderers'
 
 const TransitionUp = forwardRef(function Transition(props, ref) {
   // @ts-ignore
@@ -71,7 +51,7 @@ export const MobileDialogIfNecessary = () => {
                 <ReactMarkdown
                   // @ts-ignore
                   plugins={[gfm, { singleTilde: false }]}
-                  renderers={theNotePageRenderers}
+                  renderers={dialogRenderers}
                   children={description}
                 />
               </div>

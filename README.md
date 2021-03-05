@@ -1,5 +1,10 @@
+# next-mongodb
+
+## [Life Demo](http://code-samples.space/)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
 
+- [Stack](#stack)
 - [Roadmap](#roadmap)
 - [API](#api)
 - [Getting Started](#getting-started)
@@ -12,6 +17,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [Deploy on ZEIT Now](#deploy-on-zeit-now)
 
 > https://github.com/typicode/husky/issues/326#issuecomment-692317612
+
+## stack
+
+- react@16.13.1
+- next@9.3.6
+- express@4.17.1
+- socket.io@3.0.4
+- @material-ui/core@4.11.2
 
 ## roadmap
 
@@ -94,6 +107,7 @@ module.exports = {
         MONGO_URI: '<YOUR>',
         JWT_SECRET: '<RANDOM_STRING>',
         EXPRESS_JWT_MAXAGE_IN_DAYS: 3,
+        EXPRESS_IS_USER_SIGNUP_ENABLED: 1,
       },
     },
   ],
@@ -115,6 +129,7 @@ module.exports = {
         MONGO_URI: '<YOUR>',
         JWT_SECRET: '<RANDOM_STRING>',
         EXPRESS_JWT_MAXAGE_IN_DAYS: 3,
+        EXPRESS_IS_USER_SIGNUP_ENABLED: 1,
       },
     },
   ],
@@ -129,7 +144,7 @@ module.exports = {
 
 ```bash
 MONGO_URI=<YOUR>
-NEXT_APP_API_ENDPOINT=http://localhost:9000
+NEXT_APP_API_ENDPOINT=http://localhost:9000/api
 NEXT_APP_SOCKET_API_ENDPOINT=http://localhost:9000
 NEXT_APP_EXPRESS_API_ENDPOINT=http://localhost:9000/e-api
 NEXT_APP_COOKIE_MAXAGE_IN_DAYS=2
@@ -141,7 +156,7 @@ NEXT_APP_COOKIE_MAXAGE_IN_DAYS=2
 
 ```bash
 MONGO_URI=<YOUR>
-NEXT_APP_API_ENDPOINT=http://<DOMAIN>
+NEXT_APP_API_ENDPOINT=http://<DOMAIN>/api
 NEXT_APP_SOCKET_API_ENDPOINT=http://<DOMAIN>
 NEXT_APP_EXPRESS_API_ENDPOINT=http://<DOMAIN>/e-api
 NEXT_APP_COOKIE_MAXAGE_IN_DAYS=2
@@ -164,6 +179,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 Mongoose allows you to query your collections in different ways like: [Official Documentation](https://mongoosejs.com/docs/api.html#model_Model.find)
 
 ```js
+// MyModel.isPrivate not equal true
+MyModel.find({ isPrivate: { $ne: true } })
+
 // named john and at least 18
 MyModel.find({ name: 'john', age: { $gte: 18 } })
 

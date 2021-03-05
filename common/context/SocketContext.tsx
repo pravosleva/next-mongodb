@@ -35,6 +35,34 @@ function reducer(state: any, action: any) {
 
 const firstRendersToSkip: number = 1
 
+type TGeo = {
+  area?: number
+  city?: string
+  country?: string
+  eu?: string
+  ll?: number[]
+  metro?: number
+  range?: number[]
+  region?: string
+  timezone?: string
+}
+type TUserDetails = {
+  success: boolean
+  ip: string
+  geo: TGeo
+}
+const getInfoByGeo = (geo?: TGeo): string => {
+  if (!geo) return 'Не удалось определить детали'
+
+  let result = []
+  const fieldsForTry = ['country', 'region', 'city']
+
+  // @ts-ignore
+  for (const value of fieldsForTry) if (!!geo[value]) result.push(geo[value])
+
+  return result.join(', ')
+}
+
 export const SocketContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const isClient = useMemo(() => typeof window !== 'undefined', [typeof window])
@@ -56,17 +84,35 @@ export const SocketContextProvider = ({ children }: any) => {
     return res
   }
   const handleMeConnected = useCallback(
-    (arg: IConnectSelf, socket: any) => {
-      console.log('--- activeNote')
-      console.log(globalState.activeNote)
+    async (arg: IConnectSelf, socket: any) => {
+      // console.log('--- activeNote')
+      // console.log(globalState.activeNote)
+
+      // -- Get my IP:
+      const userDetails: TUserDetails = await httpClient.getMyIP()
+      const { success, geo, ip } = userDetails
+
+      console.log(userDetails)
+      if (success && !!ip) {
+        const geoInfo = getInfoByGeo(geo)
+        addDefaultNotif({
+          title: ip,
+          message: geoInfo,
+          dismiss: {
+            duration: 10000,
+          },
+        })
+      }
+      // --
+
+      // -- Update active note if necessary:
       if (!!globalState.activeNote?._id) {
         // TODO: Request activeNote._id should be requested
-        console.log('TODO: Request activeNote._id')
-        console.log(globalState.activeNote._id)
+        console.log(`NOTE: Request for globalState.activeNote._id (${globalState.activeNote._id}) required`)
 
         handleGetNote(globalState.activeNote._id)
           .then((res) => {
-            console.log('Received:')
+            // console.log('Received:')
             console.log(res)
             handleSetAsActiveNote(res)
           })
@@ -80,12 +126,13 @@ export const SocketContextProvider = ({ children }: any) => {
             console.log(err)
           })
       }
+      // --
 
       // console.log(arg)
       addDefaultNotif({
-        title: 'Me connected',
+        title: `Me connected (online: ${arg.data.totalConnections})`,
         message: arg.data.msg,
-        type: 'success',
+        // type: 'success',
       })
       dispatch({ type: evt.ME_CONNECTED, payload: socket })
     },
@@ -120,7 +167,7 @@ export const SocketContextProvider = ({ children }: any) => {
 
       addDefaultNotif({
         title: 'Updated',
-        message: `${_id}`,
+        message: _id,
         type: 'info',
       })
       dispatch({ type: 'REFRESH_UPDATED_NOTE', payload: arg.data })
@@ -157,11 +204,11 @@ export const SocketContextProvider = ({ children }: any) => {
     // console.log(arg)
     try {
       const {
-        data: { msg },
+        data: { msg, totalConnections },
       } = arg
 
       addDefaultNotif({
-        title: 'Somebody connected',
+        title: `Somebody connected (online: ${totalConnections})`,
         message: msg,
         type: 'info',
       })
@@ -173,11 +220,11 @@ export const SocketContextProvider = ({ children }: any) => {
     // console.log(arg)
     try {
       const {
-        data: { msg },
+        data: { msg, totalConnections },
       } = arg
 
       addDefaultNotif({
-        title: 'Somebody disconnected',
+        title: `Somebody disconnected (online: ${totalConnections})`,
         message: msg,
         type: 'info',
       })
