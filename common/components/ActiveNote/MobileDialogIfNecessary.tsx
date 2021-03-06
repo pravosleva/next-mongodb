@@ -40,7 +40,10 @@ export const MobileDialogIfNecessary = () => {
       <DialogContent
         dividers={true}
         // className={classes.dialogMDContent}
-        style={{ padding: 0 }}
+        style={{
+          padding: 0,
+          borderTop: 'none',
+        }}
       >
         <ActiveNote
           note={state.activeNote}

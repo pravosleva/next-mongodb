@@ -94,8 +94,10 @@ h1 {
   }
   .active-note-external-sticky-wrapper {
     position: sticky;
-    top: 70px;
-    max-height: calc(100vh - 60px - 20px - 8px);
+    /* top: 70px;
+    max-height: calc(100vh - 60px - 20px - 8px); */
+    top: 0px;
+    max-height: 100vh;
   }
   .active-note-external-sticky-wrapper > div {
     max-height: 100%;
@@ -439,4 +441,12 @@ h1 {
   left: calc(55px + 0px);
   background: #63cdff;
   box-shadow: 0 0 5px #13b3ff, 0 0 15px #13b3ff;
+} */
+
+.rc-md-editor {
+  padding-bottom: 0px;
+}
+/* .rc-md-editor .editor-container .sec-md .input {
+  min-height: inherit;
+  resize: vertical;
 } */

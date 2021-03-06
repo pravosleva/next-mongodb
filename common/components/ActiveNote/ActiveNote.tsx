@@ -47,7 +47,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            borderBottom: '2px solid lightgray',
+            borderBottom: '1px solid lightgray',
           }}
         >
           <Rating key={priority} maxRating={5} rating={priority} disabled />
@@ -57,6 +57,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
         (!!descriptionRenderer ? (
           descriptionRenderer({ description })
         ) : (
+          /*
           <Scrollbars
             autoHeight
             autoHeightMin={500}
@@ -68,17 +69,17 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
             // Duration for hide animation in ms.
             // autoHideDuration={500}
           >
-            <div className="description-markdown">
-              {/* @ts-ignore */}
-              <ReactMarkdown plugins={[gfm, { singleTilde: false }]} renderers={baseRenderers} children={description} />
-            </div>
-          </Scrollbars>
+          */
+          <div className="description-markdown">
+            {/* @ts-ignore */}
+            <ReactMarkdown plugins={[gfm, { singleTilde: false }]} renderers={baseRenderers} children={description} />
+          </div>
         ))}
       {/* <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(note, null, 2)}</pre> */}
 
       {!!_id && isTagsNessesary && (
         <>
-          <div style={{ borderBottom: '2px solid lightgray' }} />
+          <div style={{ borderBottom: '1px solid lightgray' }} />
           <div className={baseClasses.actionsBoxLeft}>
             <Button
               // disabled={isNotesLoading}

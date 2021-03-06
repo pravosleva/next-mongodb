@@ -52,12 +52,10 @@ export const EditNotePage = ({ note }) => {
   const updateNote = async () => {
     try {
       const body = {}
-      Object.keys(form).forEach((key) => {
+      for (const key in form) {
         switch (key) {
           case 'title':
           case 'description':
-            body[key] = form[key]
-            break
           case 'isPrivate':
             body[key] = form[key]
             break
@@ -67,7 +65,7 @@ export const EditNotePage = ({ note }) => {
           default:
             break
         }
-      })
+      }
       const _res = await fetch(`${NEXT_APP_API_ENDPOINT}/notes/${router.query.id}`, {
         method: 'PUT',
         headers: {
@@ -122,8 +120,8 @@ export const EditNotePage = ({ note }) => {
 
     return err
   }
-  const { width } = useWindowSize()
-  const minHeight = useMemo(() => (width > 767 ? '450px' : '300px'), [width])
+  const { isDesktop } = useWindowSize()
+  const minHeight = useMemo(() => (isDesktop ? '450px' : '300px'), [isDesktop])
 
   return (
     <div className={baseClasses.noPaddingMobile}>
@@ -146,43 +144,39 @@ export const EditNotePage = ({ note }) => {
             </Box>
           )}
           <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
-            {/* <Form.Input
-              fluid
-              error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
-              label="Title"
-              placeholder="Title"
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-            /> */}
             <TextField
-              label="Title"
-              id="title"
+              size="small"
+              // label="Title"
+              type="text"
               variant="outlined"
               fullWidth
               placeholder="Title"
               name="title"
               value={form.title}
               onChange={handleChange}
-              style={{
-                backgroundColor: 'transparent !important',
-              }}
+              autoComplete="off"
             />
           </Box>
           <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
             <MDEditor
+              style={{
+                boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
+                // border: '1px solid rgba(34,36,38,.15)',
+                border: 'none',
+                borderRadius: '4px',
+                minHeight,
+              }}
               value={form.description}
-              style={{ minHeight }}
               renderHTML={(text) => mdParser.render(text)}
               onChange={({ text }) => {
                 handleChange({ target: { value: text, name: 'description' } })
               }}
               config={{
-                view: { menu: false, md: true, html: width > 767 },
+                view: { menu: false, md: true, html: isDesktop },
                 canView: {
                   menu: false,
                   md: true,
-                  html: width > 767,
+                  html: isDesktop,
                   fullScreen: true,
                   hideMenu: true,
                 },

@@ -52,7 +52,7 @@ export const Layout = ({ children }) => {
           [baseClasses.noPaddingMobile]: isTheNotePage,
         })}
       >
-        <div style={{ margin: '50px 0px 50px 0px' }}>{children}</div>
+        <div style={{ margin: '20px 0px 50px 0px' }}>{children}</div>
       </Container>
       <Footer />
       {router.pathname !== '/new' && <SpeedDial />}
