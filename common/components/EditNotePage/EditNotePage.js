@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { FormGroup, Button } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Checkbox } from '@material-ui/core'
 import { ThemedButton } from '~/common/styled-mui/custom-button'
@@ -145,7 +146,7 @@ export const EditNotePage = ({ note }) => {
             </Box>
           )}
           <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
-            <Form.Input
+            {/* <Form.Input
               fluid
               error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
               label="Title"
@@ -153,6 +154,19 @@ export const EditNotePage = ({ note }) => {
               name="title"
               value={form.title}
               onChange={handleChange}
+            /> */}
+            <TextField
+              label="Title"
+              id="title"
+              variant="outlined"
+              fullWidth
+              placeholder="Title"
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              style={{
+                backgroundColor: 'transparent !important',
+              }}
             />
           </Box>
           <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>

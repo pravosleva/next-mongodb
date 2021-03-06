@@ -196,7 +196,7 @@ export const Navbar = (_props: IProps) => {
   const {
     state,
     handleSearchByTitleSetText,
-    isNotesLoading: isLoading,
+    // isNotesLoading: isLoading,
     handleSearchByDescriptionSetText,
     handleSearchByDescriptionClear,
     handleSearchByTitleClear,
@@ -240,7 +240,8 @@ export const Navbar = (_props: IProps) => {
                       // @ts-ignore
                       handleSearchByTitleSetText(e.target.value)
                     }}
-                    disabled={isLoading}
+                    // disabled={isLoading}
+                    autoFocus
                   />
                   <InputBase
                     placeholder="Search by description…"
@@ -254,7 +255,7 @@ export const Navbar = (_props: IProps) => {
                       // @ts-ignore
                       handleSearchByDescriptionSetText(e.target.value)
                     }}
-                    disabled={isLoading}
+                    // disabled={isLoading}
                   />
                 </div>
                 {(!!state.searchByDescription || !!state.searchByTitle) && (
