@@ -96,8 +96,8 @@ h1 {
     position: sticky;
     /* top: 70px;
     max-height: calc(100vh - 60px - 20px - 8px); */
-    top: 0px;
-    max-height: 100vh;
+    top: 8px;
+    max-height: calc(100vh - 16px);
   }
   .active-note-external-sticky-wrapper > div {
     max-height: 100%;
