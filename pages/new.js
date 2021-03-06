@@ -7,6 +7,9 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Checkbox } from '@material-ui/core'
 import { ThemedButton } from '~/common/styled-mui/custom-button'
+import Box from '@material-ui/core/Box'
+import { useBaseStyles } from '~/common/styled-mui/baseStyles'
+import clsx from 'clsx'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -17,6 +20,7 @@ const NewNote = () => {
   const router = useRouter()
   const { isLogged } = useAuthContext()
   const isCorrect = useMemo(() => Object.keys(errors).length === 0, [JSON.stringify(errors)])
+  const baseClasses = useBaseStyles()
 
   const createNote = async () => {
     let errs = validate()
@@ -113,7 +117,7 @@ const NewNote = () => {
               rows={8}
             />
             {isLogged && (
-              <>
+              <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
                 <ThemedButton disabled={isSubmitting || !isCorrect} type="submit" color="red" variant="contained">
                   Create
                 </ThemedButton>
@@ -125,7 +129,7 @@ const NewNote = () => {
                     label="isPrivate"
                   />
                 </FormGroup>
-              </>
+              </Box>
             )}
           </Form>
         )}
