@@ -196,7 +196,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     actionsBoxLeft: {
-      marginTop: '10px',
+      marginTop: '20px',
 
       display: 'flex',
       flexDirection: 'row',

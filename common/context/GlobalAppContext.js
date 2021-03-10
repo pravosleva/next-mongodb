@@ -190,6 +190,7 @@ export const GlobalAppContextProvider = ({ children }) => {
     handleSearchByAnythingClear()
   }, [router.pathname])
   const handleSetAsActiveNote = (note) => {
+    scrollTop(125)
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
   const handleResetActiveNote = (note) => {

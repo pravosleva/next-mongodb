@@ -42,10 +42,10 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
           style={{
             userSelect: 'none',
             // border: '1px solid transparent',
-            minHeight: '40px',
-            height: '40px',
+            minHeight: '50px',
+            height: '50px',
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             borderBottom: '1px solid lightgray',
           }}

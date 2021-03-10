@@ -450,3 +450,8 @@ h1 {
   min-height: inherit;
   resize: vertical;
 } */
+
+.ui.card, .ui.cards > .card {
+  border-radius: 8px;
+  box-shadow: unset;
+}
