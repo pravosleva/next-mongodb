@@ -182,7 +182,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
 
     // Actions box:
     actionsBoxRight: {
-      marginTop: '10px',
+      marginTop: '15px',
 
       display: 'flex',
       flexDirection: 'row',
@@ -196,7 +196,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     actionsBoxLeft: {
-      marginTop: '20px',
+      marginTop: '15px',
 
       display: 'flex',
       flexDirection: 'row',
