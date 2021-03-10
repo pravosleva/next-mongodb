@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
 import { scrollTop } from '~/utils/scrollTo'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
+import { useWindowSize } from '~/common/hooks'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -189,8 +190,9 @@ export const GlobalAppContextProvider = ({ children }) => {
   useEffect(() => {
     handleSearchByAnythingClear()
   }, [router.pathname])
+  const { isDesktop } = useWindowSize()
   const handleSetAsActiveNote = (note) => {
-    scrollTop(125)
+    if (isDesktop) scrollTop(125)
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
   const handleResetActiveNote = (note) => {
