@@ -14,7 +14,7 @@ export const Sample0 = (defaulProps: any) => {
 
   return (
     <div className={classes.root}>
-      <Pagination shape="rounded" variant="outlined" {...defaulProps} />
+      <Pagination shape="round" {...defaulProps} />
     </div>
   )
 }

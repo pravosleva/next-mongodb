@@ -190,8 +190,10 @@ export const GlobalAppContextProvider = ({ children }) => {
   useEffect(() => {
     handleSearchByAnythingClear()
   }, [router.pathname])
-  const { isDesktop } = useWindowSize()
+  const { isDesktop, ...windowParams } = useWindowSize()
   const handleSetAsActiveNote = (note) => {
+    // eslint-disable-next-line no-console
+    console.log(windowParams)
     if (isDesktop) scrollTop(125)
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
