@@ -178,56 +178,62 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
             return (
               <div
                 key={note._id}
-                className={clsx({ 'active-card-wrapper': isActive, 'private-card-wrapper': note.isPrivate })}
+                className={clsx(baseClasses.standardCard, {
+                  'active-card-wrapper': isActive,
+                  'private-card-wrapper': note.isPrivate,
+                })}
               >
-                <Card>
-                  <Card.Content>
-                    <Card.Header>
-                      <div onClick={() => handleSetAsActiveNote(note)} className="note-title-wrapper">
-                        <b>
-                          {note.title}
-                          {!!note.id ? (
-                            <span>
-                              {' '}
-                              <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
-                            </span>
-                          ) : null}
-                        </b>
-                      </div>
-                    </Card.Header>
-                  </Card.Content>
+                <>
+                  <>
+                    <div
+                      className={clsx(baseClasses.standardCardHeader, baseClasses.cursorPointer)}
+                      onClick={() => handleSetAsActiveNote(note)}
+                    >
+                      <h4>
+                        {note.title}
+                        {!!note.id ? (
+                          <span>
+                            {' '}
+                            <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
+                          </span>
+                        ) : null}
+                      </h4>
+                    </div>
+                  </>
                   {isMobile && (
-                    <Card.Content extra className={baseClasses.actionsBoxRight}>
-                      <Tags title={note.title} />
-                      {isLogged && (
+                    <div className={clsx(baseClasses.actionsBoxRight, baseClasses.standardCardFooter)}>
+                      <>
+                        <Tags title={note.title} />
+                        {isLogged && (
+                          <MuiButton
+                            // disabled={isNotesLoading}
+                            variant="outlined"
+                            size="small"
+                            color="secondary"
+                            onClick={() => {
+                              router.push(`/notes/${note._id}/edit`)
+                            }}
+                            startIcon={<EditIcon />}
+                          >
+                            Edit
+                          </MuiButton>
+                        )}
                         <MuiButton
                           // disabled={isNotesLoading}
-                          variant="outlined"
+                          variant="contained"
                           size="small"
-                          color="secondary"
+                          color="primary"
                           onClick={() => {
-                            router.push(`/notes/${note._id}/edit`)
+                            router.push(`/notes/${note._id}`)
                           }}
-                          startIcon={<EditIcon />}
+                          startIcon={<ArrowForwardIcon />}
                         >
-                          Edit
+                          View
                         </MuiButton>
-                      )}
-                      <MuiButton
-                        // disabled={isNotesLoading}
-                        variant="contained"
-                        size="small"
-                        color="primary"
-                        onClick={() => {
-                          router.push(`/notes/${note._id}`)
-                        }}
-                        startIcon={<ArrowForwardIcon />}
-                      >
-                        View
-                      </MuiButton>
-                    </Card.Content>
+                      </>
+                    </div>
                   )}
-                </Card>
+                </>
               </div>
             )
           })}

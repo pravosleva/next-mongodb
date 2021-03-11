@@ -166,22 +166,19 @@ h1 {
   color: #2185d0;
 }
 
-.ui.card {
-  border: 2px solid #fff;
+.active-card-wrapper {
+  border: 2px solid #fe7f2d !important;
 }
-.active-card-wrapper > .ui.card {
-  border: 2px solid #fe7f2d;
-}
-.private-card-wrapper > .ui.card {
+.private-card-wrapper {
   /* border: 2px dashed red; */
   /* background: linear-gradient(45deg, #ffe1a8 30%, #ffbf69 90%); */
   background: linear-gradient(180deg, #ff8e53 30%, #ffbf69 90%);
 }
-.private-card-wrapper > .ui.card .note-title-wrapper {
+.private-card-wrapper {
   color: #fff !important;
 }
 
-.active-card-wrapper.private-card-wrapper > .ui.card {
+.active-card-wrapper.private-card-wrapper {
   border: 2px solid #ff8e53;
 }
 
@@ -450,8 +447,3 @@ h1 {
   min-height: inherit;
   resize: vertical;
 } */
-
-.ui.card, .ui.cards > .card {
-  border-radius: 8px;
-  box-shadow: unset;
-}

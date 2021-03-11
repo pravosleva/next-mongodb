@@ -182,7 +182,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
 
     // Actions box:
     actionsBoxRight: {
-      marginTop: '15px',
+      // marginTop: '15px',
 
       display: 'flex',
       flexDirection: 'row',
@@ -196,7 +196,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     actionsBoxLeft: {
-      marginTop: '15px',
+      // marginTop: '15px',
 
       display: 'flex',
       flexDirection: 'row',
@@ -208,6 +208,28 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       '& > button:not(:last-child)': {
         marginRight: theme.spacing(1),
       },
+    },
+
+    standardCard: {
+      backgroundColor: '#FFF',
+      border: '2px solid #fff',
+      borderRadius: '8px',
+      boxShadow: 'unset',
+      transition: 'box-shadow 0.3s linear',
+      '&:hover': {
+        boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
+      },
+      padding: theme.spacing(1),
+    },
+    cursorPointer: {
+      cursor: 'pointer',
+    },
+    standardCardHeader: {
+      padding: theme.spacing(1, 0, 1, 0),
+    },
+    standardCardFooter: {
+      // borderTop: '1px solid #FFF',
+      padding: theme.spacing(2, 0, 0, 0),
     },
   })
 )
