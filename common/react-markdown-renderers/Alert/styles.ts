@@ -12,17 +12,17 @@ const getIconByType = (type: EType, icon?: string) => {
   switch (true) {
     case type === EType.success:
       return '👌'
-    // case type === EType.warning:
-    //   return '⚡'
+    case type === EType.warning:
+      return '⚡'
     case type === EType.danger:
-      return '😱'
+      return '🔥'
     case type === EType.info:
       return 'ℹ️'
     case type === EType.custom && !!icon:
       return '👌'
     case type === EType.default:
     default:
-      return '🔥'
+      return '💡'
   }
 }
 
