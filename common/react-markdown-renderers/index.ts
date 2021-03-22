@@ -1,4 +1,4 @@
-import { Alert } from './Alert'
+// import { Alert } from './Alert'
 import { BlockquoteRenderer } from './BlockquoteRenderer'
 import { CodeRendererSynthwave84, CodeRendererMaterialOceanic } from './CodeRenderer'
 import { HeadingRenderer } from './HeadingRenderer'
