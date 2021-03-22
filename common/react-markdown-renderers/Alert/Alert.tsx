@@ -2,6 +2,8 @@ import React from 'react'
 import clsx from 'clsx'
 import { EType, useStyles } from './styles'
 import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
+import { theNotePageRenderers } from '~/common/react-markdown-renderers'
 
 interface IProps {
   type?: EType
@@ -22,15 +24,15 @@ export const Alert = ({ type, text, header }: IProps) => {
       {!!header && (
         <ReactMarkdown
           // @ts-ignore
-          // plugins={[gfm, { singleTilde: false }]}
-          // renderers={theNotePageRenderers}
+          plugins={[gfm, { singleTilde: false }]}
+          renderers={theNotePageRenderers}
           children={`## ${header}`}
         />
       )}
       <ReactMarkdown
         // @ts-ignore
-        // plugins={[gfm, { singleTilde: false }]}
-        // renderers={theNotePageRenderers}
+        plugins={[gfm, { singleTilde: false }]}
+        renderers={theNotePageRenderers}
         children={text}
       />
     </div>
