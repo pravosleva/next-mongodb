@@ -53,7 +53,7 @@ const CloseBtn = ({ children, onClick }) => (
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
-const Index = ({ notes: initNotes, pagination: initPag }) => {
+const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => {
   const {
     state,
     isNotesLoading: isLoading,
@@ -134,6 +134,9 @@ const Index = ({ notes: initNotes, pagination: initPag }) => {
           <Label>
             <Icon name="file" /> {totalNotes}
           </Label>
+          {!!ssrErrMsg && (
+            <div style={{ border: '1px solid #fe7f2d', borderRadius: '10px', padding: '5px' }}>🔥 {ssrErrMsg}</div>
+          )}
         </div>
         {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
           <Box m={1}>
@@ -278,10 +281,25 @@ Index.getInitialProps = async (ctx) => {
   //   .then((json) => ({ isOk: true, json }))
   //   .catch((err) => ({ isOk: false }))
 
-  const res = await fetch(`${NEXT_APP_API_ENDPOINT}/notes?limit=${defaultPaginationData.limit}`, { headers })
-  const { data, pagination } = await res.json()
+  let data
+  let pagination
+  let errMsg
+  try {
+    const res = await fetch(`${NEXT_APP_API_ENDPOINT}/notes?limit=${defaultPaginationData.limit}`, { headers })
+    const json = await res.json()
+    data = json.data
+    pagination = json.pagination
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err)
+    errMsg = err?.message || 'Has err, but no err.message'
+  }
 
-  return { notes: data || [], pagination }
+  return {
+    notes: data || [],
+    pagination: pagination || { totalPages: 1, totalNotes: 0, currentPage: 1 },
+    errMsg,
+  }
 }
 
 export default Index

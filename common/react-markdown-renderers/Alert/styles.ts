@@ -51,6 +51,7 @@ export const useStyles = makeStyles((_theme) => ({
       left: '8px',
       top: '5px',
     },
+    boxShadow: '0 8px 6px -6px rgba(0,0,0,0.3)',
   },
   likeBlockuote_success: {
     quotes: `"${getIconByType(EType.success)}" "”" "${getIconByType(EType.success)}" "’"`,
