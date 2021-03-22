@@ -125,7 +125,7 @@ export const GlobalAppContextProvider = ({ children }) => {
   const debouncedSearchByDescription = useDebounce(state.searchByDescription, 1000)
   const handleScrollTop = () => {
     setTimeout(() => {
-      scrollTop()
+      scrollTop(0, true)
     }, 0)
     return Promise.resolve()
   }
@@ -189,11 +189,12 @@ export const GlobalAppContextProvider = ({ children }) => {
   const router = useRouter()
   useEffect(() => {
     handleSearchByAnythingClear()
+    handleScrollTop()
   }, [router.pathname])
   const { isDesktop, ...windowParams } = useWindowSize()
   const handleSetAsActiveNote = (note) => {
     // eslint-disable-next-line no-console
-    console.log(windowParams)
+    // console.log(windowParams)
     if (isDesktop) scrollTop(125)
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }

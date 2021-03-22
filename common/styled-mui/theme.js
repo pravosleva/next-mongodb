@@ -1,16 +1,17 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { red } from '@material-ui/core/colors'
 
-export const defaultTheme = {
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
+const breakpoints = {
+  values: {
+    xs: 0,
+    sm: 600,
+    md: 960,
+    lg: 1280,
+    xl: 1920,
   },
+}
+export const defaultTheme = {
+  breakpoints,
   common: {
     white: '#FFF',
   },
@@ -28,13 +29,37 @@ export const defaultTheme = {
       default: '#fff',
     },
   },
+
+  typography: {
+    // fontSize: '0.95rem',
+    // htmlFontSize: '0.95rem',
+  },
+  // [theme.breakpoints.up('md')]: {
+  //   // htmlFontSize: 10,
+  //   typography: { fontSize: '1rem !important' },
+  // },
+  // [theme.breakpoints.down('xs')]: {},
+
+  // overrides: {
+  //   MuiPaper: {
+  //     root: {
+  //       backgroundColor: '#FFF !important',
+  //     },
+  //   },
+  //   MuiCssBaseline: {
+  //     '@global': {
+  //       // '@font-face': ['Fira Sans'],
+  //     },
+  //     body: {
+  //       'overflow-x': 'hidden',
+  //     },
+  //   },
+  // },
 }
 
 const {
-  breakpoints: {
-    values: { xs, sm, md, lg, xl },
-  },
-} = defaultTheme
+  values: { xs, sm, md, lg, xl },
+} = breakpoints
 
 export { xl, lg, md, sm, xs }
 

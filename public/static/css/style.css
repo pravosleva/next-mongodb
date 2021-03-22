@@ -1,3 +1,7 @@
+/* See also: https://material-ui.com/ru/customization/typography/ */
+html {
+  font-size: 95%; /* For example: 62.5% of 16px = 10px */
+}
 body {
   background-color: #e9e9e9 !important;
   /* background-color: #4485bf !important; */
@@ -297,8 +301,8 @@ h1 {
   font-style: italic;
   color: #555555;
   /* padding: 1.2em 30px 1.2em 75px; */
-  padding: 1.2em 30px 1.2em 45px;
-  border-left: 8px solid #78c0a8;
+  padding: 1.2em 30px 1.2em 50px;
+  border-left: 8px solid #dedede;
   line-height: 1.6;
   position: relative;
   background: #ededed;
@@ -306,7 +310,7 @@ h1 {
 .description-markdown .otro-blockquote::before {
   font-family: Arial;
   content: '\201C';
-  color: #78c0a8;
+  color: #dedede;
   font-size: 4em;
   position: absolute;
   left: 10px;

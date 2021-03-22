@@ -86,7 +86,7 @@ const mainApi = async (req, res) => {
             response.success = true
           } catch (error) {
             if (!!error?._message) {
-              response.msg = error._message
+              response.msg = typeof error._message === 'string' ? error._message : JSON.stringify(error._message)
             }
             // res.status(400).json({ success: false });
             status = 400

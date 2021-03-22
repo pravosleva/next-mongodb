@@ -3,6 +3,10 @@ import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      // fontSize: '1.4rem',
+      // '& > *': {
+      //   fontSize: '1.4rem',
+      // },
       [theme.breakpoints.up('sm')]: {
         height: '64px',
       },
