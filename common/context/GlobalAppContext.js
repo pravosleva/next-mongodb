@@ -123,15 +123,23 @@ export const GlobalAppContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, getInitialState({}))
   const debouncedSearchByTitle = useDebounce(state.searchByTitle, 1000)
   const debouncedSearchByDescription = useDebounce(state.searchByDescription, 1000)
-  const handleScrollTop = () => {
+  const handleScrollTop = (noAnimation) => {
     setTimeout(() => {
-      scrollTop(0, true)
+      if (typeof window !== 'undefined') {
+        if (window.location.href.indexOf('#') === -1) scrollTop(0, noAnimation)
+        // else {
+        //   console.log(
+        //     window.location.href.substr(window.location.href.indexOf('#') + 1, window.location.href.length - 1)
+        //     // OUTPUT: hash wihout #
+        //   )
+        // }
+      }
     }, 0)
     return Promise.resolve()
   }
 
   const handlePageChange = (_ev, data) => {
-    handleScrollTop().then(() => {
+    handleScrollTop(true).then(() => {
       dispatch({ type: 'SET_LOCAL_PAGE', payload: data.activePage })
     })
   }
@@ -188,14 +196,15 @@ export const GlobalAppContextProvider = ({ children }) => {
   }
   const router = useRouter()
   useEffect(() => {
+    handleScrollTop(true)
     handleSearchByAnythingClear()
-    handleScrollTop()
   }, [router.pathname])
   const { isDesktop, ...windowParams } = useWindowSize()
   const handleSetAsActiveNote = (note) => {
     // eslint-disable-next-line no-console
     // console.log(windowParams)
     if (isDesktop) scrollTop(125)
+    // TODO: No scroll if current scroll position more than 125px
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
   const handleResetActiveNote = (note) => {
