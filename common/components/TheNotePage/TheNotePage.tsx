@@ -19,6 +19,7 @@ import { ThemedButton } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
 import ZoomInIcon from '@material-ui/icons/ZoomIn'
 import ZoomOutIcon from '@material-ui/icons/ZoomOut'
+import { useWindowSize } from '~/common/hooks'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -30,9 +31,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const baseClasses = useBaseStyles()
 
   useEffect(() => {
-    if (isDeleting) {
-      deleteNote()
-    }
+    if (isDeleting) deleteNote()
   }, [isDeleting])
 
   const handleOpen = () => {
@@ -69,6 +68,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const handleSetMinWidth = () => {
     setIsFullWidthContent(false)
   }
+  const { isDesktop } = useWindowSize()
   const MemoizedBtnsBox = useMemo(
     () => (
       <div style={{ margin: '0 auto' }}>
@@ -83,14 +83,18 @@ export const TheNotePage = ({ initNote: note }: any) => {
               </Button>
             </>
           )}
-          {!isFullWidthContent ? (
-            <ThemedButton color="blue" onClick={handleSetFullWidth} endIcon={<ZoomInIcon />}>
-              Full width
-            </ThemedButton>
-          ) : (
-            <ThemedButton color="blue" onClick={handleSetMinWidth} endIcon={<ZoomOutIcon />}>
-              Min width
-            </ThemedButton>
+          {isDesktop && (
+            <>
+              {!isFullWidthContent ? (
+                <ThemedButton color="blue" onClick={handleSetFullWidth} endIcon={<ZoomInIcon />}>
+                  Full width
+                </ThemedButton>
+              ) : (
+                <ThemedButton color="blue" onClick={handleSetMinWidth} endIcon={<ZoomOutIcon />}>
+                  Min width
+                </ThemedButton>
+              )}
+            </>
           )}
 
           {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
@@ -102,7 +106,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         </Box>
       </div>
     ),
-    [handleOpen, handleEdit, isLogged, isDeleting, handleSetFullWidth, handleSetMinWidth]
+    [handleOpen, handleEdit, isLogged, isDeleting, handleSetFullWidth, handleSetMinWidth, isDesktop]
   )
 
   return (
