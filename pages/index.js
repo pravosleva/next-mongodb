@@ -286,6 +286,8 @@ Index.getInitialProps = async (ctx) => {
   let errMsg
   try {
     const res = await fetch(`${NEXT_APP_API_ENDPOINT}/notes?limit=${defaultPaginationData.limit}`, { headers })
+    // eslint-disable-next-line no-console
+    console.log(res)
     const json = await res.json()
     data = json.data
     pagination = json.pagination
