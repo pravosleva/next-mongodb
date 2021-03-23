@@ -310,7 +310,7 @@ h1 {
 .description-markdown .otro-blockquote::before {
   font-family: Arial;
   content: '\201C';
-  color: gray;
+  color: darkgray;
   font-size: 4em;
   position: absolute;
   left: 10px;

@@ -17,6 +17,8 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import { ThemedButton } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
+import ZoomInIcon from '@material-ui/icons/ZoomIn'
+import ZoomOutIcon from '@material-ui/icons/ZoomOut'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -60,16 +62,37 @@ export const TheNotePage = ({ initNote: note }: any) => {
     handleClose()
   }
   const { isLogged } = useAuthContext()
+  const [isFullWidthContent, setIsFullWidthContent] = useState(false)
+  const handleSetFullWidth = () => {
+    setIsFullWidthContent(true)
+  }
+  const handleSetMinWidth = () => {
+    setIsFullWidthContent(false)
+  }
   const MemoizedBtnsBox = useMemo(
     () => (
       <div style={{ margin: '0 auto' }}>
         <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
-          <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
-            Delete
-          </ThemedButton>
-          <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
-            Edit
-          </Button>
+          {isLogged && !isDeleting && (
+            <>
+              <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
+                Delete
+              </ThemedButton>
+              <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
+                Edit
+              </Button>
+            </>
+          )}
+          {!isFullWidthContent ? (
+            <ThemedButton color="blue" onClick={handleSetFullWidth} endIcon={<ZoomInIcon />}>
+              Full width
+            </ThemedButton>
+          ) : (
+            <ThemedButton color="blue" onClick={handleSetMinWidth} endIcon={<ZoomOutIcon />}>
+              Min width
+            </ThemedButton>
+          )}
+
           {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
           Edit
         </MuiButton>
@@ -79,17 +102,19 @@ export const TheNotePage = ({ initNote: note }: any) => {
         </Box>
       </div>
     ),
-    [handleOpen, handleEdit]
+    [handleOpen, handleEdit, isLogged, isDeleting, handleSetFullWidth, handleSetMinWidth]
   )
 
   return (
     <div className={baseClasses.noPaddingMobile}>
-      {isLogged && !isDeleting && MemoizedBtnsBox}
+      {MemoizedBtnsBox}
       <Box my={4} className={baseClasses.noMarginTopBottomMobile}>
         {isDeleting ? (
           <Loader active />
         ) : (
-          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+          <div
+            style={{ maxWidth: isFullWidthContent ? '100%' : '700px', margin: '0 auto', transition: 'all 0.3s linear' }}
+          >
             {!!note && (
               <ActiveNote
                 note={note}
@@ -111,7 +136,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         )}
         <Confirm open={confirm} onCancel={handleClose} onConfirm={handleDelete} />
       </Box>
-      {isLogged && !isDeleting && MemoizedBtnsBox}
+      {MemoizedBtnsBox}
     </div>
   )
 }
