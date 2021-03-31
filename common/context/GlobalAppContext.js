@@ -203,7 +203,7 @@ export const GlobalAppContextProvider = ({ children }) => {
   const handleSetAsActiveNote = (note) => {
     // eslint-disable-next-line no-console
     // console.log(windowParams)
-    if (isDesktop) scrollTop(125)
+    // if (isDesktop) scrollTop(125)
     // TODO: No scroll if current scroll position more than 125px
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
