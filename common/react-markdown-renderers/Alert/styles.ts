@@ -73,11 +73,11 @@ export const useStyles = makeStyles((_theme) => ({
   },
   likeBlockuote_danger: {
     quotes: `"${getIconByType(EType.danger)}" "”" "${getIconByType(EType.danger)}" "’"`,
-    borderLeft: '8px solid #fe7f2d',
-    background: 'rgba(254,127,45,0.1)',
+    borderLeft: '8px solid #f44336',
+    background: 'rgba(244,67,44,0.1)',
     '&::before': {
       content: 'open-quote',
-      textShadow: '3px 3px rgba(254,127,45,0.4)',
+      textShadow: '3px 3px rgba(250,114,104,0.4)',
     },
   },
   likeBlockuote_info: {
