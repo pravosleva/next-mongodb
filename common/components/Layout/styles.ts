@@ -32,6 +32,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       position: 'sticky',
       top: 0,
       width: '200px',
+      minWidth: '200px',
       marginLeft: theme.spacing(1),
       padding: theme.spacing(1, 0, 1, 0),
       [theme.breakpoints.down('xs')]: {

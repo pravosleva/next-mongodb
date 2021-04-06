@@ -117,7 +117,10 @@ export const TheNotePage = ({ initNote: note }: any) => {
           <Loader active />
         ) : (
           <div
-            style={{ maxWidth: isFullWidthContent ? '100%' : '700px', margin: '0 auto', transition: 'all 0.3s linear' }}
+            style={{
+              // maxWidth: isFullWidthContent ? '100%' : '700px',
+              transition: 'all 0.3s linear',
+            }}
           >
             {!!note && (
               <ActiveNote
