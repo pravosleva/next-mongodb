@@ -21,7 +21,7 @@ import clsx from 'clsx'
 // import ZoomOutIcon from '@material-ui/icons/ZoomOut'
 import { useWindowSize, useNotifsContext } from '~/common/hooks'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
-import { Alert } from '~/common/react-markdown-renderers/Alert'
+import { Alert, EType as EAlertType } from '~/common/react-markdown-renderers/Alert'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -134,7 +134,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
     return (
       <>
         <h1>Oops...</h1>
-        <Alert text="Check access" header="Sorry" type="warning" />
+        <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
       </>
     )
 
