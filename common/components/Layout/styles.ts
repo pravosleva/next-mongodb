@@ -25,16 +25,19 @@ export const useStyles = makeStyles((theme: Theme) =>
         margin: '20px 0px 50px 0px',
       },
     },
-    sidebar: {
-      border: '1px dashed red',
+    sidebarInLayoutWrapper: {
+      borderLeft: '1px solid lightgray',
+      // NOTE: See also: https://css-tricks.com/gradient-borders-in-css/
+      borderImage: 'linear-gradient(to bottom, lightgray, transparent) 1 100%',
+      padding: theme.spacing(8, 0, 1, 1),
+      margin: theme.spacing(0, 0, 0, 1),
+
       overflowY: 'auto',
       maxHeight: 'calc(100vh - 64px)',
       position: 'sticky',
       top: 0,
       width: '200px',
       minWidth: '200px',
-      marginLeft: theme.spacing(1),
-      padding: theme.spacing(1, 0, 1, 0),
       [theme.breakpoints.down('xs')]: {
         display: 'none',
       },

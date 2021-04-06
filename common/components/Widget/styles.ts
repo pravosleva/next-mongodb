@@ -117,8 +117,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     heightLimit: {
       maxHeight: '350px',
-      border: '1px solid red',
+      // border: '1px dashed red',
+      padding: theme.spacing(2, 0, 2, 0),
       overflowY: 'auto',
+    },
+    insetShadow: {
+      boxShadow: 'inset 0 -10px 10px -10px rgba(0,0,0,0.1)',
     },
   })
 )

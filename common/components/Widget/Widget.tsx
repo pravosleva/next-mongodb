@@ -39,7 +39,7 @@ export const Widget: React.FC<TProps> = ({ children, isMobileOnly }) => {
           >
             {isWidgetOpened ? <CloseIcon /> : widgetTogglerLabel}
           </Button>
-          <div className={classes.heightLimit}>{children}</div>
+          <div className={clsx(classes.heightLimit, classes.insetShadow)}>{children}</div>
         </Box>
       </div>
     </>

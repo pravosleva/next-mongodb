@@ -59,7 +59,7 @@ export const Layout = ({ children }) => {
         <div className={classes.contentBox}>
           <div style={{ width: '100%' }}>{children}</div>
           {isDesktop && (
-            <div className={classes.sidebar}>
+            <div className={classes.sidebarInLayoutWrapper}>
               <SidebarContent />
             </div>
           )}
