@@ -16,5 +16,27 @@ export const useStyles = makeStyles((theme: Theme) =>
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
     },
+    contentBox: {
+      display: 'flex',
+      width: '100%',
+      minHeight: 'inherit',
+      flexDirection: 'row',
+      '& > div:first-child': {
+        margin: '20px 0px 50px 0px',
+      },
+    },
+    sidebar: {
+      border: '1px dashed red',
+      overflowY: 'auto',
+      maxHeight: 'calc(100vh - 64px)',
+      position: 'sticky',
+      top: 0,
+      width: '200px',
+      marginLeft: theme.spacing(1),
+      padding: theme.spacing(1, 0, 1, 0),
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
+    },
   })
 )

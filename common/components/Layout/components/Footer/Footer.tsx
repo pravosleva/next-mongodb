@@ -6,8 +6,8 @@ export const Footer = () => {
 
   return (
     <Container maxWidth="md" className={classes.container}>
-      <Box p={2} style={{ borderTop: '1px solid lightgray' }}>
-        2021
+      <Box style={{ borderTop: '1px solid lightgray', padding: '8px 0 8px 0', minHeight: '64px' }}>
+        © code-samples.space 2021
       </Box>
     </Container>
   )

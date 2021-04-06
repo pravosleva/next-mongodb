@@ -13,12 +13,15 @@ import clsx from 'clsx'
 import { Footer } from './components/Footer'
 import { useStyles } from './styles'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
+import { SidebarContent } from './components/SidebarContent'
+import { useWindowSize } from '~/common/hooks'
 
 export const Layout = ({ children }) => {
   const router = useRouter()
   const isTheNotePage = router.pathname === '/notes/[id]'
   const classes = useStyles()
   const baseClasses = useBaseStyles()
+  const { isDesktop } = useWindowSize()
 
   return (
     <>
@@ -45,14 +48,22 @@ export const Layout = ({ children }) => {
       <Navbar />
       <Container
         style={{
-          border: '1px solid transparent',
+          // border: '1px solid transparent',
+          border: 'none',
         }}
         maxWidth="md"
         className={clsx(classes.minimalHeightSetting, {
           [baseClasses.noPaddingMobile]: isTheNotePage,
         })}
       >
-        <div style={{ margin: '20px 0px 50px 0px' }}>{children}</div>
+        <div className={classes.contentBox}>
+          <div style={{ width: '100%' }}>{children}</div>
+          {isDesktop && (
+            <div className={classes.sidebar}>
+              <SidebarContent />
+            </div>
+          )}
+        </div>
       </Container>
       <Footer />
       {router.pathname !== '/new' && <SpeedDial />}

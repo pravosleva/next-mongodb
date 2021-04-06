@@ -19,6 +19,8 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { theme } from '~/common/styled-mui/theme'
 // import { ExternalChatWidget } from '~/common/components/ExternalChatWidget'
 // import { ExternalPrivateFrameWidget } from '~/common/components/ExternalPrivateFrameWidget'
+import { SidebarContent } from '~/common/components/Layout/components/SidebarContent'
+import { Widget } from '~/common/components/Widget'
 
 class MyApp extends NextApp {
   componentDidMount() {
@@ -54,6 +56,9 @@ class MyApp extends NextApp {
                   <SocketContextProvider>
                     <Layout>
                       <Component {...pageProps} />
+                      <Widget isMobileOnly>
+                        <SidebarContent />
+                      </Widget>
                     </Layout>
                   </SocketContextProvider>
                 </GlobalAppContextProvider>
