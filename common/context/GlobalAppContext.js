@@ -1,11 +1,12 @@
 import { createContext, useReducer, useState, useEffect, useRef, useContext } from 'react'
 import buildUrl from 'build-url'
-import { useAuthContext, useDebounce } from '~/common/hooks'
+import { useAuthContext, useDebounce, useNotifsContext } from '~/common/hooks'
 import { useRouter } from 'next/router'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
 import { scrollTop } from '~/utils/scrollTo'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { useWindowSize } from '~/common/hooks'
+import ls from 'local-storage'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -68,6 +69,14 @@ export const GlobalAppContext = createContext({
   },
   handleSetNotesResponse: (notesAndPag) => {
     throw new Error('handleSetNotesResponse method should be implemented')
+  },
+  handlePinToLS: (noteId) => {
+    throw new Error('handlePinToLS method should be implemented')
+  },
+  pinnedIds: [],
+  pinLimit: 1,
+  isPinnedToLS: (noteId) => {
+    throw new Error('handlePinToLS method should be implemented')
   },
 })
 
@@ -232,6 +241,88 @@ export const GlobalAppContextProvider = ({ children }) => {
     dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
   }
 
+  // --- LS
+  const [pinnedIds, setPinnedIds] = useState([])
+  const { addInfoNotif } = useNotifsContext()
+  const getFieldFromLS = (fieldName, isJson) => {
+    if (!ls(fieldName)) {
+      return Promise.reject(`${fieldName} not found in ls`)
+    }
+
+    let fieldFromLS
+
+    if (isJson) {
+      fieldFromLS = JSON.parse(ls.get(fieldName))
+    } else {
+      fieldFromLS = ls.get(fieldName)
+    }
+
+    // console.log(fieldFromLS)
+
+    return Promise.resolve(fieldFromLS)
+  }
+  useEffect(() => {
+    getFieldFromLS('pinned-ids', true)
+      .then((idsArr) => {
+        setPinnedIds(idsArr)
+      })
+      .catch((err) => {
+        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+        // addInfoNotif({ title: 'cDCM: Cannot get from LS', message })
+      })
+  }, [])
+  const setFieldToLS = (fieldName, value, asJson) => {
+    const stuff = asJson ? JSON.stringify(value) : String(value)
+
+    ls(fieldName, stuff)
+
+    return Promise.resolve()
+  }
+  const pinLimit = 5
+  const addItemToLS = (id) => {
+    getFieldFromLS('pinned-ids', true)
+      .then((idsArr) => {
+        // addInfoNotif({ title: 'Got from LS', message: typeof idsArr === 'string' ? idsArr : JSON.stringify(idsArr) })
+
+        const newArr = [...new Set([id, ...idsArr])]
+        const lastN = newArr.slice(0, pinLimit)
+
+        setFieldToLS('pinned-ids', lastN, true)
+        setPinnedIds(lastN)
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        // console.log(err)
+        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+        // addInfoNotif({ title: 'Cannot get from LS', message })
+
+        setFieldToLS('pinned-ids', [id], true)
+        setPinnedIds([id])
+      })
+  }
+  const handlePinToLS = (id) => {
+    // eslint-disable-next-line no-console
+    addItemToLS(id)
+  }
+  const isPinnedToLS = async (id) => {
+    // console.log('CALLED')
+    let result = false
+
+    await getFieldFromLS('pinned-ids', true)
+      .then((arr) => {
+        addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
+        result = arr.includes(id)
+      })
+      .catch((err) => {
+        result = false
+      })
+
+    return result
+  }
+  // ---
+
   return (
     <GlobalAppContext.Provider
       value={{
@@ -250,6 +341,10 @@ export const GlobalAppContextProvider = ({ children }) => {
         handleRemoveOneNote,
         handleAddOneNote,
         handleSetNotesResponse,
+        handlePinToLS,
+        pinnedIds,
+        pinLimit,
+        isPinnedToLS,
       }}
     >
       {children}

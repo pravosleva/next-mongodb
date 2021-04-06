@@ -13,7 +13,7 @@ import clsx from 'clsx'
 import { Footer } from './components/Footer'
 import { useStyles } from './styles'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
-import { SidebarContent } from './components/SidebarContent'
+import { SidebarContent } from '~/common/components/SidebarContent'
 import { useWindowSize } from '~/common/hooks'
 
 export const Layout = ({ children }) => {

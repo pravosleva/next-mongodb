@@ -18,6 +18,8 @@ import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
+import MdiIcon from '@mdi/react'
+import { mdiPin } from '@mdi/js'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -65,6 +67,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handlePageChange,
     handleSearchByDescriptionSetText,
     handleSearchByTitleSetText,
+    handlePinToLS,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
@@ -221,6 +224,18 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             Edit
                           </MuiButton>
                         )}
+                        <MuiButton
+                          // disabled={isNotesLoading}
+                          variant="outlined"
+                          size="small"
+                          color="default"
+                          onClick={() => {
+                            handlePinToLS(note._id)
+                          }}
+                          startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+                        >
+                          Pin To Top
+                        </MuiButton>
                         <MuiButton
                           // disabled={isNotesLoading}
                           variant="contained"

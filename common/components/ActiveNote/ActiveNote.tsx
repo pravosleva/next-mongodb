@@ -1,5 +1,10 @@
 /* eslint-disable no-console */
-import { memo } from 'react'
+import {
+  // memo,
+  useMemo,
+  // useEffect,
+  // useState,
+} from 'react'
 // import { openLinkInNewTab } from '~/utils/openLinkInNewTab'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -11,12 +16,14 @@ import { baseRenderers } from '~/common/react-markdown-renderers'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import clsx from 'clsx'
 import Button from '@material-ui/core/Button'
-import { useAuthContext } from '~/common/hooks'
+import { useAuthContext, useGlobalAppContext } from '~/common/hooks'
 import { useStyles } from './styles'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
+import MdiIcon from '@mdi/react'
+import { mdiPin } from '@mdi/js'
 
 interface IProps {
   note: any
@@ -28,9 +35,19 @@ interface IProps {
 const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, shouldTitleBeTruncated }: IProps) => {
   const baseClasses = useBaseStyles()
   const classes = useStyles()
-  const { description, priority, title, _id, isPrivate } = useFreshNote(initialNote)
+  const freshNote = useFreshNote(initialNote)
+  const { description, priority, title, _id, isPrivate } = freshNote || {
+    description: null,
+    priority: 0,
+    title: null,
+    _id: null,
+    isPrivate: true,
+  }
   const router = useRouter()
   const { isLogged } = useAuthContext()
+  const { handlePinToLS, pinnedIds } = useGlobalAppContext()
+  // @ts-ignore
+  const isPinned = useMemo(() => (!!_id ? pinnedIds.includes(_id) : false), [_id, JSON.stringify(pinnedIds)])
 
   return (
     <div className={clsx('todo-item', baseClasses.customizableListingWrapper, { 'todo-item_private': isPrivate })}>
@@ -107,6 +124,18 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
                 Edit
               </Button>
             )}
+            <Button
+              variant="outlined"
+              size="small"
+              color="default"
+              onClick={() => {
+                handlePinToLS(_id)
+              }}
+              startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+              disabled={isPinned}
+            >
+              Pin
+            </Button>
             <Tags title={title} />
           </div>
         </>
@@ -115,11 +144,12 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   )
 }
 
-function areEqual(prevProps: any, nextProps: any) {
-  // NOTE: return true, if render unnecessary
-  return (
-    (!!prevProps.note?._id && !nextProps.note?._id) ||
-    (prevProps.note._id === nextProps.note._id && prevProps.note.updatedAt === nextProps.note.updatedAt)
-  )
-}
-export const ActiveNote = memo(MyComponent, areEqual)
+// function areEqual(prevProps: any, nextProps: any) {
+//   // NOTE: return true, if render unnecessary
+//   return (
+//     (!!prevProps.note?._id && !nextProps.note?._id) ||
+//     (prevProps.note._id === nextProps.note._id && prevProps.note.updatedAt === nextProps.note.updatedAt)
+//   )
+// }
+// export const ActiveNote = memo(MyComponent, areEqual)
+export const ActiveNote = MyComponent
