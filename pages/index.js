@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo, useCallback } from 'react'
 // import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { Card, Icon, Label, Rating } from 'semantic-ui-react'
@@ -20,6 +20,7 @@ import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
 import { mdiPin } from '@mdi/js'
+// <MdiIcon path={mdiPin} size={0.7} />
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -68,6 +69,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handleSearchByDescriptionSetText,
     handleSearchByTitleSetText,
     handlePinToLS,
+    pinnedIds,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
@@ -86,6 +88,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
   const { isMobile } = useWindowSize()
   const baseClasses = useBaseStyles()
   const router = useRouter()
+  // @ts-ignore
+  const isIdPinned = useCallback((id) => (!!id ? pinnedIds.includes(id) : false), [JSON.stringify(pinnedIds)])
 
   return (
     <>
@@ -233,8 +237,9 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             handlePinToLS(note._id)
                           }}
                           startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+                          disabled={isIdPinned(note._id)}
                         >
-                          Pin To Top
+                          Pin
                         </MuiButton>
                         <MuiButton
                           // disabled={isNotesLoading}

@@ -8,7 +8,8 @@ export const authTokenValidator = (req) => {
   let isLogged = false
 
   try {
-    const decoded = jwt.verify(req.header('token'), JWT_SECRET)
+    // const decoded = jwt.verify(req.header('token'), JWT_SECRET)
+    const decoded = jwt.verify(req.cookies['token'], JWT_SECRET)
     const user = decoded.user
     // eslint-disable-next-line no-console
     // console.log(user)

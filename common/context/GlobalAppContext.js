@@ -279,7 +279,7 @@ export const GlobalAppContextProvider = ({ children }) => {
 
     return Promise.resolve()
   }
-  const pinLimit = 5
+  const pinLimit = 7
   const addItemToLS = (id) => {
     getFieldFromLS('pinned-ids', true)
       .then((idsArr) => {

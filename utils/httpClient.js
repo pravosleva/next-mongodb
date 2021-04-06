@@ -135,6 +135,32 @@ class HttpClientSingletone {
     return Promise.reject(this.getErrorMsg(result.res))
   }
 
+  async getNoteNoCancel(id) {
+    const result = await this.axiosInstance({
+      method: 'GET',
+      url: `/notes/${id}`,
+      // mode: 'cors',
+    })
+      .then(httpErrorHandler)
+      .then(this.responseDataHandlerAfterHttpErrorHandler(({ data, success }) => success && !!data?._id))
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled', err.message)
+        } else {
+          console.log(err)
+        }
+        return { isOk: false, res: err }
+      })
+
+    if (result.isOk) {
+      return Promise.resolve(result.res.data)
+    }
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
+    }
+    return Promise.reject(this.getErrorMsg(result.res))
+  }
+
   async getMe(token) {
     if (!!this.getMeCancelTokenSource) this.getMeCancelTokenSource.cancel('axios request cancelled')
 

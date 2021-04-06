@@ -122,7 +122,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       overflowY: 'auto',
     },
     insetShadow: {
-      boxShadow: 'inset 0 -10px 10px -10px rgba(0,0,0,0.1)',
+      // boxShadow: 'inset 0 -10px 10px -10px rgba(0,0,0,0.1)',
     },
   })
 )

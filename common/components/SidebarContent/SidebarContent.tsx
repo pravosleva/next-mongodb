@@ -1,24 +1,22 @@
 import { PinnedNotes } from '~/common/components/PinnedNotes'
 import { useGlobalAppContext } from '~/common/hooks'
+import MdiIcon from '@mdi/react'
+import { mdiTag, mdiPin } from '@mdi/js'
 
 export const SidebarContent = () => {
-  const { pinLimit } = useGlobalAppContext()
+  const { pinLimit, pinnedIds } = useGlobalAppContext()
 
   return (
     <div>
-      <h3>Pinned ids</h3>
-      <div>
-        <em>In progress...</em>
-      </div>
-      <h4>Roadmap</h4>
-      <ul style={{ paddingLeft: '20px' }}>
-        <li>Save to LS</li>
-        <li>Read from LS</li>
-        <li>Render btns & set as Active Note onClick</li>
-      </ul>
-      <h4>Last {pinLimit} pinned</h4>
+      <h3>
+        Last {pinnedIds.length === pinLimit ? pinnedIds.length : `${pinnedIds.length} of ${pinLimit}`} pinned{' '}
+        <MdiIcon path={mdiPin} size={0.7} />
+      </h3>
       <PinnedNotes />
-      <h3>Current tags</h3>
+
+      <h3>
+        Current tags <MdiIcon path={mdiTag} size={0.7} />
+      </h3>
       <div>
         <em>In progress...</em>
       </div>

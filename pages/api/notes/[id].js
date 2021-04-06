@@ -1,6 +1,7 @@
 import dbConnect from '~/utils/dbConnect'
 import Note from '~/models/Note'
 import { actionTypes as eTypes } from '~/socket-logic'
+import { authTokenValidator } from '~/utils/express/authTokenValidator'
 
 dbConnect()
 
@@ -9,6 +10,7 @@ const idApi = async (req, res) => {
     query: { id },
     method,
   } = req
+  const isLogged = authTokenValidator(req)
 
   switch (method) {
     case 'GET':
@@ -17,6 +19,9 @@ const idApi = async (req, res) => {
 
         if (!note) {
           return res.status(400).json({ success: false })
+        }
+        if (!isLogged && note.isPrivate) {
+          res.status(403).json({ success: false, message: 'Forbidden' })
         }
 
         res.status(200).json({ success: true, data: note })

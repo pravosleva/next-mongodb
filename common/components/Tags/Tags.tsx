@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import Button from '@material-ui/core/Button'
 import { useGlobalAppContext } from '~/common/hooks'
 import { CircularProgress } from '@material-ui/core'
+// <CircularProgress size={15} color="inherit" style={{ marginLeft: 'auto' }} />
 import LocalOfferIcon from '@material-ui/icons/LocalOffer'
 
 interface IProps {

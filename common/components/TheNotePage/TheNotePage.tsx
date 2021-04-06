@@ -19,8 +19,9 @@ import { ThemedButton } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
 // import ZoomInIcon from '@material-ui/icons/ZoomIn'
 // import ZoomOutIcon from '@material-ui/icons/ZoomOut'
-import { useWindowSize } from '~/common/hooks'
+import { useWindowSize, useNotifsContext } from '~/common/hooks'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
+import { Alert } from '~/common/react-markdown-renderers/Alert'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -70,6 +71,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   //   setIsFullWidthContent(false)
   // }
   const { isDesktop } = useWindowSize()
+  const { addDangerNotif } = useNotifsContext()
   const copyLinkToClipboard = () => {
     try {
       const noteId = router.query.id
@@ -77,7 +79,11 @@ export const TheNotePage = ({ initNote: note }: any) => {
       navigator.clipboard.writeText(`http://code-samples.space/notes/${noteId}`)
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err)
+      // console.log(err)
+      addDangerNotif({
+        title: 'Error',
+        message: typeof err === 'string' ? err : err?.message || 'No err.message',
+      })
     }
   }
   const MemoizedBtnsBox = useMemo(
@@ -123,6 +129,14 @@ export const TheNotePage = ({ initNote: note }: any) => {
     ),
     [handleOpen, handleEdit, isLogged, isDeleting, isDesktop]
   )
+
+  if (!note)
+    return (
+      <>
+        <h1>Oops...</h1>
+        <Alert text="Check access" header="Sorry" type="warning" />
+      </>
+    )
 
   return (
     <div className={baseClasses.noPaddingMobile}>
