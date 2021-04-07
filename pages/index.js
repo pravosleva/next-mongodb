@@ -19,7 +19,7 @@ import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
-import { mdiPin } from '@mdi/js'
+import { mdiPin, mdiPinOff } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
 
 const InputFieldFlexContainer = ({ children }) => (
@@ -69,6 +69,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handleSearchByDescriptionSetText,
     handleSearchByTitleSetText,
     handlePinToLS,
+    handleUnpinFromLS,
     pinnedIds,
   } = useGlobalAppContext()
   const init = () => {
@@ -228,19 +229,35 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             Edit
                           </MuiButton>
                         )}
-                        <MuiButton
-                          // disabled={isNotesLoading}
-                          variant="outlined"
-                          size="small"
-                          color="default"
-                          onClick={() => {
-                            handlePinToLS(note._id)
-                          }}
-                          startIcon={<MdiIcon path={mdiPin} size={0.7} />}
-                          disabled={isIdPinned(note._id)}
-                        >
-                          Pin
-                        </MuiButton>
+
+                        {!isIdPinned(note._id) ? (
+                          <MuiButton
+                            // disabled={isNotesLoading}
+                            variant="outlined"
+                            size="small"
+                            color="default"
+                            onClick={() => {
+                              handlePinToLS(note._id)
+                            }}
+                            startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+                            // disabled={isIdPinned(note._id)}
+                          >
+                            Pin
+                          </MuiButton>
+                        ) : (
+                          <MuiButton
+                            variant="outlined"
+                            size="small"
+                            color="secondary"
+                            onClick={() => {
+                              handleUnpinFromLS(note._id)
+                            }}
+                            startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+                            // disabled={!isPinned}
+                          >
+                            Unpin
+                          </MuiButton>
+                        )}
                         <MuiButton
                           // disabled={isNotesLoading}
                           variant="contained"

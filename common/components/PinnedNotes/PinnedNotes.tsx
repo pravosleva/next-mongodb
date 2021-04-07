@@ -62,7 +62,7 @@ export const PinnedNotes = () => {
           key={id}
           id={id}
           style={{
-            color: activeNote?._id === id ? '#f44336' : 'inherit',
+            // color: activeNote?._id === id ? '#f44336' : 'inherit',
             cursor: 'pointer',
           }}
           onClick={() => {

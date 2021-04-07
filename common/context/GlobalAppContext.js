@@ -73,6 +73,9 @@ export const GlobalAppContext = createContext({
   handlePinToLS: (noteId) => {
     throw new Error('handlePinToLS method should be implemented')
   },
+  handleUnpinFromLS: (noteId) => {
+    throw new Error('handleUnpinFromLS method should be implemented')
+  },
   pinnedIds: [],
   pinLimit: 1,
   isPinnedToLS: (noteId) => {
@@ -243,7 +246,7 @@ export const GlobalAppContextProvider = ({ children }) => {
 
   // --- LS
   const [pinnedIds, setPinnedIds] = useState([])
-  const { addInfoNotif } = useNotifsContext()
+  const { addInfoNotif, addDangerNotif } = useNotifsContext()
   const getFieldFromLS = (fieldName, isJson) => {
     if (!ls(fieldName)) {
       return Promise.reject(`${fieldName} not found in ls`)
@@ -283,8 +286,6 @@ export const GlobalAppContextProvider = ({ children }) => {
   const addItemToLS = (id) => {
     getFieldFromLS('pinned-ids', true)
       .then((idsArr) => {
-        // addInfoNotif({ title: 'Got from LS', message: typeof idsArr === 'string' ? idsArr : JSON.stringify(idsArr) })
-
         const newArr = [...new Set([id, ...idsArr])]
         const lastN = newArr.slice(0, pinLimit)
 
@@ -292,8 +293,6 @@ export const GlobalAppContextProvider = ({ children }) => {
         setPinnedIds(lastN)
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
-        // console.log(err)
         const message = typeof err === 'string' ? err : err.message || 'No err.message'
 
         // addInfoNotif({ title: 'Cannot get from LS', message })
@@ -305,6 +304,23 @@ export const GlobalAppContextProvider = ({ children }) => {
   const handlePinToLS = (id) => {
     // eslint-disable-next-line no-console
     addItemToLS(id)
+  }
+  const removeItemFromLS = (id) => {
+    getFieldFromLS('pinned-ids', true)
+      .then((idsArr) => {
+        if (!Array.isArray(idsArr)) {
+          throw new Error("ids from LS isn't an Array")
+        }
+        const newArr = idsArr.filter((_id) => _id !== id)
+
+        setFieldToLS('pinned-ids', newArr, true)
+        setPinnedIds(newArr)
+      })
+      .catch((err) => {
+        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+        addDangerNotif({ title: 'Error', message })
+      })
   }
   const isPinnedToLS = async (id) => {
     // console.log('CALLED')
@@ -342,6 +358,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         handleAddOneNote,
         handleSetNotesResponse,
         handlePinToLS,
+        handleUnpinFromLS: removeItemFromLS,
         pinnedIds,
         pinLimit,
         isPinnedToLS,
@@ -352,8 +369,4 @@ export const GlobalAppContextProvider = ({ children }) => {
   )
 }
 
-export const useGlobalAppContext = () => {
-  const globalAppContext = useContext(GlobalAppContext)
-
-  return globalAppContext
-}
+export const useGlobalAppContext = () => useContext(GlobalAppContext)

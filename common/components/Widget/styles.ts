@@ -116,9 +116,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     heightLimit: {
-      maxHeight: '350px',
+      maxHeight: 'calc(100vh - 65px - 65px)',
       // border: '1px dashed red',
-      padding: theme.spacing(2, 0, 2, 0),
+      // padding: theme.spacing(2, 0, 2, 0),
       overflowY: 'auto',
     },
     insetShadow: {

@@ -1,4 +1,4 @@
-import { red } from '@material-ui/core/colors'
+// import { red } from '@material-ui/core/colors'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -31,8 +31,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     defaultBadge: {},
     defaultPrivate: {
-      backgroundColor: red[200],
-      color: '#FFF !important',
+      backgroundColor: '#ffbf69', // Orange
+      color: 'inherit',
     },
     defaultNotPrivate: {
       // backgroundColor: theme.palette.primary.main,
@@ -48,7 +48,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     activePrivate: {
-      backgroundColor: '#f44336',
+      // backgroundColor: '#f44336',
+      backgroundColor: '#ff8e53', // Orange
       color: '#FFF !important',
       '&:hover': {
         // backgroundColor: '#f44336',

@@ -23,7 +23,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
 import MdiIcon from '@mdi/react'
-import { mdiPin } from '@mdi/js'
+import { mdiPin, mdiPinOff } from '@mdi/js'
 
 interface IProps {
   note: any
@@ -45,7 +45,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   }
   const router = useRouter()
   const { isLogged } = useAuthContext()
-  const { handlePinToLS, pinnedIds } = useGlobalAppContext()
+  const { handlePinToLS, pinnedIds, handleUnpinFromLS } = useGlobalAppContext()
   // @ts-ignore
   const isPinned = useMemo(() => (!!_id ? pinnedIds.includes(_id) : false), [_id, JSON.stringify(pinnedIds)])
 
@@ -124,18 +124,33 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
                 Edit
               </Button>
             )}
-            <Button
-              variant="outlined"
-              size="small"
-              color="default"
-              onClick={() => {
-                handlePinToLS(_id)
-              }}
-              startIcon={<MdiIcon path={mdiPin} size={0.7} />}
-              disabled={isPinned}
-            >
-              Pin
-            </Button>
+            {!isPinned ? (
+              <Button
+                variant="outlined"
+                size="small"
+                color="default"
+                onClick={() => {
+                  handlePinToLS(_id)
+                }}
+                startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+                disabled={isPinned}
+              >
+                Pin
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="secondary"
+                onClick={() => {
+                  handleUnpinFromLS(_id)
+                }}
+                startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+                disabled={!isPinned}
+              >
+                Unpin
+              </Button>
+            )}
             <Tags title={title} />
           </div>
         </>
