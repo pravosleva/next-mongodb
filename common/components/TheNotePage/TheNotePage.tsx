@@ -148,7 +148,8 @@ export const TheNotePage = ({ initNote: note }: any) => {
           <div
             style={{
               // maxWidth: isFullWidthContent ? '100%' : '700px',
-              maxWidth: '700px',
+              // maxWidth: '700px',
+              width: '100%',
               transition: 'all 0.3s linear',
             }}
           >
