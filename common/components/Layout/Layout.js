@@ -47,17 +47,20 @@ export const Layout = ({ children }) => {
       />
       <Navbar />
       <Container
-        style={{
-          // border: '1px solid transparent',
-          border: 'none',
-        }}
+        style={
+          {
+            // border: '1px solid red',
+            // display: 'flex',
+            // border: 'none',
+          }
+        }
         maxWidth="md"
         className={clsx(classes.minimalHeightSetting, {
           [baseClasses.noPaddingMobile]: isTheNotePage,
         })}
       >
         <div className={classes.contentBox}>
-          <div style={{ width: '100%' }}>{children}</div>
+          <div>{children}</div>
           {isDesktop && (
             <div className={classes.sidebarInLayoutWrapper}>
               <SidebarContent />

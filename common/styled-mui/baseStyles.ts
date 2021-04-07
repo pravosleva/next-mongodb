@@ -220,6 +220,11 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
         boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
       },
       padding: theme.spacing(1),
+      '& h4': {
+        [theme.breakpoints.up('md')]: {
+          fontSize: '13px !important',
+        },
+      },
     },
     cursorPointer: {
       cursor: 'pointer',

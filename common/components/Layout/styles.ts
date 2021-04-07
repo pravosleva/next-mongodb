@@ -18,11 +18,21 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     contentBox: {
       display: 'flex',
+      // boxSizing: 'border-box',
       width: '100%',
       minHeight: 'inherit',
       flexDirection: 'row',
       '& > div:first-child': {
         margin: '20px 0px 50px 0px',
+        [theme.breakpoints.up('md')]: {
+          width: 'calc(100% - 200px)',
+          minWidth: 'calc(100% - 200px)',
+          maxWidth: 'calc(100% - 200px)',
+        },
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+          minWidth: '100%',
+        },
       },
     },
     sidebarInLayoutWrapper: {
@@ -36,11 +46,13 @@ export const useStyles = makeStyles((theme: Theme) =>
       maxHeight: 'calc(100vh - 64px)',
       position: 'sticky',
       top: 0,
+      boxSizing: 'border-box',
       width: '200px',
       minWidth: '200px',
       [theme.breakpoints.down('xs')]: {
         display: 'none',
       },
+      // border: '1px solid red',
     },
   })
 )
