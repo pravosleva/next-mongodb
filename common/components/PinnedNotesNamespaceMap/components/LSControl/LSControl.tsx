@@ -33,6 +33,7 @@ export const LSControl = () => {
                 !!pinnedMap[key] && (
                   // @ts-ignore
                   <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>
+                    {/* @ts-ignore */}
                     {JSON.stringify(pinnedMap[key], null, 2)}
                   </pre>
                 )
