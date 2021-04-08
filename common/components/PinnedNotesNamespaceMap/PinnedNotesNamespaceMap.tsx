@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { CreateNamespace, LSControl, LSResult } from './components'
 import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 import { useGlobalAppContext } from '~/common/hooks'
-import { useStyles } from './styles'
+// import { useStyles } from './styles'
 
 const getLSSpace = (toFixedArg = 2) => {
   if (typeof window === 'undefined') return 0
@@ -17,7 +17,7 @@ const getLSSpace = (toFixedArg = 2) => {
 }
 
 export const PinnedNotesNamespaceMap = () => {
-  const classes = useStyles()
+  // const classes = useStyles()
   const { pinnedMap } = useGlobalAppContext()
   // const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? new Blob(Object.values(localStorage)).size : 0), [
   //   typeof window,
