@@ -70,16 +70,25 @@ export const GlobalAppContext = createContext({
   handleSetNotesResponse: (notesAndPag) => {
     throw new Error('handleSetNotesResponse method should be implemented')
   },
-  handlePinToLS: (noteId) => {
+  handlePinToLS: ({ namespace, id }) => {
     throw new Error('handlePinToLS method should be implemented')
   },
   handleUnpinFromLS: (noteId) => {
     throw new Error('handleUnpinFromLS method should be implemented')
   },
   pinnedIds: [],
-  pinLimit: 1,
+  pinnedMap: null,
   isPinnedToLS: (noteId) => {
-    throw new Error('handlePinToLS method should be implemented')
+    throw new Error('isPinnedToLS method should be implemented')
+  },
+  createTestPinnedMap: () => {
+    throw new Error('createTestPinnedMap method should be implemented')
+  },
+  removeNamespace: (key) => {
+    throw new Error('removeNamespace method should be implemented')
+  },
+  createNamespacePromise: ({ namespace, title, description, limit }) => {
+    return Promise.reject('createNamespacePromise method should be implemented')
   },
 })
 
@@ -130,6 +139,8 @@ function reducer(state, action) {
       return state
   }
 }
+
+const getMsgStr = (err) => (typeof err === 'string' ? err : err.message || 'No err.message')
 
 export const GlobalAppContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, getInitialState({}))
@@ -245,34 +256,38 @@ export const GlobalAppContextProvider = ({ children }) => {
   }
 
   // --- LS
-  const [pinnedIds, setPinnedIds] = useState([])
+  // const [pinnedIds, setPinnedIds] = useState([])
+  const [pinnedMap, setPinnedMap] = useState(null)
   const { addInfoNotif, addDangerNotif } = useNotifsContext()
-  const getFieldFromLS = (fieldName, isJson) => {
-    if (!ls(fieldName)) {
-      return Promise.reject(`${fieldName} not found in ls`)
-    }
+  const lsMainField = 'pinned-namespace-map' // 'pinned-ids'
+  const getFieldFromLS = (fieldName, shouldBeJson) => {
+    if (!ls(fieldName)) return Promise.reject('Not found in ls')
 
-    let fieldFromLS
+    let dataFromLS
 
-    if (isJson) {
-      fieldFromLS = JSON.parse(ls.get(fieldName))
+    if (shouldBeJson) {
+      try {
+        dataFromLS = JSON.parse(ls.get(fieldName))
+      } catch (err) {
+        return Promise.reject(getMsgStr(err))
+      }
     } else {
-      fieldFromLS = ls.get(fieldName)
+      dataFromLS = ls.get(fieldName)
     }
 
-    // console.log(fieldFromLS)
+    // console.log(dataFromLS)
 
-    return Promise.resolve(fieldFromLS)
+    return Promise.resolve(dataFromLS)
   }
   useEffect(() => {
-    getFieldFromLS('pinned-ids', true)
-      .then((idsArr) => {
-        setPinnedIds(idsArr)
+    getFieldFromLS(lsMainField, true)
+      .then((lsData) => {
+        // setPinnedIds(lsData)
+        setPinnedMap(lsData)
+        addInfoNotif({ title: `cDCM: ${lsMainField}`, message: JSON.stringify(lsData) })
       })
       .catch((err) => {
-        const message = typeof err === 'string' ? err : err.message || 'No err.message'
-
-        // addInfoNotif({ title: 'cDCM: Cannot get from LS', message })
+        addDangerNotif({ title: `cDCM: ${lsMainField}`, message: getMsgStr(err) })
       })
   }, [])
   const setFieldToLS = (fieldName, value, asJson) => {
@@ -282,51 +297,132 @@ export const GlobalAppContextProvider = ({ children }) => {
 
     return Promise.resolve()
   }
-  const pinLimit = 7
-  const addItemToLS = (id) => {
-    getFieldFromLS('pinned-ids', true)
-      .then((idsArr) => {
-        const newArr = [...new Set([id, ...idsArr])]
-        const lastN = newArr.slice(0, pinLimit)
+  const createTestPinnedMap = () => {
+    const testPinnedMap = {
+      'tst-namespace': {
+        limit: 2,
+        description: 'Test namespace descr',
+        title: 'Test namespace title',
+        ids: [],
+      },
+    }
+    setFieldToLS(lsMainField, testPinnedMap, true).then(() => {
+      setPinnedMap(testPinnedMap)
+    })
+  }
+  const defautOptions = {
+    limit: 2,
+    title: 'New',
+    description: 'Descr',
+    ids: [],
+  }
+  const createNamespacePromise = async (opts) => {
+    const { namespace, title, description, limit = defautOptions.limit } = opts
+    if (!namespace || !title || !description || !limit) {
+      const message = '!namespace || !title || !description || !limit'
 
-        setFieldToLS('pinned-ids', lastN, true)
-        setPinnedIds(lastN)
+      addDangerNotif({
+        title: `ERROR: createNamespace("${namespace}")`,
+        message,
+      })
+      return Promise.reject(message)
+    }
+    const result = await getFieldFromLS(lsMainField, true)
+      .then((lsData) => {
+        if (!!lsData[namespace]) {
+          throw new Error('Уже есть в LS; Задайте другое имя')
+        }
+        const newData = { [namespace]: { ...defautOptions, ...opts }, ...lsData }
+
+        setFieldToLS(lsMainField, newData, true).then(() => {
+          setPinnedMap(newData)
+          return Promise.resolve()
+        })
       })
       .catch((err) => {
-        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+        const message = getMsgStr(err)
 
-        // addInfoNotif({ title: 'Cannot get from LS', message })
+        return Promise.reject(message)
+      })
+    return result
+  }
+  const removeNamespace = (namespace) => {
+    getFieldFromLS(lsMainField, true)
+      .then((lsData) => {
+        if (!lsData[namespace]) {
+          addDangerNotif({ title: `!lsData[${namespace}]}` })
+          return
+        }
+        const newData = {}
 
-        setFieldToLS('pinned-ids', [id], true)
-        setPinnedIds([id])
+        for (const _namespace in lsData) {
+          if (_namespace !== namespace) newData[_namespace] = lsData[_namespace]
+        }
+        setFieldToLS(lsMainField, newData, true).then(() => {
+          setPinnedMap(newData)
+        })
+      })
+      .catch((err) => {
+        addDangerNotif({ title: `cDCM: ${lsMainField}`, message: getMsgStr(err) })
       })
   }
-  const handlePinToLS = (id) => {
+  const addItemToLS = ({ namespace, id }) => {
+    if (!namespace || !id) {
+      // addDangerNotif({ title: 'addItemToLs(): Incorrect params', message: '!namespace || !id' })
+      addInfoNotif({ title: 'Select namespace...', message: 'TODO' })
+      return
+    }
+
+    getFieldFromLS(lsMainField, true)
+      .then((lsData) => {
+        if (!lsData[namespace]) {
+          throw new Error(`No namespace "${namespace}" in ls`)
+        }
+        if (!lsData[namespace].limit) {
+          throw new Error(`No limit in "${namespace}"`)
+        }
+        const namespaceData = lsData[namespace]
+        const { ids, limit } = namespaceData
+        const newArr = [...new Set([id, ...ids])]
+        const lastN = newArr.slice(0, limit)
+
+        setFieldToLS(lsMainField, lastN, true)
+        // V1:
+        // setPinnedIds(lastN)
+      })
+      .catch((err) => {
+        addInfoNotif({ title: 'addItemToLS()', message: getMsgStr(err) })
+
+        // V1:
+        // setFieldToLS(lsMainField, [id], true)
+        // setPinnedIds([id])
+      })
+  }
+  const handlePinToLS = (arg) => {
     // eslint-disable-next-line no-console
-    addItemToLS(id)
+    addItemToLS(arg)
   }
   const removeItemFromLS = (id) => {
-    getFieldFromLS('pinned-ids', true)
+    getFieldFromLS(lsMainField, true)
       .then((idsArr) => {
         if (!Array.isArray(idsArr)) {
           throw new Error("ids from LS isn't an Array")
         }
         const newArr = idsArr.filter((_id) => _id !== id)
 
-        setFieldToLS('pinned-ids', newArr, true)
-        setPinnedIds(newArr)
+        setFieldToLS(lsMainField, newArr, true)
+        // V1:
+        // setPinnedIds(newArr)
       })
       .catch((err) => {
-        const message = typeof err === 'string' ? err : err.message || 'No err.message'
-
-        addDangerNotif({ title: 'Error', message })
+        addDangerNotif({ title: 'Error', message: getMsgStr(err) })
       })
   }
   const isPinnedToLS = async (id) => {
     // console.log('CALLED')
     let result = false
 
-    await getFieldFromLS('pinned-ids', true)
+    await getFieldFromLS(lsMainField, true)
       .then((arr) => {
         addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
         result = arr.includes(id)
@@ -359,9 +455,12 @@ export const GlobalAppContextProvider = ({ children }) => {
         handleSetNotesResponse,
         handlePinToLS,
         handleUnpinFromLS: removeItemFromLS,
-        pinnedIds,
-        pinLimit,
+        // pinnedIds,
+        pinnedMap,
         isPinnedToLS,
+        createTestPinnedMap,
+        removeNamespace,
+        createNamespacePromise,
       }}
     >
       {children}

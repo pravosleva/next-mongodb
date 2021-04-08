@@ -70,7 +70,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handleSearchByTitleSetText,
     handlePinToLS,
     handleUnpinFromLS,
-    pinnedIds,
+    // pinnedIds,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
@@ -90,7 +90,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
   const baseClasses = useBaseStyles()
   const router = useRouter()
   // @ts-ignore
-  const isIdPinned = useCallback((id) => (!!id ? pinnedIds.includes(id) : false), [JSON.stringify(pinnedIds)])
+  // const isIdPinned = useCallback((id) => (!!id ? pinnedIds.includes(id) : false), [JSON.stringify(pinnedIds)])
 
   return (
     <>
@@ -229,7 +229,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             Edit
                           </MuiButton>
                         )}
-
+                        {/*
                         {!isIdPinned(note._id) ? (
                           <MuiButton
                             // disabled={isNotesLoading}
@@ -237,7 +237,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             size="small"
                             color="default"
                             onClick={() => {
-                              handlePinToLS(note._id)
+                              handlePinToLS({ id: note._id })
                             }}
                             startIcon={<MdiIcon path={mdiPin} size={0.7} />}
                             // disabled={isIdPinned(note._id)}
@@ -258,6 +258,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             Unpin
                           </MuiButton>
                         )}
+                        */}
+
                         <MuiButton
                           // disabled={isNotesLoading}
                           variant="contained"
