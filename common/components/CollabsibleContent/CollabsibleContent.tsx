@@ -5,12 +5,13 @@ import Icon from '@mdi/react'
 import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
 
 interface IProps {
+  titleColor?: string
   contentRenderer: React.FC<any>
   title: string
   isOpenedByDefault?: boolean
 }
 
-export const CollabsibleContent = ({ title, contentRenderer, isOpenedByDefault }: IProps): any => {
+export const CollabsibleContent = ({ title, titleColor, contentRenderer, isOpenedByDefault }: IProps): any => {
   const classes = useStyles()
   const [isOpened, setIsOpened] = useState<boolean>(isOpenedByDefault || false)
   const handleToggle = () => {
@@ -19,7 +20,11 @@ export const CollabsibleContent = ({ title, contentRenderer, isOpenedByDefault }
 
   return (
     <div className={classes.wrapper}>
-      <div className={clsx(classes.titleBox, { [classes.marginBottomIfOpened]: isOpened })} onClick={handleToggle}>
+      <div
+        style={{ color: titleColor || 'inherit' }}
+        className={clsx(classes.titleBox, { [classes.marginBottomIfOpened]: isOpened })}
+        onClick={handleToggle}
+      >
         <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
         <div>
           <b>{title}</b>

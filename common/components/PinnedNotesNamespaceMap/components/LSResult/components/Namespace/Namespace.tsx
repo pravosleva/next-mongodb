@@ -11,18 +11,23 @@ type TProps = {
 }
 
 export const Namespace = ({ data }: TProps) => {
-  const { title, ids, description } = data
+  const { title, ids, description, limit } = data
 
   return (
     <div>
-      <h4>{title}</h4>
-      <div
-        style={{
-          marginBottom: '8px',
-        }}
-      >
-        <em>{description}</em>
-      </div>
+      <h4 style={{ marginBottom: '8px' }}>
+        {title} ({ids.length} of {limit})
+      </h4>
+      {!!description && (
+        <div
+          style={{
+            marginBottom: '8px',
+            color: 'grey',
+          }}
+        >
+          <em>{description}</em>
+        </div>
+      )}
       <List ids={ids} />
     </div>
   )

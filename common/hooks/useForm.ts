@@ -13,7 +13,7 @@ export const useForm = (initialState = {}): TProps => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: typeof e.target.value === 'string' ? e.target.value.trim() : e.target.value,
+      [e.target.name]: e.target.value,
     })
   }
 

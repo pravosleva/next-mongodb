@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useForm, useGlobalAppContext, useNotifsContext } from '~/common/hooks'
+import { ThemedButton } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
 
 type TForm = {
@@ -22,10 +23,10 @@ export const CreateNamespace = () => {
   const { addDangerNotif } = useNotifsContext()
   const { formData, handleInputChange, resetForm } = useForm(initialState)
   const hasAnyField = useMemo<boolean>(
-    () => !!formData.newSpaceName || !!formData.newTitle || !!formData.newDescription,
+    () => !!formData.newSpaceName.trim() || !!formData.newTitle.trim() || !!formData.newDescription.trim(),
     [formData]
   )
-  const isFormCorrect = useMemo<boolean>(() => !!formData.newSpaceName && !!formData.newTitle, [
+  const isFormCorrect = useMemo<boolean>(() => !!formData.newSpaceName.trim() && !!formData.newTitle.trim(), [
     formData.newSpaceName,
     formData.newTitle,
   ])
@@ -38,7 +39,7 @@ export const CreateNamespace = () => {
         label="Namespace"
         required
         type="text"
-        // variant="outlined"
+        variant="outlined"
         fullWidth
         // placeholder="Namespace"
         name="newSpaceName"
@@ -51,7 +52,7 @@ export const CreateNamespace = () => {
         label="Title"
         required
         type="text"
-        // variant="outlined"
+        variant="outlined"
         fullWidth
         // placeholder="Title"
         name="newTitle"
@@ -64,7 +65,7 @@ export const CreateNamespace = () => {
         label="Description"
         required
         type="text"
-        // variant="outlined"
+        variant="outlined"
         fullWidth
         // placeholder="Description"
         name="newDescription"
@@ -86,12 +87,14 @@ export const CreateNamespace = () => {
         autoComplete="off"
       />
       {!!isFormCorrect && (
-        <button
+        <ThemedButton
+          color="red"
+          variant="contained"
           onClick={() => {
             createNamespacePromise({
-              namespace: formData.newSpaceName,
-              title: formData.newTitle,
-              description: formData.newDescription,
+              namespace: formData.newSpaceName.trim(),
+              title: formData.newTitle.trim(),
+              description: formData.newDescription.trim(),
               limit: !!formData.limit ? Number(formData.limit) : 5,
             })
               .then(resetForm)
@@ -100,10 +103,14 @@ export const CreateNamespace = () => {
               })
           }}
         >
-          Create Namespace
-        </button>
+          Create
+        </ThemedButton>
       )}
-      {hasAnyField && <button onClick={resetForm}>Reset Form</button>}
+      {hasAnyField && (
+        <ThemedButton color="grey" variant="contained" onClick={resetForm}>
+          Clear
+        </ThemedButton>
+      )}
     </div>
   )
 }

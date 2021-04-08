@@ -1,5 +1,7 @@
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
+const sidebarWidth = 300
+
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     minimalHeightSetting: {
@@ -25,9 +27,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       '& > div:first-child': {
         margin: '20px 0px 50px 0px',
         [theme.breakpoints.up('md')]: {
-          width: 'calc(100% - 200px)',
-          minWidth: 'calc(100% - 200px)',
-          maxWidth: 'calc(100% - 200px)',
+          width: `calc(100% - ${sidebarWidth}px)`,
+          minWidth: `calc(100% - ${sidebarWidth}px)`,
+          maxWidth: `calc(100% - ${sidebarWidth}px)`,
         },
         [theme.breakpoints.down('sm')]: {
           width: '100%',
@@ -47,8 +49,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       position: 'sticky',
       top: 0,
       boxSizing: 'border-box',
-      width: '200px',
-      minWidth: '200px',
+      width: `${sidebarWidth}px`,
+      minWidth: `${sidebarWidth}px`,
       [theme.breakpoints.down('xs')]: {
         display: 'none',
       },

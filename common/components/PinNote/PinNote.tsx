@@ -17,7 +17,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
     () =>
       !!pinnedMap
         ? // @ts-ignore
-          pinnedMapKeys.map((key) => ({ title: pinnedMap[key].title, namespace: pinnedMap[key].namespace }))
+          pinnedMapKeys.map((key) => ({ title: pinnedMap[key].title, namespace: key }))
         : [],
     [pinnedMapKeys, pinnedMap]
   )
@@ -26,25 +26,29 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
   if (!options || options.length === 0) return null
   return (
     <>
-      <Button
-        // disabled={isNotesLoading}
-        variant="outlined"
-        size="small"
-        color="default"
-        onClick={() => {
-          // @ts-ignore
-          // handlePinToLS({ id })
-          setIsOpened(true)
-        }}
-        startIcon={<MdiIcon path={mdiPin} size={0.7} />}
-        // disabled={isIdPinned(note._id)}
-        {...rest}
-      >
-        -Pin-
-      </Button>
+      {!isOpened && (
+        <Button
+          // disabled={isNotesLoading}
+          variant="outlined"
+          size="small"
+          color="default"
+          onClick={() => {
+            // @ts-ignore
+            // handlePinToLS({ id })
+            setIsOpened(true)
+          }}
+          startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+          // disabled={isIdPinned(note._id)}
+          {...rest}
+        >
+          Pin
+        </Button>
+      )}
       {isOpened && options.length > 0 && (
         <>
           <Autocomplete
+            clearOnEscape
+            disableClearable
             size="small"
             options={options}
             getOptionLabel={(option) =>
@@ -62,7 +66,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
             }}
             renderInput={(params) => (
               <TextField
-                // style={{ height: '10px !important' }}
+                style={{ minWidth: '150px' }}
                 {...params}
                 label="NS"
                 variant="outlined"

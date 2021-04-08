@@ -11,6 +11,7 @@ interface ColorsMapping {
   default: string
   blue: string
   red: string
+  grey: string
   [key: string]: any
 }
 interface ButtonStyles extends WithStyles<typeof styles> {
@@ -26,6 +27,7 @@ const styles = {
       default: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
       blue: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
       red: 'linear-gradient(45deg, #e63946 30%, #fe7f2d 90%)',
+      grey: 'lightgrey',
     }),
     transition: 'box-shadow 0.3s linear',
     // borderRadius: 3,
@@ -37,17 +39,20 @@ const styles = {
       default: '0 3px 5px 2px rgba(255, 105, 135, .3)',
       blue: '0 3px 5px 2px rgba(33, 203, 243, .3)',
       red: '0 3px 5px 2px rgba(230, 57, 70, .3)',
+      grey: 'none',
     }),
     '&:hover': {
       background: styledBy('color', {
         default: 'linear-gradient(0deg, #FE6B8B 10%, #FF8E53 110%)',
         blue: 'linear-gradient(0deg, #2196F3 10%, #21CBF3 110%)',
         red: 'linear-gradient(0deg, #e63946 10%, #fe7f2d 110%)',
+        grey: 'darkgrey',
       }),
       boxShadow: styledBy('color', {
         default: '0 3px 5px 2px rgba(255, 105, 135, .5)',
         blue: '0 3px 5px 2px rgba(33, 203, 243, .5)',
         red: '0 0px 8px 2px rgba(230, 57, 70, .5)',
+        grey: 'none',
       }),
     },
   },

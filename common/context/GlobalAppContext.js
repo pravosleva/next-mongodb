@@ -258,10 +258,15 @@ export const GlobalAppContextProvider = ({ children }) => {
   // --- LS
   // const [pinnedIds, setPinnedIds] = useState([])
   const [pinnedMap, setPinnedMap] = useState(null)
-  const { addInfoNotif, addDangerNotif } = useNotifsContext()
+  const { addInfoNotif, addDangerNotif, addWarningNotif } = useNotifsContext()
   const lsMainField = 'pinned-namespace-map' // 'pinned-ids'
+  const msgAsFlasEmpty = 'Not found in ls'
   const getFieldFromLS = (fieldName, shouldBeJson) => {
-    if (!ls(fieldName)) return Promise.reject('Not found in ls')
+    if (!ls(fieldName)) {
+      createEmptyMap()
+      setPinnedMap({})
+      // return Promise.reject(msgAsFlasEmpty)
+    }
 
     let dataFromLS
 
@@ -325,13 +330,10 @@ export const GlobalAppContextProvider = ({ children }) => {
   }
   const createNamespacePromise = async (opts) => {
     const { namespace, title, description, limit = defautOptions.limit } = opts
-    if (!namespace || !title || !description || !limit) {
-      const message = '!namespace || !title || !description || !limit'
+    if (!namespace || !title || !limit) {
+      const message = 'Condition warning: !namespace || !title || !limit'
 
-      addDangerNotif({
-        title: `ERROR: createNamespace("${namespace}")`,
-        message,
-      })
+      // addWarningNotif({ title: `ERROR: createNamespace("${namespace}")`, message })
       return Promise.reject(message)
     }
     const result = await getFieldFromLS(lsMainField, true)
@@ -339,7 +341,15 @@ export const GlobalAppContextProvider = ({ children }) => {
         if (!!lsData[namespace]) {
           throw new Error('Уже есть в LS; Задайте другое имя')
         }
-        const newData = { [namespace]: { ...defautOptions, ...opts }, ...lsData }
+        const newData = {
+          [namespace]: {
+            ...defautOptions,
+            title,
+            description,
+            limit,
+          },
+          ...lsData,
+        }
 
         setFieldToLS(lsMainField, newData, true).then(() => {
           setPinnedMap(newData)
@@ -397,13 +407,19 @@ export const GlobalAppContextProvider = ({ children }) => {
         // setPinnedIds(lastN)
         // V2:
         setPinnedMap(newLsData)
+
+        addInfoNotif({ title: 'Note pinned', message: id })
       })
       .catch((err) => {
-        addInfoNotif({ title: 'addItemToLS()', message: getMsgStr(err) })
+        const message = getMsgStr(err)
 
         // V1:
         // setFieldToLS(lsMainField, [id], true)
         // setPinnedIds([id])
+
+        // V2:
+        // TODO
+        addDangerNotif({ title: 'addItemToLS()', message })
       })
   }
   const handlePinToLS = (arg) => {
