@@ -10,6 +10,7 @@ export const LSResult = () => {
 
   return (
     <div className={classes.wrapper}>
+      {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
       {pinnedMapKeys.map((key) => {
         // @ts-ignore
         const data = pinnedMap ? pinnedMap[key] : null

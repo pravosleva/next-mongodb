@@ -10,9 +10,9 @@ export const LSControl = () => {
   const { pinnedMap, removeNamespace } = useGlobalAppContext()
   const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
 
-  if (!pinnedMap) return <div>WTF?</div>
   return (
     <div className={classes.wrapper}>
+      {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
       {pinnedMapKeys.length > 0 &&
         pinnedMapKeys.map((key) => {
           return (
