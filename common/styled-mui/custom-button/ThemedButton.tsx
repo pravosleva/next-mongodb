@@ -1,7 +1,7 @@
 import { withStyles, WithStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-type TColorValue = 'default' | 'blue' | 'red'
+type TColorValue = 'default' | 'blue' | 'red' | 'grey'
 interface Styles {
   color: TColorValue
   children: React.ReactNode
