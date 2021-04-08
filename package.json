@@ -76,6 +76,7 @@
     "react-emoji-render": "^1.2.4",
     "react-gist": "^1.2.2",
     "react-headroom": "^3.1.0",
+    "react-hooks-form": "^2.0.1",
     "react-jsx-parser": "^1.28.1",
     "react-markdown": "^5.0.3",
     "react-markdown-editor-lite": "^1.2.2",

@@ -3,7 +3,6 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     list: {
-      border: '1px solid red',
       marginBottom: '0px',
       '& li:not(:last-child)': {
         marginBottom: theme.spacing(1),

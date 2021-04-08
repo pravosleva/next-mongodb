@@ -19,8 +19,9 @@ import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
-import { mdiPin, mdiPinOff } from '@mdi/js'
+import { mdiPinOff } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
+import { PinNote } from '~/common/components/PinNote'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -71,6 +72,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handlePinToLS,
     handleUnpinFromLS,
     // pinnedIds,
+    pinnedMap,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
@@ -89,8 +91,20 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
   const { isMobile } = useWindowSize()
   const baseClasses = useBaseStyles()
   const router = useRouter()
-  // @ts-ignore
-  // const isIdPinned = useCallback((id) => (!!id ? pinnedIds.includes(id) : false), [JSON.stringify(pinnedIds)])
+  const isIdPinned = useCallback(
+    (id) => {
+      let result
+
+      for (const ns in pinnedMap) {
+        const ids = pinnedMap[ns].ids
+        if (!ids) result = false
+        if (ids.includes(id)) result = true
+      }
+
+      return result
+    },
+    [JSON.stringify(pinnedMap)]
+  )
 
   return (
     <>
@@ -229,21 +243,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             Edit
                           </MuiButton>
                         )}
-                        {/*
                         {!isIdPinned(note._id) ? (
-                          <MuiButton
-                            // disabled={isNotesLoading}
-                            variant="outlined"
-                            size="small"
-                            color="default"
-                            onClick={() => {
-                              handlePinToLS({ id: note._id })
-                            }}
-                            startIcon={<MdiIcon path={mdiPin} size={0.7} />}
-                            // disabled={isIdPinned(note._id)}
-                          >
-                            Pin
-                          </MuiButton>
+                          <PinNote id={note._id} />
                         ) : (
                           <MuiButton
                             variant="outlined"
@@ -253,12 +254,10 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                               handleUnpinFromLS(note._id)
                             }}
                             startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
-                            // disabled={!isPinned}
                           >
                             Unpin
                           </MuiButton>
                         )}
-                        */}
 
                         <MuiButton
                           // disabled={isNotesLoading}

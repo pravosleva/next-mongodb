@@ -14,6 +14,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       '& > *:not(:last-child)': {
         marginRight: theme.spacing(2),
       },
+      // alignItems: 'center',
     },
     standardMobileResponsiveBlock: {
       [theme.breakpoints.down('sm')]: {
@@ -188,12 +189,13 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-end',
-      '& > button': {
+      '& > *': {
         marginBottom: theme.spacing(1),
       },
-      '& > button:not(:first-child)': {
+      '& > *:not(:first-child)': {
         marginLeft: theme.spacing(1),
       },
+      alignItems: 'center',
     },
     actionsBoxLeft: {
       // marginTop: '15px',
@@ -202,12 +204,13 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',
-      '& > button': {
+      '& > *': {
         marginBottom: theme.spacing(1),
       },
-      '& > button:not(:last-child)': {
+      '& > *:not(:last-child)': {
         marginRight: theme.spacing(1),
       },
+      alignItems: 'center',
     },
 
     standardCard: {

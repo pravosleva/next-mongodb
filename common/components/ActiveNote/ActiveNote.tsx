@@ -1,10 +1,5 @@
 /* eslint-disable no-console */
-// import {
-//   memo,
-//   useMemo,
-//   useEffect,
-//   useState,
-// } from 'react'
+import { useMemo, useCallback } from 'react'
 // import { openLinkInNewTab } from '~/utils/openLinkInNewTab'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -24,9 +19,10 @@ import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
 import MdiIcon from '@mdi/react'
 import {
-  mdiPin,
-  // mdiPinOff,
+  // mdiPin,
+  mdiPinOff,
 } from '@mdi/js'
+import { PinNote } from '~/common/components/PinNote'
 
 interface IProps {
   note: any
@@ -48,15 +44,25 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   }
   const router = useRouter()
   const { isLogged } = useAuthContext()
-  const {
-    handlePinToLS,
-    // pinnedIds,
-    // pinnedMap,
-    // handleUnpinFromLS,
-  } = useGlobalAppContext()
-  // @ts-ignore
-  // const isPinned = useMemo(() => (!!_id ? pinnedIds.includes(_id) : false), [_id, JSON.stringify(pinnedIds)])
-  const isPinned = false
+  const { pinnedMap, handleUnpinFromLS } = useGlobalAppContext()
+  const isIdPinned = useCallback(
+    (id) => {
+      if (!pinnedMap) return false
+      let result
+
+      // @ts-ignore
+      for (const ns in pinnedMap) {
+        // @ts-ignore
+        const ids = pinnedMap[ns].ids
+        if (!ids) result = false
+        if (ids.includes(id)) result = true
+      }
+
+      return result
+    },
+    [JSON.stringify(pinnedMap)]
+  )
+  const isPinned = useMemo(() => isIdPinned(_id), [_id, isIdPinned])
 
   return (
     <div className={clsx('todo-item', baseClasses.customizableListingWrapper, { 'todo-item_private': isPrivate })}>
@@ -134,20 +140,8 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
               </Button>
             )}
 
-            {/*
             {!isPinned ? (
-              <Button
-                variant="outlined"
-                size="small"
-                color="default"
-                onClick={() => {
-                  handlePinToLS({ id: _id })
-                }}
-                startIcon={<MdiIcon path={mdiPin} size={0.7} />}
-                disabled={isPinned}
-              >
-                Pin
-              </Button>
+              <PinNote id={_id} />
             ) : (
               <Button
                 variant="outlined"
@@ -162,20 +156,6 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
                 Unpin
               </Button>
             )}
-            */}
-            <Button
-              variant="outlined"
-              size="small"
-              color="default"
-              onClick={() => {
-                // @ts-ignore
-                handlePinToLS({ id: _id })
-              }}
-              startIcon={<MdiIcon path={mdiPin} size={0.7} />}
-              disabled={isPinned}
-            >
-              Pin
-            </Button>
 
             <Tags title={title} />
           </div>

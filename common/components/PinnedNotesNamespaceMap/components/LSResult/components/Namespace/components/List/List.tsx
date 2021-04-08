@@ -8,7 +8,7 @@ type TProps = {
 export const List = ({ ids }: TProps) => {
   const classes = useStyles()
 
-  if (ids.length === 0) return null
+  if (!ids || ids.length === 0) return null
   return (
     <ul className={classes.list}>
       {ids.map((id) => {

@@ -279,6 +279,12 @@ export const GlobalAppContextProvider = ({ children }) => {
 
     return Promise.resolve(dataFromLS)
   }
+  const createEmptyMap = () => {
+    const emptyPinnedMap = {}
+    setFieldToLS(lsMainField, emptyPinnedMap, true).then(() => {
+      setPinnedMap(emptyPinnedMap)
+    })
+  }
   useEffect(() => {
     getFieldFromLS(lsMainField, true)
       .then((lsData) => {
@@ -287,7 +293,8 @@ export const GlobalAppContextProvider = ({ children }) => {
         addInfoNotif({ title: `cDCM: ${lsMainField}`, message: JSON.stringify(lsData) })
       })
       .catch((err) => {
-        addDangerNotif({ title: `cDCM: ${lsMainField}`, message: getMsgStr(err) })
+        createEmptyMap()
+        // addDangerNotif({ title: `cDCM: ${lsMainField}`, message: getMsgStr(err) })
       })
   }, [])
   const setFieldToLS = (fieldName, value, asJson) => {
@@ -375,20 +382,21 @@ export const GlobalAppContextProvider = ({ children }) => {
 
     getFieldFromLS(lsMainField, true)
       .then((lsData) => {
-        if (!lsData[namespace]) {
-          throw new Error(`No namespace "${namespace}" in ls`)
-        }
-        if (!lsData[namespace].limit) {
-          throw new Error(`No limit in "${namespace}"`)
-        }
-        const namespaceData = lsData[namespace]
+        if (!lsData[namespace]) throw new Error(`No namespace "${namespace}" in ls`)
+        if (!lsData[namespace].limit) throw new Error(`No limit in "${namespace}"`)
+        const namespaceData = { ...lsData[namespace] }
         const { ids, limit } = namespaceData
         const newArr = [...new Set([id, ...ids])]
         const lastN = newArr.slice(0, limit)
 
-        setFieldToLS(lsMainField, lastN, true)
+        const newNamespaceData = { ...namespaceData, ids: lastN }
+        const newLsData = { ...lsData, [namespace]: newNamespaceData }
+
+        setFieldToLS(lsMainField, newLsData, true)
         // V1:
         // setPinnedIds(lastN)
+        // V2:
+        setPinnedMap(newLsData)
       })
       .catch((err) => {
         addInfoNotif({ title: 'addItemToLS()', message: getMsgStr(err) })
@@ -404,15 +412,33 @@ export const GlobalAppContextProvider = ({ children }) => {
   }
   const removeItemFromLS = (id) => {
     getFieldFromLS(lsMainField, true)
-      .then((idsArr) => {
-        if (!Array.isArray(idsArr)) {
-          throw new Error("ids from LS isn't an Array")
-        }
+      .then((lsData) => {
+        /* V1:
+        if (!Array.isArray(idsArr)) throw new Error("ids from LS isn't an Array")
         const newArr = idsArr.filter((_id) => _id !== id)
-
         setFieldToLS(lsMainField, newArr, true)
-        // V1:
-        // setPinnedIds(newArr)
+        setPinnedIds(newArr)
+        */
+
+        // V2:
+        // 1. Find namespace:
+        // const nss = Object.keys(lsData)
+        let targetNSName = null
+        for (const ns in lsData) {
+          const ids = lsData[ns].ids
+          if (!ids) continue
+          if (ids.includes(id)) targetNSName = ns
+        }
+        if (!targetNSName) throw new Error('WTF? targetNSName not found')
+        // 2. Filter
+        const targetNS = lsData[targetNSName]
+        if (!targetNS.ids) throw new Error('WTF? !targetNS.ids')
+
+        const newIds = targetNS.ids.filter((_id) => _id !== id)
+        const newTargetNS = { ...targetNS, ids: newIds }
+        const newLsData = { ...lsData, [targetNSName]: newTargetNS }
+        setFieldToLS(lsMainField, newLsData, true)
+        setPinnedMap(newLsData)
       })
       .catch((err) => {
         addDangerNotif({ title: 'Error', message: getMsgStr(err) })
