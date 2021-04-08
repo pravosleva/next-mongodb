@@ -15,7 +15,9 @@ export const Namespace = ({ data }: TProps) => {
 
   return (
     <div>
-      <h4 style={{ marginBottom: '8px' }}>
+      <h4
+      // style={{ marginBottom: '8px' }}
+      >
         {title} ({ids.length} of {limit})
       </h4>
       {!!description && (

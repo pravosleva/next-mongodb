@@ -29,13 +29,13 @@ export const PinnedNotesNamespaceMap = () => {
     // className={classes.wrapper}
     >
       <CollabsibleContent titleColor="gray" title="Create namespace" contentRenderer={() => <CreateNamespace />} />
-      <CollabsibleContent titleColor="gray" title="LS Control" contentRenderer={() => <LSControl />} />
       <CollabsibleContent
         titleColor="gray"
         title={`LS Result (${totalSizeLS})`}
         contentRenderer={() => <LSResult />}
         isOpenedByDefault
       />
+      <CollabsibleContent titleColor="gray" title="LS Control" contentRenderer={() => <LSControl />} />
     </div>
   )
 }

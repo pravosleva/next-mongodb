@@ -295,11 +295,11 @@ export const GlobalAppContextProvider = ({ children }) => {
       .then((lsData) => {
         // setPinnedIds(lsData)
         setPinnedMap(lsData)
-        addInfoNotif({ title: `cDCM: ${lsMainField}`, message: JSON.stringify(lsData) })
+        // addInfoNotif({ title: `cDM: ${lsMainField}`, message: JSON.stringify(lsData) })
       })
       .catch((err) => {
         createEmptyMap()
-        // addDangerNotif({ title: `cDCM: ${lsMainField}`, message: getMsgStr(err) })
+        // addDangerNotif({ title: `cDM: ${lsMainField}`, message: getMsgStr(err) })
       })
   }, [])
   const setFieldToLS = (fieldName, value, asJson) => {
@@ -380,7 +380,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         })
       })
       .catch((err) => {
-        addDangerNotif({ title: `cDCM: ${lsMainField}`, message: getMsgStr(err) })
+        addDangerNotif({ title: `cDM: ${lsMainField}`, message: getMsgStr(err) })
       })
   }
   const addItemToLS = ({ namespace, id }) => {
