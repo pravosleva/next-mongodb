@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     stepper: {
       // border: '1px solid red',
       borderRadius: '4px',
-      padding: theme.spacing(1),
+      padding: theme.spacing(1, 0, 1, 0),
       backgroundColor: 'transparent',
     },
     descriptionContent: {
@@ -55,6 +55,10 @@ type TProps = {
   // formData: any
   // onInputChange: any
   // getNormalizedForm: (form: any) => any
+  formErrors: {
+    [key: string]: any
+    blockedSteps?: number[]
+  }
 }
 
 export const Stepper = ({ onClose, onSave, onCancel, steps, ...rest }: TProps) => {
@@ -107,6 +111,7 @@ export const Stepper = ({ onClose, onSave, onCancel, steps, ...rest }: TProps) =
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    disabled={rest.formErrors?.blockedSteps?.includes(activeStep)}
                   >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>

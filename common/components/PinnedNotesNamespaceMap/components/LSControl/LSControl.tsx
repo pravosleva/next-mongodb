@@ -38,11 +38,15 @@ export const LSControl = () => {
               {
                 // @ts-ignore
                 !!pinnedMap[key] && (
-                  // @ts-ignore
-                  <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>
-                    {/* @ts-ignore */}
-                    {JSON.stringify(pinnedMap[key], null, 2)}
-                  </pre>
+                  <div>
+                    <b>
+                      <em>Before:</em>
+                    </b>
+                    <pre style={{ margin: '0px', fontSize: '10px', whiteSpace: 'pre-wrap' }}>
+                      {/* @ts-ignore */}
+                      {JSON.stringify(pinnedMap[key], null, 2)}
+                    </pre>
+                  </div>
                 )
               }
             </Fragment>

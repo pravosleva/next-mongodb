@@ -38,7 +38,7 @@ export const LSResult = () => {
       {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
       {pinnedMapKeys.length > 0 && (
         <TextField
-          autoFocus
+          // autoFocus
           size="small"
           label="Search by title or descr"
           // required
