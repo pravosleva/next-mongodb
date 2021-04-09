@@ -66,7 +66,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
             }}
             renderInput={(params) => (
               <TextField
-                style={{ minWidth: '150px' }}
+                style={{ minWidth: '190px' }}
                 {...params}
                 label="NS"
                 variant="outlined"

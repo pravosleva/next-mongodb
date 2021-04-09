@@ -34,7 +34,7 @@ export const LSControl = () => {
                 Remove Namespace
               </ThemedButton>
               {/* @ts-ignore */}
-              <EditBtn namespace={key} data={pinnedMap[key]} />
+              <EditBtn key={pinnedMap[key].ts} namespace={key} data={pinnedMap[key]} />
               {
                 // @ts-ignore
                 !!pinnedMap[key] && (

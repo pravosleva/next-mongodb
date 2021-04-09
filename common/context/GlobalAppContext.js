@@ -90,6 +90,9 @@ export const GlobalAppContext = createContext({
   createNamespacePromise: ({ namespace, title, description, limit }) => {
     return Promise.reject('createNamespacePromise method should be implemented')
   },
+  replaceNamespaceInLS: ({ namespace, normalizedData }) => {
+    return Promise.reject('replaceNamespaceInLS method should be implemented')
+  },
 })
 
 function reducer(state, action) {
@@ -347,6 +350,7 @@ export const GlobalAppContextProvider = ({ children }) => {
             title,
             description,
             limit,
+            ts: new Date().getTime(),
           },
           ...lsData,
         }
@@ -399,7 +403,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         const newArr = [...new Set([id, ...ids])]
         const lastN = newArr.slice(0, limit)
 
-        const newNamespaceData = { ...namespaceData, ids: lastN }
+        const newNamespaceData = { ...namespaceData, ids: lastN, ts: new Date().getTime() }
         const newLsData = { ...lsData, [namespace]: newNamespaceData }
 
         setFieldToLS(lsMainField, newLsData, true)
@@ -422,6 +426,30 @@ export const GlobalAppContextProvider = ({ children }) => {
         addDangerNotif({ title: 'addItemToLS()', message })
       })
   }
+  const replaceNamespaceInLS = ({ namespace, normalizedData }) => {
+    // eslint-disable-next-line no-console
+    // console.log(namespace, normalizedData)
+
+    getFieldFromLS(lsMainField, true)
+      .then((lsData) => {
+        if (!!lsData[namespace]) {
+          // 1. REPLACE
+          const newNameSpaceData = { ...normalizedData, ts: new Date().getTime() }
+          const newLsData = { ...lsData, [namespace]: newNameSpaceData }
+
+          setFieldToLS(lsMainField, newLsData, true)
+          setPinnedMap(newLsData)
+          addInfoNotif({ title: 'LS data updated', message: namespace })
+        } else {
+          // 2. ADD NEW?
+          addWarningNotif({ title: 'replaceNamespaceInLS()', message: 'TODO: ADD NEW?' })
+        }
+      })
+      .catch((err) => {
+        addDangerNotif({ title: 'replaceNamespaceInLS()', message: getMsgStr(err) })
+      })
+  }
+
   const handlePinToLS = (arg) => {
     // eslint-disable-next-line no-console
     addItemToLS(arg)
@@ -503,6 +531,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         createTestPinnedMap,
         removeNamespace,
         createNamespacePromise,
+        replaceNamespaceInLS,
       }}
     >
       {children}

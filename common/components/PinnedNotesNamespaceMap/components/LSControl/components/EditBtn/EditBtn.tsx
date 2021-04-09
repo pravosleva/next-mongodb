@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import MdiIcon from '@mdi/react'
 import { mdiPencil } from '@mdi/js'
 import { Stepper } from '~/common/components/Stepper'
 import { useStyles } from './styles'
 
-import { useForm } from '~/common/hooks'
+import { useForm, useGlobalAppContext } from '~/common/hooks'
 import TextField from '@material-ui/core/TextField'
 
 export type NamespaceData = {
@@ -22,14 +22,14 @@ type TProps = {
 type TStepContentProps = {
   data: NamespaceData
   onInputChange: (e: any) => void
-  formData: NamespaceData
-  getNormalizedForm: (f: any) => any
+  formData: any
+  normalizedForm: NamespaceData
 }
 
 const steps = [
   {
     title: 'Set Title',
-    content: ({ data, onInputChange, formData, getNormalizedForm }: TStepContentProps) => {
+    content: ({ data, onInputChange, normalizedForm }: TStepContentProps) => {
       return (
         <>
           <TextField
@@ -41,44 +41,40 @@ const steps = [
             fullWidth
             // placeholder="Namespace"
             name="title"
-            // defaultValue={data.title}
-            value={formData.title || data.title}
+            defaultValue={data.title}
+            value={normalizedForm.title}
             onChange={onInputChange}
             autoComplete="off"
             autoFocus
             style={{ marginBottom: '8px' }}
           />
-          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>
-            {JSON.stringify(getNormalizedForm(formData), null, 2)}
-          </pre>
+          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>{JSON.stringify(normalizedForm, null, 2)}</pre>
         </>
       )
     },
   },
   {
     title: 'Set Description',
-    content: ({ data, onInputChange, formData, getNormalizedForm }: TStepContentProps) => {
+    content: ({ data, onInputChange, normalizedForm }: TStepContentProps) => {
       return (
         <>
           <TextField
             size="small"
             label="Description"
-            required
+            // required
             type="text"
             variant="outlined"
             fullWidth
             // placeholder="Namespace"
             name="description"
-            // defaultValue={data.description}
-            value={formData.description || data.description}
+            defaultValue={data.description}
+            value={normalizedForm.description}
             onChange={onInputChange}
             autoComplete="off"
             autoFocus
             style={{ marginBottom: '8px' }}
           />
-          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>
-            {JSON.stringify(getNormalizedForm(formData), null, 2)}
-          </pre>
+          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>{JSON.stringify(normalizedForm, null, 2)}</pre>
         </>
       )
     },
@@ -86,28 +82,26 @@ const steps = [
   {
     title: 'Set Limit',
     description: 'Количество заметок при привышении которого более старые будут удалены',
-    content: ({ data, onInputChange, formData, getNormalizedForm }: TStepContentProps) => {
+    content: ({ data, onInputChange, normalizedForm }: TStepContentProps) => {
       return (
         <>
           <TextField
             size="small"
-            label="Description"
+            label="Limit"
             required
             type="number"
             // variant="outlined"
             fullWidth
             // placeholder="Namespace"
             name="limit"
-            // defaultValue={data.limit}
-            value={Number(formData.limit) || data.limit}
+            defaultValue={data.limit}
+            value={normalizedForm.limit}
             onChange={onInputChange}
             autoComplete="off"
             autoFocus
             style={{ marginBottom: '8px' }}
           />
-          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>
-            {JSON.stringify(getNormalizedForm(formData), null, 2)}
-          </pre>
+          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>{JSON.stringify(normalizedForm, null, 2)}</pre>
         </>
       )
     },
@@ -131,7 +125,7 @@ export const EditBtn = ({ namespace, data }: TProps) => {
   const handleClose = useCallback(() => {
     setIsFormOpened(false)
   }, [setIsFormOpened])
-  const { formData, handleInputChange } = useForm({ ...initialState, ...data })
+  const { formData, handleInputChange, resetForm } = useForm({ ...initialState, ...data })
   const getNormalizedForm = useCallback((formData) => {
     const normalizedForm: Partial<NamespaceData> | any = {}
 
@@ -148,16 +142,14 @@ export const EditBtn = ({ namespace, data }: TProps) => {
 
     return normalizedForm
   }, [])
+  const normalizedData = useMemo(() => getNormalizedForm(formData), [formData])
+  const { replaceNamespaceInLS } = useGlobalAppContext()
   const handleSave = useCallback(() => {
-    // TODO: New data in formData
-    const normalizedForm = getNormalizedForm(formData)
-
-    // eslint-disable-next-line no-console
-    console.log(normalizedForm)
-
-    // TODO:
-    // Use api from GlobalAppContext (as Promise?)
-  }, [formData])
+    replaceNamespaceInLS({ normalizedData, namespace })
+  }, [normalizedData])
+  const handleCancel = useCallback(() => {
+    resetForm()
+  }, [resetForm])
 
   return (
     <div className={classes.wrapper}>
@@ -177,10 +169,12 @@ export const EditBtn = ({ namespace, data }: TProps) => {
           onClose={handleClose}
           onSave={handleSave}
           steps={steps}
+          onCancel={handleCancel}
+          // REST:
           data={data}
           formData={formData}
           onInputChange={handleInputChange}
-          getNormalizedForm={getNormalizedForm}
+          normalizedForm={normalizedData}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import MuiStepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
@@ -47,15 +47,17 @@ type TProps = {
     content: React.FC<any>
   }[]
   onClose?: () => void
+  onCancel: () => void
 
   // REST:
-  data: any
-  formData: any
-  onInputChange: any
-  getNormalizedForm: (form: any) => any
+  [key: string]: any
+  // data: any
+  // formData: any
+  // onInputChange: any
+  // getNormalizedForm: (form: any) => any
 }
 
-export const Stepper = ({ onClose, onSave, steps, ...rest }: TProps) => {
+export const Stepper = ({ onClose, onSave, onCancel, steps, ...rest }: TProps) => {
   const classes = useStyles()
   const [activeStep, setActiveStep] = React.useState(0)
   // const steps = getSteps()
@@ -68,13 +70,17 @@ export const Stepper = ({ onClose, onSave, steps, ...rest }: TProps) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
-  const handleReset = () => {
+  const handleResetStep = () => {
     setActiveStep(0)
   }
   const finalHandler = () => {
     onSave()
     if (!!onClose) onClose()
   }
+  const handleCancel = useCallback(() => {
+    onCancel()
+    handleResetStep()
+  }, [onCancel, handleResetStep])
 
   return (
     <div className={classes.root}>
@@ -113,8 +119,17 @@ export const Stepper = ({ onClose, onSave, steps, ...rest }: TProps) => {
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
           <div>All steps completed - you&apos;re finished</div>
-          <Button color="secondary" size="small" variant="outlined" onClick={handleReset} className={classes.button}>
-            Reset
+          <Button
+            color="secondary"
+            size="small"
+            variant="outlined"
+            onClick={handleResetStep}
+            className={classes.button}
+          >
+            Go Start
+          </Button>
+          <Button color="secondary" size="small" variant="contained" onClick={handleCancel} className={classes.button}>
+            Cancel
           </Button>
           <Button color="primary" size="small" variant="contained" onClick={finalHandler} className={classes.button}>
             Save
