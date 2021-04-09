@@ -1,7 +1,10 @@
 import { PinnedNotesNamespaceMap } from '~/common/components/PinnedNotesNamespaceMap'
 // import { useGlobalAppContext } from '~/common/hooks'
 import MdiIcon from '@mdi/react'
-import { mdiTag, mdiPin } from '@mdi/js'
+import {
+  // mdiTag,
+  mdiPin,
+} from '@mdi/js'
 
 export const SidebarContent = () => {
   return (
@@ -12,7 +15,7 @@ export const SidebarContent = () => {
       </h3>
       <PinnedNotesNamespaceMap />
 
-      <h3>
+      {/* <h3>
         Current tags <MdiIcon path={mdiTag} size={0.7} />
       </h3>
       <div>
@@ -23,7 +26,7 @@ export const SidebarContent = () => {
         <li>Get all tags in current page</li>
         <li>Sort and memoizing</li>
         <li>Render btns & set as title search onClick</li>
-      </ul>
+      </ul> */}
     </div>
   )
 }

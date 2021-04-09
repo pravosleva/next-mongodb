@@ -4,6 +4,10 @@ const widgetWidthDesktop = 500
 const widgetWidthMobile = 280
 // const widgetTogglerWidthDesktop = 160
 // const widgetTogglerWidthMobile = 160
+const offsetTop = {
+  md: 90,
+  sm: 65,
+}
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,11 +60,11 @@ export const useStyles = makeStyles((theme: Theme) =>
     fixedDesktopWidget: {
       position: 'fixed',
       [theme.breakpoints.up('md')]: {
-        top: '90px',
+        top: `${offsetTop.md}px`,
         transform: `translateX(${widgetWidthDesktop}px)`,
       },
       [theme.breakpoints.down('sm')]: {
-        top: '65px',
+        top: `${offsetTop.sm}px`,
         transform: `translateX(${widgetWidthMobile}px)`,
       },
       right: '0px',
@@ -116,7 +120,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     heightLimit: {
-      maxHeight: 'calc(100vh - 65px - 65px)',
+      [theme.breakpoints.up('md')]: {
+        maxHeight: `calc(100vh - ${offsetTop.md}px - 65px)`,
+      },
+      [theme.breakpoints.down('sm')]: {
+        maxHeight: `calc(100vh - ${offsetTop.sm}px - 65px)`,
+      },
       // border: '1px dashed red',
       // padding: theme.spacing(2, 0, 2, 0),
       overflowY: 'auto',

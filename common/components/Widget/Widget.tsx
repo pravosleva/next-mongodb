@@ -31,7 +31,7 @@ export const Widget: React.FC<TProps> = ({ children, isMobileOnly }) => {
         <Box boxShadow={3} className={clsx(classes.widgetPaper, classes.buttonsWrapper)}>
           <Button
             onClick={handleToggleWidget}
-            size="small"
+            size="medium"
             variant="contained"
             color="inherit"
             className={classes.widgetTogglerBtn}
