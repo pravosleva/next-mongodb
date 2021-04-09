@@ -15,7 +15,7 @@ import { theNotePageRenderers } from '~/common/react-markdown-renderers'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import { ThemedButton } from '~/common/styled-mui/custom-button'
+import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
 // import ZoomInIcon from '@material-ui/icons/ZoomIn'
 // import ZoomOutIcon from '@material-ui/icons/ZoomOut'
@@ -92,7 +92,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
           {isLogged && !isDeleting && (
             <>
-              <ThemedButton color="red" onClick={handleOpen} endIcon={<DeleteIcon />}>
+              <ThemedButton color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete
               </ThemedButton>
               <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
@@ -114,7 +114,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
             </>
           )*/}
 
-          <ThemedButton color="blue" onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
+          <ThemedButton color={EColorValue.blue} onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
             Copy Link
           </ThemedButton>
 
