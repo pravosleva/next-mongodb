@@ -453,3 +453,12 @@ h1 {
   min-height: inherit;
   resize: vertical;
 } */
+
+.mobile-search-box {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-search-box > *:not(:last-child) {
+  margin-bottom: 8px;
+}

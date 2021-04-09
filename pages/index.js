@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react'
 // import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
-import { Card, Icon, Label, Rating } from 'semantic-ui-react'
+import { Icon, Label, Rating } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
 import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/context'
@@ -12,14 +12,14 @@ import { Button as MuiButton, Box, TextField } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
 import CloseIcon from '@material-ui/icons/Close'
-import AutorenewIcon from '@material-ui/icons/Autorenew'
+// import AutorenewIcon from '@material-ui/icons/Autorenew'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
-import { mdiPinOff } from '@mdi/js'
+import { mdiPinOff, mdiAutorenew } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
 import { PinNote } from '~/common/components/PinNote'
 
@@ -47,7 +47,7 @@ const CloseBtn = ({ children, onClick }) => (
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      border: '2px dashed #fff',
+      border: '2px dashed #3882C4',
       cursor: 'pointer',
     }}
   >
@@ -110,7 +110,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     <>
       <div className="search-wrapper">
         {isMobile && (
-          <>
+          <div className="mobile-search-box">
             <InputFieldFlexContainer>
               <TextField
                 size="small"
@@ -126,7 +126,9 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                 }}
               />
               {!!state.searchByTitle && (
-                <CloseBtn onClick={handleSearchByTitleClear}>{isLoading ? <AutorenewIcon /> : <CloseIcon />}</CloseBtn>
+                <CloseBtn onClick={handleSearchByTitleClear}>
+                  {isLoading ? <MdiIcon path={mdiAutorenew} size={0.85} spin /> : <CloseIcon />}
+                </CloseBtn>
               )}
             </InputFieldFlexContainer>
             <InputFieldFlexContainer>
@@ -145,14 +147,14 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               />
               {!!state.searchByDescription && (
                 <CloseBtn onClick={handleSearchByDescriptionClear}>
-                  {isLoading ? <AutorenewIcon /> : <CloseIcon />}
+                  {isLoading ? <MdiIcon path={mdiAutorenew} size={0.85} spin /> : <CloseIcon />}
                 </CloseBtn>
               )}
             </InputFieldFlexContainer>
-          </>
+          </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
           <Label>
             <Icon name="file" /> {totalNotes}
           </Label>
@@ -160,7 +162,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
             <div style={{ border: '1px solid #fe7f2d', borderRadius: '10px', padding: '5px' }}>🔥 {ssrErrMsg}</div>
           )}
         </div>
-        {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
+        {/* state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
           <Box m={1}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Sample0
@@ -178,7 +180,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               />
             </div>
           </Box>
-        )}
+        ) */}
       </div>
       {/* <div style={{ border: '1px solid red' }}>
         <pre

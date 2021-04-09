@@ -6,7 +6,7 @@ const widgetWidthMobile = 280
 // const widgetTogglerWidthMobile = 160
 const offsetTop = {
   md: 90,
-  sm: 65,
+  sm: 56,
 }
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -121,10 +121,10 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     heightLimit: {
       [theme.breakpoints.up('md')]: {
-        maxHeight: `calc(100vh - ${offsetTop.md}px - 65px)`,
+        maxHeight: `calc(100vh - ${offsetTop.md}px - ${offsetTop.md}px)`,
       },
       [theme.breakpoints.down('sm')]: {
-        maxHeight: `calc(100vh - ${offsetTop.sm}px - 65px)`,
+        maxHeight: `calc(100vh - ${offsetTop.sm}px - ${offsetTop.sm}px)`,
       },
       // border: '1px dashed red',
       // padding: theme.spacing(2, 0, 2, 0),

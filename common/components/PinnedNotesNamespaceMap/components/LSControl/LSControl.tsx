@@ -4,6 +4,7 @@ import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
 import MdiIcon from '@mdi/react'
 import { mdiArrowDown } from '@mdi/js'
+import Alert from '@material-ui/lab/Alert'
 
 export const LSControl = () => {
   const classes = useStyles()
@@ -12,6 +13,9 @@ export const LSControl = () => {
 
   return (
     <div className={classes.wrapper}>
+      <Alert variant="filled" severity="error">
+        Be careful before do anything!
+      </Alert>
       {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
       {pinnedMapKeys.length > 0 &&
         pinnedMapKeys.map((key) => {
