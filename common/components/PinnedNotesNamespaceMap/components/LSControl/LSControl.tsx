@@ -1,6 +1,6 @@
 import { useMemo, Fragment } from 'react'
 import { useGlobalAppContext } from '~/common/hooks'
-import { ThemedButton } from '~/common/styled-mui/custom-button'
+import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
 import MdiIcon from '@mdi/react'
 import { mdiArrowDown } from '@mdi/js'
@@ -19,7 +19,7 @@ export const LSControl = () => {
             <Fragment key={key}>
               <ThemedButton
                 size="small"
-                color="grey"
+                color={EColorValue.grey}
                 variant="contained"
                 onClick={() => {
                   removeNamespace(key)

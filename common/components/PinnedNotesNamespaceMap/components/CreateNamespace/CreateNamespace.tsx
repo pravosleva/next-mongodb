@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useForm, useGlobalAppContext, useNotifsContext } from '~/common/hooks'
-import { ThemedButton } from '~/common/styled-mui/custom-button'
+import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
 
 type TForm = {
@@ -88,8 +88,9 @@ export const CreateNamespace = () => {
       />
       {!!isFormCorrect && (
         <ThemedButton
-          color="red"
+          color={EColorValue.redNoShadow}
           variant="contained"
+          size="small"
           onClick={() => {
             createNamespacePromise({
               namespace: formData.newSpaceName.trim(),
@@ -107,7 +108,7 @@ export const CreateNamespace = () => {
         </ThemedButton>
       )}
       {hasAnyField && (
-        <ThemedButton color="grey" variant="contained" onClick={resetForm}>
+        <ThemedButton size="small" color={EColorValue.grey} variant="contained" onClick={resetForm}>
           Clear
         </ThemedButton>
       )}

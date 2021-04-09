@@ -4,8 +4,16 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     list: {
       marginBottom: '0px',
-      '& li:not(:last-child)': {
-        marginBottom: theme.spacing(1),
+
+      [theme.breakpoints.up('md')]: {
+        '& li:not(:last-child)': {
+          marginBottom: theme.spacing(1),
+        },
+      },
+      [theme.breakpoints.down('sm')]: {
+        '& li:not(:last-child)': {
+          marginBottom: '1px',
+        },
       },
     },
     badge: {

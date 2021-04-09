@@ -8,19 +8,20 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontSize: '12px',
       padding: theme.spacing(1),
       [theme.breakpoints.up('md')]: {
-        borderRadius: '8px',
+        borderRadius: '4px',
       },
       [theme.breakpoints.down('sm')]: {
-        borderRadius: '8px 0px 0px 8px',
+        // borderRadius: '4px 0px 0px 4px',
+        borderRadius: 0,
       },
 
       transition: 'all 0.2s linear',
-      backgroundColor: 'rgba(0,0,0,0.1)',
+      backgroundColor: 'rgba(0,0,0,0.05)',
       '&:hover': {
         // borderBottom: '1px solid white',
         // boxShadow: '0 8px 6px -6px rgba(0,0,0,0.1), 0 -8px 6px -6px rgba(0,0,0,0.1)',
-        // backgroundColor: 'rgba(0,0,0,0.2)',
-        opacity: 0.9,
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        // opacity: 0.7,
       },
     },
     truncate: {
@@ -34,17 +35,22 @@ export const useStyles = makeStyles((theme: Theme) =>
     defaultPrivate: {
       backgroundColor: '#ffbf69', // Orange
       color: 'inherit',
+      '&:hover': {
+        backgroundColor: '#ff8e53',
+        color: '#FFF',
+        // opacity: 0.7,
+      },
     },
     defaultNotPrivate: {
       // backgroundColor: theme.palette.primary.main,
-      backgroundColor: 'rgba(0,0,0,0.1)',
+      backgroundColor: 'rgba(0,0,0,0.05)',
       color: 'inherit',
     },
     activeDefault: {
       backgroundColor: theme.palette.primary.main,
       color: '#FFF !important',
       '&:hover': {
-        // backgroundColor: 'rgba(0,0,0,0.1)',
+        backgroundColor: theme.palette.primary.main,
         // opacity: 0.7,
       },
     },
@@ -54,7 +60,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: '#FFF !important',
       '&:hover': {
         // backgroundColor: '#f44336',
-        // opacity: 0.7,
+        backgroundColor: '#ff8e53',
+        // opacity: 0.75,
       },
     },
   })

@@ -171,7 +171,7 @@ h1 {
 }
 
 .active-card-wrapper {
-  border: 2px solid #fe7f2d !important;
+  border: 2px solid #3882c4 !important;
 }
 .private-card-wrapper {
   /* border: 2px dashed red; */
@@ -183,7 +183,7 @@ h1 {
 }
 
 .active-card-wrapper.private-card-wrapper {
-  border: 2px solid #ff8e53;
+  border: 2px solid #ff8e53 !important;
 }
 
 .navbar {
