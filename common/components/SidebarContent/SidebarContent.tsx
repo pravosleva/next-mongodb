@@ -10,8 +10,7 @@ export const SidebarContent = () => {
   return (
     <div>
       <h3>
-        Pinned namespaces
-        <MdiIcon path={mdiPin} size={0.7} />
+        Pinned namespaces <MdiIcon path={mdiPin} size={0.7} />
       </h3>
       <PinnedNotesNamespaceMap />
 

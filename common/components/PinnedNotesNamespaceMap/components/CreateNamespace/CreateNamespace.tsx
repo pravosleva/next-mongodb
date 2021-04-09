@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import { useForm, useGlobalAppContext, useNotifsContext } from '~/common/hooks'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
+import { TOutputCollapsibleProps } from '~/common/components/CollabsibleContent'
 
 type TForm = {
   newSpaceName: string
@@ -18,7 +19,7 @@ const initialState: TForm = {
   limit: 5,
 }
 
-export const CreateNamespace = () => {
+export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
   const classes = useStyles()
   const { addDangerNotif } = useNotifsContext()
   const { formData, handleInputChange, resetForm } = useForm(initialState)
@@ -46,6 +47,7 @@ export const CreateNamespace = () => {
         value={formData.newSpaceName}
         onChange={handleInputChange}
         autoComplete="off"
+        autoFocus
       />
       <TextField
         size="small"
@@ -99,6 +101,7 @@ export const CreateNamespace = () => {
               limit: !!formData.limit ? Number(formData.limit) : 5,
             })
               .then(resetForm)
+              .then(handleClose)
               .catch((message: string) => {
                 addDangerNotif({ title: 'ERROR: Create namespace', message })
               })

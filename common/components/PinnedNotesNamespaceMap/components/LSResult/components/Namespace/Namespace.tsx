@@ -1,4 +1,5 @@
 import { List } from './components'
+import { useStyles } from './styles'
 
 type TProps = {
   data: {
@@ -11,10 +12,11 @@ type TProps = {
 }
 
 export const Namespace = ({ data }: TProps) => {
+  const classes = useStyles()
   const { title, ids, description, limit } = data
 
   return (
-    <div>
+    <div className={classes.wrapper}>
       <h4
       // style={{ marginBottom: '8px' }}
       >
@@ -23,7 +25,6 @@ export const Namespace = ({ data }: TProps) => {
       {!!description && (
         <div
           style={{
-            marginBottom: '8px',
             color: 'grey',
           }}
         >

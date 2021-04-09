@@ -27,7 +27,10 @@ export const PinnedNotesNamespaceMap = () => {
     <div
     // className={classes.wrapper}
     >
-      <CollabsibleContent title="Create namespace" contentRenderer={() => <CreateNamespace />} />
+      <CollabsibleContent
+        title="Create namespace"
+        contentRenderer={(collabsiblePs) => <CreateNamespace {...collabsiblePs} />}
+      />
       {pinnedMapKeys.length > 0 && (
         <>
           <CollabsibleContent
@@ -36,7 +39,7 @@ export const PinnedNotesNamespaceMap = () => {
             contentRenderer={() => <LSResult />}
             isOpenedByDefault
           />
-          <CollabsibleContent title="LS Control" contentRenderer={() => <LSControl />} />
+          <CollabsibleContent title="LS Control ☢️" contentRenderer={() => <LSControl />} />
         </>
       )}
     </div>

@@ -7,8 +7,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       // '& > .search': { marginBottom: theme.spacing(2) },
       display: 'flex',
       flexDirection: 'column',
-      '& > *:not(:last-child)': {
-        marginBottom: theme.spacing(2),
+      '& > div:not(:last-child)': {
+        marginBottom: theme.spacing(1),
       },
     },
   })
