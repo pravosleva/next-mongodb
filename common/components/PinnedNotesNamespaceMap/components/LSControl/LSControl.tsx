@@ -5,6 +5,7 @@ import { useStyles } from './styles'
 import MdiIcon from '@mdi/react'
 import { mdiArrowDown } from '@mdi/js'
 import Alert from '@material-ui/lab/Alert'
+import { EditBtn } from './components'
 
 export const LSControl = () => {
   const classes = useStyles()
@@ -13,7 +14,7 @@ export const LSControl = () => {
 
   return (
     <div className={classes.wrapper}>
-      <Alert variant="filled" severity="error">
+      <Alert variant="outlined" severity="error">
         Be careful before do anything!
       </Alert>
       {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
@@ -23,7 +24,7 @@ export const LSControl = () => {
             <Fragment key={key}>
               <ThemedButton
                 size="small"
-                color={EColorValue.grey}
+                color={EColorValue.redNoShadow}
                 variant="contained"
                 onClick={() => {
                   removeNamespace(key)
@@ -32,6 +33,8 @@ export const LSControl = () => {
               >
                 Remove Namespace
               </ThemedButton>
+              {/* @ts-ignore */}
+              <EditBtn namespace={key} data={pinnedMap[key]} />
               {
                 // @ts-ignore
                 !!pinnedMap[key] && (
