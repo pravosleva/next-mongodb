@@ -19,23 +19,26 @@ const getLSSpace = (toFixedArg = 2) => {
 export const PinnedNotesNamespaceMap = () => {
   // const classes = useStyles()
   const { pinnedMap } = useGlobalAppContext()
-  // const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? new Blob(Object.values(localStorage)).size : 0), [
-  //   typeof window,
-  // ])
+  const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
+  // const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? new Blob(Object.values(localStorage)).size : 0), [typeof window])
   const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? getLSSpace() : 0), [typeof window, pinnedMap])
 
   return (
     <div
     // className={classes.wrapper}
     >
-      <CollabsibleContent titleColor="gray" title="Create namespace" contentRenderer={() => <CreateNamespace />} />
-      <CollabsibleContent
-        titleColor="gray"
-        title={`LS Result (${totalSizeLS})`}
-        contentRenderer={() => <LSResult />}
-        isOpenedByDefault
-      />
-      <CollabsibleContent titleColor="gray" title="LS Control" contentRenderer={() => <LSControl />} />
+      <CollabsibleContent title="Create namespace" contentRenderer={() => <CreateNamespace />} />
+      {pinnedMapKeys.length > 0 && (
+        <>
+          <CollabsibleContent
+            // titleColor="gray"
+            title={`LS Result (${totalSizeLS})`}
+            contentRenderer={() => <LSResult />}
+            isOpenedByDefault
+          />
+          <CollabsibleContent title="LS Control" contentRenderer={() => <LSControl />} />
+        </>
+      )}
     </div>
   )
 }
