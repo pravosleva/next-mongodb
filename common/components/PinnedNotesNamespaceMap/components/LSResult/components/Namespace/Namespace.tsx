@@ -13,15 +13,18 @@ type TProps = {
 
 export const Namespace = ({ data }: TProps) => {
   const classes = useStyles()
-  const { title, ids, description, limit } = data
+  const {
+    // title,
+    ids,
+    description,
+    // limit,
+  } = data
 
   return (
     <div className={classes.wrapper}>
-      <h4
-      // style={{ marginBottom: '8px' }}
-      >
+      {/* <h4>
         {title} ({ids.length} of {limit})
-      </h4>
+      </h4> */}
       {!!description && (
         <div
           style={{

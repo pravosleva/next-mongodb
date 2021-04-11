@@ -2,10 +2,13 @@ import { PinnedNotesNamespaceMap } from '~/common/components/PinnedNotesNamespac
 // import { useGlobalAppContext } from '~/common/hooks'
 import MdiIcon from '@mdi/react'
 import { mdiTag, mdiPin } from '@mdi/js'
+import { useStyles } from './styles'
 
 export const SidebarContent = () => {
+  const classes = useStyles()
+
   return (
-    <div>
+    <div className={classes.wrapper}>
       <h3>
         Pinned notes <MdiIcon path={mdiPin} size={0.7} />
       </h3>

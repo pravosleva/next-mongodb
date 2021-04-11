@@ -11,9 +11,16 @@ interface IProps {
   contentRenderer: React.FC<TOutputCollapsibleProps>
   title: string
   isOpenedByDefault?: boolean
+  isRightSide?: boolean
 }
 
-export const CollabsibleContent = ({ title, titleColor, contentRenderer, isOpenedByDefault }: IProps): any => {
+export const CollabsibleContent = ({
+  title,
+  titleColor,
+  contentRenderer,
+  isOpenedByDefault,
+  isRightSide,
+}: IProps): any => {
   const classes = useStyles()
   const [isOpened, setIsOpened] = useState<boolean>(isOpenedByDefault || false)
   const handleToggle = useCallback(() => {
@@ -27,13 +34,25 @@ export const CollabsibleContent = ({ title, titleColor, contentRenderer, isOpene
     <div className={classes.wrapper}>
       <div
         style={{ color: titleColor || 'inherit' }}
-        className={clsx(classes.titleBox, { [classes.marginBottomIfOpened]: isOpened })}
+        className={
+          (classes.titleBox,
+          clsx({
+            [classes.titleBoxLeft]: !isRightSide,
+            [classes.titleBoxRight]: isRightSide,
+            [classes.marginBottomIfOpened]: isOpened,
+          }))
+        }
         onClick={handleToggle}
       >
-        <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
+        {!isRightSide && (
+          <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
+        )}
         <div>
           <b>{title}</b>
         </div>
+        {isRightSide && (
+          <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
+        )}
       </div>
       {isOpened && contentRenderer({ handleClose, handleToggle })}
     </div>

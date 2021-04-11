@@ -3,6 +3,8 @@ import { useGlobalAppContext, useForm } from '~/common/hooks'
 import TextField from '@material-ui/core/TextField'
 import { useStyles } from './styles'
 import { Namespace } from './components'
+import { CollabsibleContent } from '~/common/components/CollabsibleContent'
+import clsx from 'clsx'
 
 type TForm = {
   byTitleOrDescr: string
@@ -38,6 +40,7 @@ export const LSResult = () => {
       {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
       {pinnedMapKeys.length > 0 && (
         <TextField
+          className="search"
           // autoFocus
           size="small"
           label="Search by title or descr"
@@ -64,7 +67,17 @@ export const LSResult = () => {
           })
 
           if (!shouldBeDisplayed) return null
-          return <Namespace key={key} data={data} />
+          return (
+            <div key={key} className={clsx(classes.collapsibleWrapper, 'collapsible-wrapper')}>
+              <CollabsibleContent
+                titleColor="grey"
+                isRightSide
+                title={`${data.title} (${data.ids.length} of ${data.limit})`}
+                contentRenderer={(_collabsiblePs) => <Namespace key={key} data={data} />}
+              />
+            </div>
+          )
+          // return <Namespace key={key} data={data} />
         })}
     </div>
   )

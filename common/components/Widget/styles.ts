@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme: Theme) =>
 
     // Widget:
     widgetPaper: {
-      padding: theme.spacing(1),
+      // padding: theme.spacing(1),
       backgroundColor: '#FFF',
       [theme.breakpoints.up('md')]: {
         width: `${widgetWidthDesktop}px`,
@@ -94,7 +94,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
       // ---
 
-      marginRight: '0px !important',
+      // marginRight: '0px !important',
       position: 'absolute',
       top: '0px',
       right: '0px',
