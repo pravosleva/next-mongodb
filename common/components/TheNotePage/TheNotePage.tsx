@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { Confirm, Loader } from 'semantic-ui-react'
 // import { Button as MuiButton } from '@material-ui/core'
@@ -19,9 +19,15 @@ import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
 // import ZoomInIcon from '@material-ui/icons/ZoomIn'
 // import ZoomOutIcon from '@material-ui/icons/ZoomOut'
-import { useWindowSize, useNotifsContext } from '~/common/hooks'
+import { useWindowSize, useNotifsContext, useGlobalAppContext } from '~/common/hooks'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import { Alert, EType as EAlertType } from '~/common/react-markdown-renderers/Alert'
+import { PinNote } from '~/common/components/PinNote'
+import MdiIcon from '@mdi/react'
+import {
+  // mdiPin,
+  mdiPinOff,
+} from '@mdi/js'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -53,11 +59,29 @@ export const TheNotePage = ({ initNote: note }: any) => {
       // TODO: logger
     }
   }
-  const handleEdit = () => {
-    const noteId = router.query.id
+  const noteId = useMemo(() => router.query.id, [router.query.id])
+  const { pinnedMap, handleUnpinFromLS } = useGlobalAppContext()
+  const isIdPinned = useCallback(
+    (id) => {
+      if (!pinnedMap) return false
+      let result
 
+      // @ts-ignore
+      for (const ns in pinnedMap) {
+        // @ts-ignore
+        const ids = pinnedMap[ns].ids
+        if (!ids) result = false
+        if (ids.includes(id)) result = true
+      }
+
+      return result
+    },
+    [JSON.stringify(pinnedMap)]
+  )
+  const isPinned = useMemo(() => isIdPinned(noteId), [noteId, isIdPinned])
+  const handleEdit = useCallback(() => {
     router.push(`/notes/${noteId}/edit`)
-  }
+  }, [noteId])
   const handleDelete = async () => {
     setIsDeleting(true)
     handleClose()
@@ -117,6 +141,23 @@ export const TheNotePage = ({ initNote: note }: any) => {
           <ThemedButton color={EColorValue.blue} onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
             Copy Link
           </ThemedButton>
+
+          {!isPinned && !!noteId && typeof noteId === 'string' ? (
+            <PinNote id={noteId} />
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              color="secondary"
+              onClick={() => {
+                handleUnpinFromLS(noteId)
+              }}
+              startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+              disabled={!isPinned}
+            >
+              Unpin
+            </Button>
+          )}
 
           {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
           Edit

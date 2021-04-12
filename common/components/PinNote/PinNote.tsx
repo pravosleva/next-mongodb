@@ -68,7 +68,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
               <TextField
                 style={{ minWidth: '190px' }}
                 {...params}
-                label="NS"
+                label="Namespace"
                 variant="outlined"
                 // size="small"
               />

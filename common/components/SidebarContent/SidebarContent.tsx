@@ -3,6 +3,7 @@ import { PinnedNotesNamespaceMap } from '~/common/components/PinnedNotesNamespac
 import MdiIcon from '@mdi/react'
 import { mdiTag, mdiPin } from '@mdi/js'
 import { useStyles } from './styles'
+import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 
 export const SidebarContent = () => {
   const classes = useStyles()
@@ -17,21 +18,31 @@ export const SidebarContent = () => {
       <h3>
         News by pinned tags <MdiIcon path={mdiTag} size={0.7} />
       </h3>
-      <div>
-        <em>In progress...</em>
-      </div>
-      <h4>Идея</h4>
-      <ul style={{ paddingLeft: '20px' }}>
-        <li>
-          Дать возможность пользователю прикрепить несколько <b>N1</b> тегов (лимит придется захардодить) для
-          отслеживания;
-        </li>
-        <li>
-          При добавлении тега в список, отображать здесь последние <b>N2</b> (аналогичный лимит) заметок,
-          отфильтрованных по выбранным тегам;
-        </li>
-        <li>Собирать статистику по наиболее востребованным тегам?</li>
-      </ul>
+      <CollabsibleContent
+        // activeTitleColor="#3882C4"
+        // inactiveTitleColor="#a9a9a9"
+        // isRightSide
+        title="Планы"
+        contentRenderer={(_collabsiblePs) => (
+          <>
+            <div>
+              <em>In progress...</em>
+            </div>
+            <h4>Идея</h4>
+            <ul style={{ paddingLeft: '20px' }}>
+              <li>
+                Дать возможность пользователю прикрепить несколько <b>N1</b> тегов (лимит придется захардодить) для
+                отслеживания;
+              </li>
+              <li>
+                При добавлении тега в список, отображать здесь последние <b>N2</b> (аналогичный лимит) заметок,
+                отфильтрованных по выбранным тегам;
+              </li>
+              <li>Собирать статистику по наиболее востребованным тегам?</li>
+            </ul>
+          </>
+        )}
+      />
     </div>
   )
 }

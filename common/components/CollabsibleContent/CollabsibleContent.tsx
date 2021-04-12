@@ -7,7 +7,8 @@ import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
 export type TOutputCollapsibleProps = { handleClose: () => void; handleToggle: () => void }
 
 interface IProps {
-  titleColor?: string
+  activeTitleColor?: string
+  inactiveTitleColor?: string
   contentRenderer: React.FC<TOutputCollapsibleProps>
   title: string
   isOpenedByDefault?: boolean
@@ -16,7 +17,8 @@ interface IProps {
 
 export const CollabsibleContent = ({
   title,
-  titleColor,
+  activeTitleColor,
+  inactiveTitleColor,
   contentRenderer,
   isOpenedByDefault,
   isRightSide,
@@ -33,7 +35,10 @@ export const CollabsibleContent = ({
   return (
     <div className={classes.wrapper}>
       <div
-        style={{ color: titleColor || 'inherit' }}
+        style={{
+          color:
+            !!activeTitleColor && !!inactiveTitleColor ? (isOpened ? activeTitleColor : inactiveTitleColor) : 'inherit',
+        }}
         className={
           (classes.titleBox,
           clsx({
