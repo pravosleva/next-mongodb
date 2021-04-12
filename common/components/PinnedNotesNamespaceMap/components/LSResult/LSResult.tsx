@@ -71,7 +71,7 @@ export const LSResult = () => {
             <div key={key} className={clsx(classes.collapsibleWrapper, 'collapsible-wrapper')}>
               <CollabsibleContent
                 activeTitleColor="#3882C4"
-                inactiveTitleColor="#a9a9a9"
+                inactiveTitleColor="#949494"
                 isRightSide
                 title={`${data.title} (${data.ids.length} of ${data.limit})`}
                 contentRenderer={(_collabsiblePs) => <Namespace key={key} data={data} />}
