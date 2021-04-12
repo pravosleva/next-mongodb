@@ -1,5 +1,6 @@
 import { List } from './components'
 import { useStyles } from './styles'
+import Alert from '@material-ui/lab/Alert'
 
 type TProps = {
   data: {
@@ -34,7 +35,13 @@ export const Namespace = ({ data }: TProps) => {
           <em>{description}</em>
         </div>
       )}
-      {ids.length > 0 ? <List ids={ids} /> : <em>Теперь Вы можете прикрепить заметки (кнопка PIN)</em>}
+      {ids.length > 0 ? (
+        <List ids={ids} />
+      ) : (
+        <Alert className="info" variant="outlined" severity="info">
+          Теперь Вы можете прикрепить заметки кнопкой PIN
+        </Alert>
+      )}
     </div>
   )
 }

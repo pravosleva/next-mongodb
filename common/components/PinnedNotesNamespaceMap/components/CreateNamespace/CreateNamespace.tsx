@@ -5,6 +5,7 @@ import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
 import { TOutputCollapsibleProps } from '~/common/components/CollabsibleContent'
 import slugify from 'slugify'
+import Alert from '@material-ui/lab/Alert'
 
 type TForm = {
   newSpaceName: string
@@ -39,9 +40,9 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
   return (
     <div className={classes.formWrapper}>
       {!hasAnyOneNamespace && (
-        <div className="info">
-          <em>Создайте свой первый Неймспейс для прикрепления к нему заметок</em>
-        </div>
+        <Alert className="info" variant="outlined" severity="info">
+          Создайте Ваш первый Неймспейс для прикрепления заметок
+        </Alert>
       )}
       <TextField
         size="small"
