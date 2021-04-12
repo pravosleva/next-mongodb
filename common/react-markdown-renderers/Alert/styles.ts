@@ -28,6 +28,9 @@ const getIconByType = (type: EType, icon?: string) => {
 
 export const useStyles = makeStyles((_theme) => ({
   likeBlockuote: {
+    '& h2': {
+      lineHeight: '25px',
+    },
     fontSize: '1em',
     maxWidth: '100%',
     borderRadius: '4px',

@@ -7,6 +7,7 @@ import { scrollTop } from '~/utils/scrollTo'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { useWindowSize } from '~/common/hooks'
 import ls from 'local-storage'
+import slugify from 'slugify'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -339,13 +340,14 @@ export const GlobalAppContextProvider = ({ children }) => {
       // addWarningNotif({ title: `ERROR: createNamespace("${namespace}")`, message })
       return Promise.reject(message)
     }
+    const normalizedNamespace = slugify(namespace)
     const result = await getFieldFromLS(lsMainField, true)
       .then((lsData) => {
-        if (!!lsData[namespace]) {
+        if (!!lsData[normalizedNamespace]) {
           throw new Error('Уже есть в LS; Задайте другое имя')
         }
         const newData = {
-          [namespace]: {
+          [normalizedNamespace]: {
             ...defautOptions,
             title,
             description,

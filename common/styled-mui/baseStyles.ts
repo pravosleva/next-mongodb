@@ -10,6 +10,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
     btnsBox: {
       display: 'flex',
       flexDirection: 'row',
+      alignItems: 'center',
       flexWrap: 'wrap',
       '& > *:not(:last-child)': {
         marginRight: theme.spacing(1),

@@ -1,7 +1,7 @@
 import { PinnedNotesNamespaceMap } from '~/common/components/PinnedNotesNamespaceMap'
 // import { useGlobalAppContext } from '~/common/hooks'
 import MdiIcon from '@mdi/react'
-import { mdiTag, mdiPin } from '@mdi/js'
+import { mdiPin } from '@mdi/js'
 import { useStyles } from './styles'
 import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 
@@ -15,20 +15,17 @@ export const SidebarContent = () => {
       </h3>
       <PinnedNotesNamespaceMap />
 
-      <h3>
-        News by pinned tags <MdiIcon path={mdiTag} size={0.7} />
-      </h3>
+      <h3>Планы</h3>
       <CollabsibleContent
         // activeTitleColor="#3882C4"
         // inactiveTitleColor="#a9a9a9"
         // isRightSide
-        title="Планы"
+        title="Подписка на теги"
         contentRenderer={(_collabsiblePs) => (
           <>
-            <div>
-              <em>In progress...</em>
+            <div style={{ marginBottom: '8px' }}>
+              <em>Идея</em>
             </div>
-            <h4>Идея</h4>
             <ul style={{ paddingLeft: '20px' }}>
               <li>
                 Дать возможность пользователю прикрепить несколько <b>N1</b> тегов (лимит придется захардодить) для
@@ -39,6 +36,25 @@ export const SidebarContent = () => {
                 отфильтрованных по выбранным тегам;
               </li>
               <li>Собирать статистику по наиболее востребованным тегам?</li>
+            </ul>
+          </>
+        )}
+      />
+      <CollabsibleContent
+        // activeTitleColor="#3882C4"
+        // inactiveTitleColor="#a9a9a9"
+        // isRightSide
+        title="LS Features"
+        contentRenderer={(_collabsiblePs) => (
+          <>
+            <div style={{ marginBottom: '8px' }}>
+              <em>Просто мысли.</em>
+            </div>
+            <ul style={{ paddingLeft: '20px' }}>
+              <li>
+                Дать возможность пользователю создавать локальные заметки и переносить их на другие устройства с помощью
+                QR кода, используя временное общее хранилище;
+              </li>
             </ul>
           </>
         )}

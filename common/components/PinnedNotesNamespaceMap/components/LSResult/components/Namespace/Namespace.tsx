@@ -34,7 +34,7 @@ export const Namespace = ({ data }: TProps) => {
           <em>{description}</em>
         </div>
       )}
-      <List ids={ids} />
+      {ids.length > 0 ? <List ids={ids} /> : <em>Теперь Вы можете прикрепить заметки (кнопка PIN)</em>}
     </div>
   )
 }

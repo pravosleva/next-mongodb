@@ -4,6 +4,7 @@ import { useForm, useGlobalAppContext, useNotifsContext } from '~/common/hooks'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useStyles } from './styles'
 import { TOutputCollapsibleProps } from '~/common/components/CollabsibleContent'
+import slugify from 'slugify'
 
 type TForm = {
   newSpaceName: string
@@ -22,6 +23,9 @@ const initialState: TForm = {
 export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
   const classes = useStyles()
   const { addDangerNotif } = useNotifsContext()
+  const { pinnedMap, createNamespacePromise } = useGlobalAppContext()
+  const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
+  const hasAnyOneNamespace = useMemo(() => Object.keys(pinnedMapKeys).length > 0, [])
   const { formData, handleInputChange, resetForm } = useForm(initialState)
   const hasAnyField = useMemo<boolean>(
     () => !!formData.newSpaceName.trim() || !!formData.newTitle.trim() || !!formData.newDescription.trim(),
@@ -31,10 +35,14 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
     formData.newSpaceName,
     formData.newTitle,
   ])
-  const { createNamespacePromise } = useGlobalAppContext()
 
   return (
     <div className={classes.formWrapper}>
+      {!hasAnyOneNamespace && (
+        <div className="info">
+          <em>Создайте свой первый Неймспейс для прикрепления к нему заметок</em>
+        </div>
+      )}
       <TextField
         size="small"
         label="Namespace"
@@ -48,7 +56,10 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
         onChange={handleInputChange}
         autoComplete="off"
         autoFocus
+        helperText={`Название поля для хранения в LS (${30 - formData.newSpaceName.length} left)`}
+        InputProps={{ inputProps: { maxLength: 30 } }}
       />
+      {!!formData.newSpaceName && <code>{slugify(formData.newSpaceName)}</code>}
       <TextField
         size="small"
         label="Title"
@@ -61,11 +72,12 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
         value={formData.newTitle}
         onChange={handleInputChange}
         autoComplete="off"
+        helperText="Название для отображения в UI"
       />
       <TextField
         size="small"
         label="Description"
-        required
+        // required
         type="text"
         variant="outlined"
         fullWidth
@@ -87,6 +99,8 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
         value={formData.limit}
         onChange={handleInputChange}
         autoComplete="off"
+        helperText={`Возможно прикрепить не более ${formData.limit} id`}
+        InputProps={{ inputProps: { min: 1, max: 50 } }}
       />
       {!!isFormCorrect && (
         <ThemedButton
