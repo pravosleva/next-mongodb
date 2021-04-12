@@ -116,10 +116,10 @@ export const TheNotePage = ({ initNote: note }: any) => {
         <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
           {isLogged && !isDeleting && (
             <>
-              <ThemedButton color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
+              <ThemedButton size="small" color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete
               </ThemedButton>
-              <Button color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
+              <Button size="small" color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
                 Edit
               </Button>
             </>
@@ -138,7 +138,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
             </>
           )*/}
 
-          <ThemedButton color={EColorValue.blue} onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
+          <ThemedButton size="small" color={EColorValue.blue} onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
             Copy Link
           </ThemedButton>
 

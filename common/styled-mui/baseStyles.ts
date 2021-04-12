@@ -12,7 +12,10 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       '& > *:not(:last-child)': {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(1),
+      },
+      '& > *': {
+        marginBottom: theme.spacing(1),
       },
       // alignItems: 'center',
     },
