@@ -307,6 +307,14 @@ h1 {
   white-space: pre-wrap;
   overflow-y: auto;
 }
+.description-markdown h1,
+.description-markdown h2,
+.description-markdown h3,
+.description-markdown h4,
+.description-markdown h5,
+.description-markdown h6 {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
 ::selection {
 	background-color: #cce2ff;
 	color: rgba(0,0,0,.87);
