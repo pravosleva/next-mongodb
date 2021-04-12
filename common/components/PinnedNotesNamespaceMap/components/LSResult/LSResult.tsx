@@ -43,7 +43,7 @@ export const LSResult = () => {
           className="search"
           // autoFocus
           size="small"
-          label="Search by title or descr"
+          label="Search by title or description"
           // required
           type="text"
           variant="outlined"
