@@ -154,7 +154,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', margin: '8px 0 8px 0' }}>
           <Label>
             <Icon name="file" /> {totalNotes}
           </Label>
@@ -198,7 +198,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
             <EmptyTemplate />
           )}
         </div>
-        <div className="grid wrapper">
+        <div className="grid wrapper" style={{ marginBottom: '8px' }}>
           {notes.map((note) => {
             const isActive = !!activeNote?._id && activeNote._id === note._id
 
@@ -282,27 +282,31 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           })}
         </div>
       </div>
-      {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
-        <div className="search-wrapper">
-          <Box m={1}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Sample0
-                page={page}
-                defaultPage={page}
-                hideNextButton={page >= totalPages}
-                hidePrevButton={page <= 1}
-                onChange={(_e, page) => {
-                  handlePageChange(_e, { activePage: page })
-                }}
-                boundaryCount={3}
-                color="primary"
-                count={totalPages}
-                variant="otlined"
-              />
-            </div>
-          </Box>
-        </div>
-      )}
+      {state.notes.length > 0 &&
+        totalPages > 0 &&
+        !!currentPage &&
+        !!state.pagination &&
+        state.pagination.totalPages > 1 && (
+          <div className="search-wrapper">
+            <Box m={1}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Sample0
+                  page={page}
+                  defaultPage={page}
+                  hideNextButton={page >= totalPages}
+                  hidePrevButton={page <= 1}
+                  onChange={(_e, page) => {
+                    handlePageChange(_e, { activePage: page })
+                  }}
+                  boundaryCount={3}
+                  color="primary"
+                  count={totalPages}
+                  variant="otlined"
+                />
+              </div>
+            </Box>
+          </div>
+        )}
     </>
   )
 }

@@ -21,7 +21,7 @@ export const Layout = ({ children }) => {
   const isTheNotePage = router.pathname === '/notes/[id]'
   const classes = useStyles()
   const baseClasses = useBaseStyles()
-  const { isDesktop } = useWindowSize()
+  const { isDesktop, isMobile } = useWindowSize()
 
   return (
     <>
@@ -46,29 +46,31 @@ export const Layout = ({ children }) => {
         options={{ showSpinner: true }}
       />
       <Navbar />
-      <Container
-        style={
-          {
-            // border: '1px solid red',
-            // display: 'flex',
-            // border: 'none',
+      <div className={classes.minimalHeightSetting}>
+        <Container
+          style={
+            {
+              // border: '1px solid red',
+              // display: 'flex',
+              // border: 'none',
+            }
           }
-        }
-        maxWidth="md"
-        className={clsx(classes.minimalHeightSetting, {
-          [baseClasses.noPaddingMobile]: isTheNotePage,
-        })}
-      >
-        <div className={classes.contentBox}>
-          <div>{children}</div>
-          {isDesktop && (
-            <div className={classes.sidebarInLayoutWrapper}>
-              <SidebarContent />
-            </div>
-          )}
-        </div>
-      </Container>
-      <Footer />
+          maxWidth="md"
+          className={clsx({
+            [baseClasses.noPaddingMobile]: isTheNotePage,
+          })}
+        >
+          <div className={classes.contentBox}>
+            <div>{children}</div>
+            {isDesktop && (
+              <div className={classes.sidebarInLayoutWrapper}>
+                <SidebarContent />
+              </div>
+            )}
+          </div>
+        </Container>
+      </div>
+      {isMobile && <Footer />}
       {router.pathname !== '/new' && <SpeedDial />}
       <style jsx global>{`
         #nprogress .spinner {

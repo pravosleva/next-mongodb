@@ -5,8 +5,13 @@ const sidebarWidth = 300
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     minimalHeightSetting: {
+      // border: '1px solid red',
       [theme.breakpoints.up('sm')]: {
         minHeight: 'calc(100vh - 64px)',
+
+        // NOTE: Height limit
+        maxHeight: 'calc(100vh - 64px)',
+        overflow: 'auto',
       },
       [theme.breakpoints.down('xs')]: {
         minHeight: 'calc(100vh - 56px)',
@@ -25,7 +30,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       minHeight: 'inherit',
       flexDirection: 'row',
       '& > div:first-child': {
-        margin: '20px 0px 50px 0px',
         [theme.breakpoints.up('md')]: {
           width: `calc(100% - ${sidebarWidth}px)`,
           minWidth: `calc(100% - ${sidebarWidth}px)`,
@@ -34,6 +38,8 @@ export const useStyles = makeStyles((theme: Theme) =>
         [theme.breakpoints.down('sm')]: {
           width: '100%',
           minWidth: '100%',
+
+          margin: '20px 0px 50px 0px',
         },
       },
     },
