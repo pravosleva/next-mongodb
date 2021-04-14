@@ -154,14 +154,6 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', margin: '8px 0 8px 0' }}>
-          <Label>
-            <Icon name="file" /> {totalNotes}
-          </Label>
-          {!!ssrErrMsg && (
-            <div style={{ border: '1px solid #fe7f2d', borderRadius: '10px', padding: '5px' }}>🔥 {ssrErrMsg}</div>
-          )}
-        </div>
         {/* state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
           <Box m={1}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -199,6 +191,14 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           )}
         </div>
         <div className="grid wrapper" style={{ marginBottom: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', margin: '8px 0 0 0' }}>
+            <Label>
+              <Icon name="file" /> {totalNotes}
+            </Label>
+            {!!ssrErrMsg && (
+              <div style={{ border: '1px solid #fe7f2d', borderRadius: '10px', padding: '5px' }}>🔥 {ssrErrMsg}</div>
+            )}
+          </div>
           {notes.map((note) => {
             const isActive = !!activeNote?._id && activeNote._id === note._id
 

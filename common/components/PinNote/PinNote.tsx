@@ -37,7 +37,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
             // handlePinToLS({ id })
             setIsOpened(true)
           }}
-          startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+          endIcon={<MdiIcon path={mdiPin} size={0.7} />}
           // disabled={isIdPinned(note._id)}
           {...rest}
         >
@@ -92,7 +92,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
                 handlePinToLS({ id, namespace: selectedNamespace })
                 setIsOpened(false)
               }}
-              startIcon={<MdiIcon path={mdiPin} size={0.7} />}
+              endIcon={<MdiIcon path={mdiPin} size={0.7} />}
               // disabled={isIdPinned(note._id)}
               {...rest}
             >

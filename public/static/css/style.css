@@ -103,7 +103,7 @@ h1 {
     max-height: calc(100vh - 60px - 20px - 8px); */
     top: 8px;
     /* max-height: calc(100vh - 8px - 64px - 36px - 20px); */
-    max-height: calc(100vh - 8px - 64px - 37px - 8px);
+    max-height: calc(100vh - 8px - 64px - 8px);
   }
   .active-note-external-sticky-wrapper > div {
     max-height: 100%;
@@ -281,9 +281,18 @@ h1 {
   cursor: default;
   border-top: 8px solid #3882c4;
 }
-.todo-item > div {
-  padding: 8px;
+@media(min-width: 768px) {
+  .todo-item > div {
+    padding: 8px;
+  }
+  .todo-item > div:nth-last-child(3) > p:first-child {
+    margin-top: 8px;
+  }
+  .todo-item > div:nth-last-child(3) > p:last-child {
+    margin-bottom: 8px;
+  }
 }
+
 .todo-item > div:nth-child(2) {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -397,13 +406,14 @@ h1 {
   transition: max-width 0.3s;
   margin: 0 auto;
   display: block;
+  object-fit: contain;
 
   border-radius: 4px;
 }
 .description-markdown img.small {
   width: 100%;
+  min-width: 350px;
   max-width: 350px;
-  max-height: 350px;
 }
 .description-markdown img.large {
   max-width: 100%;

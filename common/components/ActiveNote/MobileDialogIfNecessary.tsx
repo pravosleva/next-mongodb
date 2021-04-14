@@ -41,7 +41,7 @@ export const MobileDialogIfNecessary = () => {
         dividers={true}
         // className={classes.dialogMDContent}
         style={{
-          padding: 0,
+          padding: '0px',
           borderTop: 'none',
         }}
       >

@@ -113,13 +113,20 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const MemoizedBtnsBox = useMemo(
     () => (
       <div style={{ margin: '0 auto' }}>
-        <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+        <div
+          style={
+            {
+              // padding: '8px 8px 16px 8px',
+            }
+          }
+          className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}
+        >
           {isLogged && !isDeleting && (
             <>
               <ThemedButton size="small" color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete
               </ThemedButton>
-              <Button size="small" color="default" variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
+              <Button size="small" color="default" variant="outlined" onClick={handleEdit} endIcon={<EditIcon />}>
                 Edit
               </Button>
             </>
@@ -138,10 +145,6 @@ export const TheNotePage = ({ initNote: note }: any) => {
             </>
           )*/}
 
-          <ThemedButton size="small" color={EColorValue.blue} onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
-            Copy Link
-          </ThemedButton>
-
           {!isPinned && !!noteId && typeof noteId === 'string' ? (
             <PinNote id={noteId} />
           ) : (
@@ -152,12 +155,16 @@ export const TheNotePage = ({ initNote: note }: any) => {
               onClick={() => {
                 handleUnpinFromLS(noteId)
               }}
-              startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+              endIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
               disabled={!isPinned}
             >
               Unpin
             </Button>
           )}
+
+          <ThemedButton size="small" color={EColorValue.blue} onClick={copyLinkToClipboard} endIcon={<FileCopyIcon />}>
+            Copy Link
+          </ThemedButton>
 
           {/* <MuiButton color="default" variant="outlined" onClick={handleEdit}>
           Edit
@@ -165,7 +172,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         <MuiButton color="secondary" variant="outlined" onClick={handleEdit}>
           Edit
         </MuiButton> */}
-        </Box>
+        </div>
       </div>
     ),
     [handleOpen, handleEdit, isLogged, isDeleting, isDesktop]

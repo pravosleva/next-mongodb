@@ -8,6 +8,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     btnsBox: {
+      marginTop: theme.spacing(1),
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
