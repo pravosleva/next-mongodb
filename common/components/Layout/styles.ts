@@ -47,7 +47,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       borderLeft: '1px solid lightgray',
       // NOTE: See also: https://css-tricks.com/gradient-borders-in-css/
       borderImage: 'linear-gradient(to bottom, lightgray, transparent) 1 100%',
-      padding: theme.spacing(8, 0, 1, 0),
+      padding: theme.spacing(2, 0, 1, 0),
       margin: theme.spacing(0, 0, 0, 1),
 
       overflowY: 'auto',

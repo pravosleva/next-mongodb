@@ -280,33 +280,30 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               </div>
             )
           })}
+          {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
+            // state.pagination.totalPages > 1 &&
+            <div className="search-wrapper">
+              <Box m={1}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Sample0
+                    page={page}
+                    defaultPage={page}
+                    hideNextButton={page >= totalPages}
+                    hidePrevButton={page <= 1}
+                    onChange={(_e, page) => {
+                      handlePageChange(_e, { activePage: page })
+                    }}
+                    boundaryCount={3}
+                    color="primary"
+                    count={totalPages}
+                    variant="otlined"
+                  />
+                </div>
+              </Box>
+            </div>
+          )}
         </div>
       </div>
-      {state.notes.length > 0 &&
-        totalPages > 0 &&
-        !!currentPage &&
-        !!state.pagination &&
-        state.pagination.totalPages > 1 && (
-          <div className="search-wrapper">
-            <Box m={1}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Sample0
-                  page={page}
-                  defaultPage={page}
-                  hideNextButton={page >= totalPages}
-                  hidePrevButton={page <= 1}
-                  onChange={(_e, page) => {
-                    handlePageChange(_e, { activePage: page })
-                  }}
-                  boundaryCount={3}
-                  color="primary"
-                  count={totalPages}
-                  variant="otlined"
-                />
-              </div>
-            </Box>
-          </div>
-        )}
     </>
   )
 }
