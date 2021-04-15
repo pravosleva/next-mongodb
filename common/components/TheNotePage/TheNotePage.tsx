@@ -6,7 +6,7 @@ import { Confirm, Loader } from 'semantic-ui-react'
 import { ActiveNote } from '~/common/components/ActiveNote'
 import { useAuthContext } from '~/common/context'
 // See also: https://github.com/hadnazzar/nextjs-with-material-ui/blob/master/pages/about.js
-import { Box, Button } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 // import Button from '@material-ui/core/Button'
 // import { useStyles } from './styles'
 import ReactMarkdown from 'react-markdown'
