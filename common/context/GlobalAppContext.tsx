@@ -54,7 +54,7 @@ export const GlobalAppContext = createContext({
   handleSetAsActiveNote: (_note: any): void | never => {
     throw new Error('handleSetAsActiveNote method should be implemented')
   },
-  handleResetActiveNote: (_note: any): void | never => {
+  handleResetActiveNote: (): void | never => {
     throw new Error('handleResetActiveNote method should be implemented')
   },
   handlePageChange: (_ev: any, _data: any): void | never => {
@@ -257,8 +257,8 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     // TODO: No scroll if current scroll position more than 125px
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
-  const handleResetActiveNote = (note: any) => {
-    dispatch({ type: 'ACTIVE_NOTE@RESET', payload: note })
+  const handleResetActiveNote = () => {
+    dispatch({ type: 'ACTIVE_NOTE@RESET' })
   }
   const initState = (state: any) => {
     dispatch({ type: 'INIT_STATE', payload: state })
