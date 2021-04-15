@@ -23,6 +23,7 @@ import {
   mdiPinOff,
 } from '@mdi/js'
 import { PinNote } from '~/common/components/PinNote'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 
 interface IProps {
   note: any
@@ -148,7 +149,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
                 size="small"
                 color="secondary"
                 onClick={() => {
-                  handleUnpinFromLS(_id)
+                  handleUnpinFromLS(_id, ELSFields.Main)
                 }}
                 startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
                 disabled={!isPinned}

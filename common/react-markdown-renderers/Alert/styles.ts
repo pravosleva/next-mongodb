@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
+import { theme } from '~/common/styled-mui/theme'
 
 export enum EType {
   success = 'success',
@@ -109,6 +110,9 @@ export const useStyles = makeStyles((_theme) => ({
       content: 'open-quote',
       // textShadow: '3px 3px rgba(222,222,222,0.4)',
       textShadow: '0px 0px 7px #FFF',
+    },
+    '& a': {
+      color: theme.palette.primary.main,
     },
   },
 }))

@@ -28,6 +28,7 @@ import {
   // mdiPin,
   mdiPinOff,
 } from '@mdi/js'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -153,7 +154,8 @@ export const TheNotePage = ({ initNote: note }: any) => {
               size="small"
               color="secondary"
               onClick={() => {
-                handleUnpinFromLS(noteId)
+                if (typeof noteId === 'string') handleUnpinFromLS(noteId, ELSFields.Main)
+                // TODO: Notif
               }}
               endIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
               disabled={!isPinned}

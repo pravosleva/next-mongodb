@@ -4,7 +4,7 @@ import MdiIcon from '@mdi/react'
 import { mdiPencil } from '@mdi/js'
 import { Stepper } from '~/common/components/Stepper'
 import { useStyles } from './styles'
-
+import { ELSFields } from '~/common/context/GlobalAppContext'
 import { useForm, useGlobalAppContext } from '~/common/hooks'
 import TextField from '@material-ui/core/TextField'
 
@@ -203,7 +203,7 @@ export const EditBtn = ({ namespace, data }: TProps) => {
   const formErrors = useMemo(() => getFormErrorsObj(normalizedData), [normalizedData])
   const { replaceNamespaceInLS } = useGlobalAppContext()
   const handleSave = useCallback(() => {
-    replaceNamespaceInLS({ normalizedData, namespace })
+    replaceNamespaceInLS({ normalizedData, namespace }, ELSFields.Main)
   }, [normalizedData])
   const handleCancel = useCallback(() => {
     resetForm()

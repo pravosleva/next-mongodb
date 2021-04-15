@@ -44,17 +44,19 @@ export const SidebarContent = () => {
         // activeTitleColor="#3882C4"
         // inactiveTitleColor="#a9a9a9"
         // isRightSide
-        title="LS Features"
+        title="Local notes in LS"
         contentRenderer={(_collabsiblePs) => (
           <>
             <div style={{ marginBottom: '8px' }}>
-              <em>Просто мысли.</em>
+              <em>Идея</em>
             </div>
             <ul style={{ paddingLeft: '20px' }}>
+              <li>Дать возможность пользователю создавать локальные заметки;</li>
               <li>
-                Дать возможность пользователю создавать локальные заметки и переносить их на другие устройства с помощью
-                QR кода, используя временное общее хранилище;
+                Дать возможность переносить их на другие устройства с помощью QR кода, используя временное общее
+                хранилище;
               </li>
+              <li>Удалять из временного хранилища после переноса;</li>
             </ul>
           </>
         )}

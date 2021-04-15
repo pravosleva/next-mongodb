@@ -5,13 +5,27 @@ import { useRouter } from 'next/router'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
 import { scrollTop } from '~/utils/scrollTo'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
-import { useWindowSize } from '~/common/hooks'
+// import { useWindowSize } from '~/common/hooks'
 import ls from 'local-storage'
 import slugify from 'slugify'
 
-const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
+const NEXT_APP_API_ENDPOINT: string = process.env.NEXT_APP_API_ENDPOINT || ''
 
-export const getInitialState = (base) => ({
+type TPagination = {
+  curentPage: number
+  totalPages: number
+  totalNotes: number
+}
+interface IState {
+  notes: any
+  pagination: TPagination
+  searchByTitle: string
+  searchByDescription: string
+  activeNote: any | null
+  localPage: number
+}
+
+export const getInitialState = (base: Partial<IState>): IState => ({
   notes: [],
   pagination: {
     curentPage: 0,
@@ -31,72 +45,73 @@ export const GlobalAppContext = createContext({
   setPage: () => {
     throw new Error('setPage method should be implemented')
   },
-  handleSearchByTitleClear: () => {
+  handleSearchByTitleClear: (): void | never => {
     throw new Error('handleSearchByTitleClear method should be implemented')
   },
-  handleSearchByDescriptionClear: () => {
+  handleSearchByDescriptionClear: (): void | never => {
     throw new Error('handleSearchByDescriptionClear method should be implemented')
   },
-  handleSetAsActiveNote: (note) => {
+  handleSetAsActiveNote: (_note: any): void | never => {
     throw new Error('handleSetAsActiveNote method should be implemented')
   },
-  handleResetActiveNote: () => {
+  handleResetActiveNote: (_note: any): void | never => {
     throw new Error('handleResetActiveNote method should be implemented')
   },
-  handlePageChange: () => {
+  handlePageChange: (_ev: any, _data: any): void | never => {
     throw new Error('handlePageChange method should be implemented')
   },
   isNotesLoading: false,
   initPagination: () => {
     throw new Error('initPagination method should be implemented')
   },
-  initState: () => {
+  initState: (_state: any): void | never => {
     throw new Error('initState method should be implemented')
   },
-  handleSearchByDescriptionSetText: () => {
+  handleSearchByDescriptionSetText: (_text: string): void | never => {
     throw new Error('handleSearchByDescriptionSetText method should be implemented')
   },
-  handleSearchByTitleSetText: (text) => {
+  handleSearchByTitleSetText: (_text: string): void | never => {
     throw new Error('handleSearchByTitleSetText method should be implemented')
   },
-  handleUpdateOneNote: (note) => {
+  handleUpdateOneNote: (_note: any): void | never => {
     throw new Error('handleUpdateOneNote method should be implemented')
   },
-  handleRemoveOneNote: (id) => {
+  handleRemoveOneNote: (_id: string): void | never => {
     throw new Error('handleRemoveOneNote method should be implemented')
   },
-  handleAddOneNote: (note) => {
+  handleAddOneNote: (_note: any): void | never => {
     throw new Error('handleAddOneNote method should be implemented')
   },
-  handleSetNotesResponse: (notesAndPag) => {
+  handleSetNotesResponse: (_arg: any): void | never => {
     throw new Error('handleSetNotesResponse method should be implemented')
   },
-  handlePinToLS: ({ namespace, id }) => {
+  handlePinToLS: (_arg: any, _lsField: ELSFields): void | never => {
     throw new Error('handlePinToLS method should be implemented')
   },
-  handleUnpinFromLS: (noteId) => {
+  handleUnpinFromLS: (_id: string, _lsField: ELSFields): void | never => {
     throw new Error('handleUnpinFromLS method should be implemented')
   },
   pinnedIds: [],
   pinnedMap: null,
-  isPinnedToLS: (noteId) => {
+  localNotesMap: null,
+  isPinnedToLS: (_id: string, _lsField: ELSFields): void | never => {
     throw new Error('isPinnedToLS method should be implemented')
   },
-  createTestPinnedMap: () => {
-    throw new Error('createTestPinnedMap method should be implemented')
-  },
-  removeNamespace: (key) => {
+  // createTestPinnedMap: (): void | never => {
+  //   throw new Error('createTestPinnedMap method should be implemented')
+  // },
+  removeNamespace: (_namespace: string, _lsField: ELSFields): void | never => {
     throw new Error('removeNamespace method should be implemented')
   },
-  createNamespacePromise: ({ namespace, title, description, limit }) => {
+  createNamespacePromise: async (_opts: any, _lsField: ELSFields): Promise<any> => {
     return Promise.reject('createNamespacePromise method should be implemented')
   },
-  replaceNamespaceInLS: ({ namespace, normalizedData }) => {
-    return Promise.reject('replaceNamespaceInLS method should be implemented')
+  replaceNamespaceInLS: (_args: any, _lsField: ELSFields): void | never => {
+    throw new Error('replaceNamespaceInLS method should be implemented')
   },
 })
 
-function reducer(state, action) {
+function reducer(state: any, action: any) {
   let newState = { ...state }
 
   switch (action.type) {
@@ -123,7 +138,7 @@ function reducer(state, action) {
         localPage: action.payload,
       }
     case 'UPDATE_ONE_NOTE':
-      const theNoteIndex = state.notes.findIndex(({ _id }) => _id === action.payload._id)
+      const theNoteIndex = state.notes.findIndex(({ _id }: any) => _id === action.payload._id)
 
       if (theNoteIndex !== -1) {
         newState.notes[theNoteIndex] = action.payload
@@ -132,7 +147,7 @@ function reducer(state, action) {
 
       return state
     case 'REMOVE_ONE_NOTE':
-      newState.notes = newState.notes.filter(({ _id }) => _id !== action.payload)
+      newState.notes = newState.notes.filter(({ _id }: any) => _id !== action.payload)
 
       return newState
     case 'ADD_ONE_NOTE':
@@ -144,13 +159,18 @@ function reducer(state, action) {
   }
 }
 
-const getMsgStr = (err) => (typeof err === 'string' ? err : err.message || 'No err.message')
+const getMsgStr = (err: any) => (typeof err === 'string' ? err : err.message || 'No err.message')
 
-export const GlobalAppContextProvider = ({ children }) => {
+export enum ELSFields {
+  Main = 'pinned-namespace-map',
+  LocalNotes = 'my-local-notes',
+}
+
+export const GlobalAppContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, getInitialState({}))
   const debouncedSearchByTitle = useDebounce(state.searchByTitle, 1000)
   const debouncedSearchByDescription = useDebounce(state.searchByDescription, 1000)
-  const handleScrollTop = (noAnimation) => {
+  const handleScrollTop = (noAnimation: boolean = false) => {
     setTimeout(() => {
       if (typeof window !== 'undefined') {
         if (window.location.href.indexOf('#') === -1) scrollTop(0, noAnimation)
@@ -165,7 +185,7 @@ export const GlobalAppContextProvider = ({ children }) => {
     return Promise.resolve()
   }
 
-  const handlePageChange = (_ev, data) => {
+  const handlePageChange = (_ev: any, data: any) => {
     handleScrollTop(true).then(() => {
       dispatch({ type: 'SET_LOCAL_PAGE', payload: data.activePage })
     })
@@ -181,7 +201,7 @@ export const GlobalAppContextProvider = ({ children }) => {
 
     const fetchData = async () => {
       setIsLoading(true)
-      const queryParams = {
+      const queryParams: any = {
         limit: defaultPaginationData.limit,
       }
       if (!!debouncedSearchByTitle) {
@@ -198,6 +218,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         queryParams,
       })
       const res = await fetch(url, {
+        // @ts-ignore
         headers: getStandardHeadersByCtx(),
       })
       setIsLoading(false)
@@ -222,52 +243,53 @@ export const GlobalAppContextProvider = ({ children }) => {
     dispatch({ type: 'SEARCH_BY_ANYTHING@RESET' })
   }
   const router = useRouter()
+
   useEffect(() => {
     handleScrollTop(true)
     handleSearchByAnythingClear()
   }, [router.pathname])
-  const { isDesktop, ...windowParams } = useWindowSize()
-  const handleSetAsActiveNote = (note) => {
+
+  // const { isDesktop } = useWindowSize()
+  const handleSetAsActiveNote = (note: any) => {
     // eslint-disable-next-line no-console
     // console.log(windowParams)
     // if (isDesktop) scrollTop(125)
     // TODO: No scroll if current scroll position more than 125px
     dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
   }
-  const handleResetActiveNote = (note) => {
+  const handleResetActiveNote = (note: any) => {
     dispatch({ type: 'ACTIVE_NOTE@RESET', payload: note })
   }
-  const initState = (state) => {
+  const initState = (state: any) => {
     dispatch({ type: 'INIT_STATE', payload: state })
   }
-  const handleSearchByDescriptionSetText = (text) => {
+  const handleSearchByDescriptionSetText = (text: string) => {
     dispatch({ type: 'SEARCH_BY_DESCRIPTION@SET', payload: text })
   }
-  const handleSearchByTitleSetText = (text) => {
+  const handleSearchByTitleSetText = (text: string) => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: text })
   }
-  const handleUpdateOneNote = (note) => {
+  const handleUpdateOneNote = (note: any) => {
     dispatch({ type: 'UPDATE_ONE_NOTE', payload: note })
   }
-  const handleRemoveOneNote = (id) => {
+  const handleRemoveOneNote = (id: string) => {
     dispatch({ type: 'REMOVE_ONE_NOTE', payload: id })
   }
-  const handleAddOneNote = (note) => {
+  const handleAddOneNote = (note: any) => {
     dispatch({ type: 'ADD_ONE_NOTE', payload: note })
   }
-  const handleSetNotesResponse = ({ data, pagination }) => {
+  const handleSetNotesResponse = ({ data, pagination }: any) => {
     dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
   }
 
   // --- LS
-  // const [pinnedIds, setPinnedIds] = useState([])
-  const [pinnedMap, setPinnedMap] = useState(null)
+  const [pinnedMap, setPinnedMap] = useState<any | null>(null)
+  const [localNotesMap, setLocalNotesMap] = useState<any | null>(null)
   const { addInfoNotif, addDangerNotif, addWarningNotif } = useNotifsContext()
-  const lsMainField = 'pinned-namespace-map' // 'pinned-ids'
-  const msgAsFlasEmpty = 'Not found in ls'
-  const getFieldFromLS = (fieldName, shouldBeJson) => {
+  const getFieldFromLS = (fieldName: ELSFields, shouldBeJson: boolean) => {
+    // @ts-ignore
     if (!ls(fieldName)) {
-      createEmptyMap()
+      createEmptyMap(fieldName)
       setPinnedMap({})
       // return Promise.reject(msgAsFlasEmpty)
     }
@@ -276,63 +298,73 @@ export const GlobalAppContextProvider = ({ children }) => {
 
     if (shouldBeJson) {
       try {
+        // @ts-ignore
         dataFromLS = JSON.parse(ls.get(fieldName))
       } catch (err) {
         return Promise.reject(getMsgStr(err))
       }
     } else {
+      // @ts-ignore
       dataFromLS = ls.get(fieldName)
     }
 
-    // console.log(dataFromLS)
-
     return Promise.resolve(dataFromLS)
   }
-  const createEmptyMap = () => {
+  const createEmptyMap = (lsFieldName: ELSFields) => {
     const emptyPinnedMap = {}
-    setFieldToLS(lsMainField, emptyPinnedMap, true).then(() => {
+    setFieldToLS(lsFieldName, emptyPinnedMap, true).then(() => {
       setPinnedMap(emptyPinnedMap)
     })
   }
   useEffect(() => {
-    getFieldFromLS(lsMainField, true)
+    // 1. Main (pinned notes)
+    getFieldFromLS(ELSFields.Main, true)
       .then((lsData) => {
-        // setPinnedIds(lsData)
         setPinnedMap(lsData)
-        // addInfoNotif({ title: `cDM: ${lsMainField}`, message: JSON.stringify(lsData) })
+        // addInfoNotif({ title: `cDM: ${ELSFields.Main}`, message: JSON.stringify(lsData) })
       })
-      .catch((err) => {
-        createEmptyMap()
-        // addDangerNotif({ title: `cDM: ${lsMainField}`, message: getMsgStr(err) })
+      .catch(() => {
+        createEmptyMap(ELSFields.Main)
+        // addDangerNotif({ title: `cDM: ${ELSFields.Main}`, message: getMsgStr(err) })
+      })
+    // 2. For local notes
+    getFieldFromLS(ELSFields.LocalNotes, true)
+      .then((lsData) => {
+        setLocalNotesMap(lsData)
+        // addInfoNotif({ title: `cDM: ${ELSFields.Main}`, message: JSON.stringify(lsData) })
+      })
+      .catch(() => {
+        createEmptyMap(ELSFields.LocalNotes)
+        // addDangerNotif({ title: `cDM: ${ELSFields.Main}`, message: getMsgStr(err) })
       })
   }, [])
-  const setFieldToLS = (fieldName, value, asJson) => {
+  const setFieldToLS = (fieldName: string, value: any, asJson: boolean) => {
     const stuff = asJson ? JSON.stringify(value) : String(value)
 
     ls(fieldName, stuff)
 
     return Promise.resolve()
   }
-  const createTestPinnedMap = () => {
-    const testPinnedMap = {
-      'tst-namespace': {
-        limit: 2,
-        description: 'Test namespace descr',
-        title: 'Test namespace title',
-        ids: [],
-      },
-    }
-    setFieldToLS(lsMainField, testPinnedMap, true).then(() => {
-      setPinnedMap(testPinnedMap)
-    })
-  }
+  // const createTestPinnedMap = () => {
+  //   const testPinnedMap = {
+  //     'tst-namespace': {
+  //       limit: 2,
+  //       description: 'Test namespace descr',
+  //       title: 'Test namespace title',
+  //       ids: [],
+  //     },
+  //   }
+  //   setFieldToLS(ELSFields.Main, testPinnedMap, true).then(() => {
+  //     setPinnedMap(testPinnedMap)
+  //   })
+  // }
   const defautOptions = {
     limit: 2,
     title: 'New',
     description: 'Descr',
     ids: [],
   }
-  const createNamespacePromise = async (opts) => {
+  const createNamespacePromise = async (opts: any, lsField: ELSFields) => {
     const { namespace, title, description, limit = defautOptions.limit } = opts
     if (!namespace || !title || !limit) {
       const message = 'Condition warning: !namespace || !title || !limit'
@@ -341,7 +373,7 @@ export const GlobalAppContextProvider = ({ children }) => {
       return Promise.reject(message)
     }
     const normalizedNamespace = slugify(namespace)
-    const result = await getFieldFromLS(lsMainField, true)
+    const result = await getFieldFromLS(lsField, true)
       .then((lsData) => {
         if (!!lsData[normalizedNamespace]) {
           throw new Error('Уже есть в LS; Задайте другое имя')
@@ -357,7 +389,7 @@ export const GlobalAppContextProvider = ({ children }) => {
           ...lsData,
         }
 
-        setFieldToLS(lsMainField, newData, true).then(() => {
+        setFieldToLS(lsField, newData, true).then(() => {
           setPinnedMap(newData)
           return Promise.resolve()
         })
@@ -369,8 +401,8 @@ export const GlobalAppContextProvider = ({ children }) => {
       })
     return result
   }
-  const removeNamespace = (namespace) => {
-    getFieldFromLS(lsMainField, true)
+  const removeNamespace = (namespace: any, lsField: ELSFields) => {
+    getFieldFromLS(lsField, true)
       .then((lsData) => {
         if (!lsData[namespace]) {
           addDangerNotif({ title: `!lsData[${namespace}]}` })
@@ -379,24 +411,25 @@ export const GlobalAppContextProvider = ({ children }) => {
         const newData = {}
 
         for (const _namespace in lsData) {
+          // @ts-ignore
           if (_namespace !== namespace) newData[_namespace] = lsData[_namespace]
         }
-        setFieldToLS(lsMainField, newData, true).then(() => {
+        setFieldToLS(lsField, newData, true).then(() => {
           setPinnedMap(newData)
         })
       })
       .catch((err) => {
-        addDangerNotif({ title: `cDM: ${lsMainField}`, message: getMsgStr(err) })
+        addDangerNotif({ title: `cDM: ${lsField}`, message: getMsgStr(err) })
       })
   }
-  const addItemToLS = ({ namespace, id }) => {
+  const addItemToLS = ({ namespace, id }: any, lsField: ELSFields) => {
     if (!namespace || !id) {
       // addDangerNotif({ title: 'addItemToLs(): Incorrect params', message: '!namespace || !id' })
       addInfoNotif({ title: 'Select namespace...', message: 'TODO' })
       return
     }
 
-    getFieldFromLS(lsMainField, true)
+    getFieldFromLS(lsField, true)
       .then((lsData) => {
         if (!lsData[namespace]) throw new Error(`No namespace "${namespace}" in ls`)
         if (!lsData[namespace].limit) throw new Error(`No limit in "${namespace}"`)
@@ -408,10 +441,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         const newNamespaceData = { ...namespaceData, ids: lastN, ts: new Date().getTime() }
         const newLsData = { ...lsData, [namespace]: newNamespaceData }
 
-        setFieldToLS(lsMainField, newLsData, true)
-        // V1:
-        // setPinnedIds(lastN)
-        // V2:
+        setFieldToLS(lsField, newLsData, true)
         setPinnedMap(newLsData)
 
         addInfoNotif({ title: 'Note pinned', message: id })
@@ -420,7 +450,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         const message = getMsgStr(err)
 
         // V1:
-        // setFieldToLS(lsMainField, [id], true)
+        // setFieldToLS(ELSFields.Main, [id], true)
         // setPinnedIds([id])
 
         // V2:
@@ -428,18 +458,17 @@ export const GlobalAppContextProvider = ({ children }) => {
         addDangerNotif({ title: 'addItemToLS()', message })
       })
   }
-  const replaceNamespaceInLS = ({ namespace, normalizedData }) => {
+  const replaceNamespaceInLS = ({ namespace, normalizedData }: any, lsField: ELSFields) => {
     // eslint-disable-next-line no-console
-    // console.log(namespace, normalizedData)
 
-    getFieldFromLS(lsMainField, true)
+    getFieldFromLS(lsField, true)
       .then((lsData) => {
         if (!!lsData[namespace]) {
           // 1. REPLACE
           const newNameSpaceData = { ...normalizedData, ts: new Date().getTime() }
           const newLsData = { ...lsData, [namespace]: newNameSpaceData }
 
-          setFieldToLS(lsMainField, newLsData, true)
+          setFieldToLS(lsField, newLsData, true)
           setPinnedMap(newLsData)
           addInfoNotif({ title: 'LS data updated', message: namespace })
         } else {
@@ -452,21 +481,13 @@ export const GlobalAppContextProvider = ({ children }) => {
       })
   }
 
-  const handlePinToLS = (arg) => {
+  const handlePinToLS = (arg: any, lsField: ELSFields) => {
     // eslint-disable-next-line no-console
-    addItemToLS(arg)
+    addItemToLS(arg, lsField)
   }
-  const removeItemFromLS = (id) => {
-    getFieldFromLS(lsMainField, true)
+  const removeItemFromLS = (id: string, lsField: ELSFields) => {
+    getFieldFromLS(lsField, true)
       .then((lsData) => {
-        /* V1:
-        if (!Array.isArray(idsArr)) throw new Error("ids from LS isn't an Array")
-        const newArr = idsArr.filter((_id) => _id !== id)
-        setFieldToLS(lsMainField, newArr, true)
-        setPinnedIds(newArr)
-        */
-
-        // V2:
         // 1. Find namespace:
         // const nss = Object.keys(lsData)
         let targetNSName = null
@@ -480,26 +501,26 @@ export const GlobalAppContextProvider = ({ children }) => {
         const targetNS = lsData[targetNSName]
         if (!targetNS.ids) throw new Error('WTF? !targetNS.ids')
 
-        const newIds = targetNS.ids.filter((_id) => _id !== id)
+        const newIds = targetNS.ids.filter((_id: string) => _id !== id)
         const newTargetNS = { ...targetNS, ids: newIds }
         const newLsData = { ...lsData, [targetNSName]: newTargetNS }
-        setFieldToLS(lsMainField, newLsData, true)
+        setFieldToLS(lsField, newLsData, true)
         setPinnedMap(newLsData)
       })
       .catch((err) => {
         addDangerNotif({ title: 'Error', message: getMsgStr(err) })
       })
   }
-  const isPinnedToLS = async (id) => {
+  const isPinnedToLS = async (id: string, lsField: ELSFields) => {
     // console.log('CALLED')
     let result = false
 
-    await getFieldFromLS(lsMainField, true)
+    await getFieldFromLS(lsField, true)
       .then((arr) => {
         addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
         result = arr.includes(id)
       })
-      .catch((err) => {
+      .catch(() => {
         result = false
       })
 
@@ -518,6 +539,7 @@ export const GlobalAppContextProvider = ({ children }) => {
         handlePageChange,
         isNotesLoading: isLoading,
         initState,
+        // @ts-ignore
         page: state.localPage,
         handleSearchByDescriptionSetText,
         handleSearchByTitleSetText,
@@ -529,8 +551,9 @@ export const GlobalAppContextProvider = ({ children }) => {
         handleUnpinFromLS: removeItemFromLS,
         // pinnedIds,
         pinnedMap,
+        localNotesMap,
         isPinnedToLS,
-        createTestPinnedMap,
+        // createTestPinnedMap,
         removeNamespace,
         createNamespacePromise,
         replaceNamespaceInLS,

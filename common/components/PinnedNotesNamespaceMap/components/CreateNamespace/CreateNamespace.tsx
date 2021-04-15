@@ -6,6 +6,7 @@ import { useStyles } from './styles'
 import { TOutputCollapsibleProps } from '~/common/components/CollabsibleContent'
 import slugify from 'slugify'
 import Alert from '@material-ui/lab/Alert'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 
 type TForm = {
   newSpaceName: string
@@ -109,12 +110,15 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
           variant="contained"
           size="small"
           onClick={() => {
-            createNamespacePromise({
-              namespace: formData.newSpaceName.trim(),
-              title: formData.newTitle.trim(),
-              description: formData.newDescription.trim(),
-              limit: !!formData.limit ? Number(formData.limit) : 5,
-            })
+            createNamespacePromise(
+              {
+                namespace: formData.newSpaceName.trim(),
+                title: formData.newTitle.trim(),
+                description: formData.newDescription.trim(),
+                limit: !!formData.limit ? Number(formData.limit) : 5,
+              },
+              ELSFields.Main
+            )
               .then(resetForm)
               .then(handleClose)
               .catch((message: string) => {

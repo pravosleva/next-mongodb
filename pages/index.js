@@ -22,6 +22,7 @@ import MdiIcon from '@mdi/react'
 import { mdiPinOff, mdiAutorenew } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
 import { PinNote } from '~/common/components/PinNote'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -69,9 +70,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handlePageChange,
     handleSearchByDescriptionSetText,
     handleSearchByTitleSetText,
-    handlePinToLS,
     handleUnpinFromLS,
-    // pinnedIds,
     pinnedMap,
   } = useGlobalAppContext()
   const init = () => {
@@ -253,7 +252,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             size="small"
                             color="secondary"
                             onClick={() => {
-                              handleUnpinFromLS(note._id)
+                              handleUnpinFromLS(note._id, ELSFields.Main)
                             }}
                             startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
                           >

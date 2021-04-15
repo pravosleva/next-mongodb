@@ -4,6 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useGlobalAppContext } from '~/common/hooks'
 import MdiIcon from '@mdi/react'
 import { mdiPin } from '@mdi/js'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 
 export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => {
   // eslint-disable-next-line no-console
@@ -89,7 +90,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
               color="secondary"
               onClick={() => {
                 // @ts-ignore
-                handlePinToLS({ id, namespace: selectedNamespace })
+                handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.Main)
                 setIsOpened(false)
               }}
               endIcon={<MdiIcon path={mdiPin} size={0.7} />}
