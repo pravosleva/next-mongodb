@@ -83,6 +83,10 @@ h1 {
   display: flex;
   margin: 0 auto;
 }
+.main > div:first-child {
+  margin-top: 8px;
+  padding: 0 !important;
+}
 @media (min-width: 768px) {
   .main {
     flex-direction: row;
@@ -281,7 +285,7 @@ h1 {
   cursor: default;
   border-top: 8px solid #3882c4;
 }
-@media(min-width: 768px) {
+@media (min-width: 768px) {
   .todo-item > div {
     padding: 8px;
   }

@@ -73,7 +73,7 @@ export const LSResult = () => {
                 activeTitleColor="#3882C4"
                 inactiveTitleColor="#949494"
                 isRightSide
-                title={`${data.title} (${data.ids.length} of ${data.limit})`}
+                title={`${data.title} ${data.ids.length}/${data.limit}`}
                 contentRenderer={(_collabsiblePs) => <Namespace key={key} data={data} />}
               />
             </div>

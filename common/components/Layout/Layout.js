@@ -71,7 +71,7 @@ export const Layout = ({ children }) => {
         </Container>
       </div>
       {isMobile && <Footer />}
-      {router.pathname !== '/new' && <SpeedDial />}
+      {isMobile && router.pathname !== '/new' && <SpeedDial />}
       <style jsx global>{`
         #nprogress .spinner {
           display: block;

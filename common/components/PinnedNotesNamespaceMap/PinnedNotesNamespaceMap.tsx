@@ -35,7 +35,7 @@ export const PinnedNotesNamespaceMap = () => {
         <>
           <CollabsibleContent
             // titleColor="gray"
-            title={`LS Result (${totalSizeLS})`}
+            title={`My pinned notes (${totalSizeLS} in LS)`}
             contentRenderer={() => <LSResult />}
             isOpenedByDefault
           />

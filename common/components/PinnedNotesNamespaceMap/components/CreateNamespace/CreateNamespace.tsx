@@ -57,7 +57,7 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
         onChange={handleInputChange}
         autoComplete="off"
         autoFocus
-        helperText={`Название поля для хранения в LS (${30 - formData.newSpaceName.length} left)`}
+        helperText={`Поле для хранения в LS (${30 - formData.newSpaceName.length} left)`}
         InputProps={{ inputProps: { maxLength: 30 } }}
       />
       {!!formData.newSpaceName && <code>{slugify(formData.newSpaceName)}</code>}
