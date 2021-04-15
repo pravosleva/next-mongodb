@@ -191,7 +191,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   return (
     <div className={baseClasses.noPaddingMobile}>
       {MemoizedBtnsBox}
-      <Box my={4} className={baseClasses.noMarginTopBottomMobile}>
+      <div className={baseClasses.noMarginTopBottomMobile}>
         {isDeleting ? (
           <Loader active />
         ) : (
@@ -223,7 +223,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
           </div>
         )}
         <Confirm open={confirm} onCancel={handleClose} onConfirm={handleDelete} />
-      </Box>
+      </div>
       {MemoizedBtnsBox}
     </div>
   )
