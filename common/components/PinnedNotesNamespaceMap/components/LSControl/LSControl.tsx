@@ -6,6 +6,7 @@ import MdiIcon from '@mdi/react'
 import { mdiArrowDown } from '@mdi/js'
 import Alert from '@material-ui/lab/Alert'
 import { EditBtn } from './components'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 
 export const LSControl = () => {
   const classes = useStyles()
@@ -27,7 +28,7 @@ export const LSControl = () => {
                 color={EColorValue.redNoShadow}
                 variant="contained"
                 onClick={() => {
-                  removeNamespace(key)
+                  removeNamespace(key, ELSFields.Main)
                 }}
                 endIcon={<MdiIcon path={mdiArrowDown} size={0.7} />}
               >
