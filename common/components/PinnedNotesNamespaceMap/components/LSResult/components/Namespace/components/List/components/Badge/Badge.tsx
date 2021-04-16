@@ -68,19 +68,19 @@ export const Badge0 = ({ id }: TProps) => {
         //   ),
         // })
 
-        httpClient
-          .getNote(id)
-          .then((data) => {
-            handleSetAsActiveNote(data)
+        tryToSearchAsLocal(id)
+          .then((normalizedLocalNote) => {
+            setData(normalizedLocalNote)
+            handleSetAsActiveNote(normalizedLocalNote)
+            setIsFoundAsLocal(true)
+            setIsLoaded(true)
+            setErrorMsg(null)
           })
           .catch((_err) => {
-            tryToSearchAsLocal(id)
-              .then((normalizedLocalNote) => {
-                setData(normalizedLocalNote)
-                handleSetAsActiveNote(normalizedLocalNote)
-                setIsFoundAsLocal(true)
-                setIsLoaded(true)
-                setErrorMsg(null)
+            httpClient
+              .getNote(id)
+              .then((data) => {
+                handleSetAsActiveNote(data)
               })
               .catch((err) => {
                 addDangerNotif({
@@ -95,42 +95,42 @@ export const Badge0 = ({ id }: TProps) => {
   )
 
   useEffect(() => {
-    setIsLoading(true)
-    setErrorMsg(null)
-    setData(null)
+    tryToSearchAsLocal(id)
+      .then((normalizedLocalNote) => {
+        setData(normalizedLocalNote)
 
-    httpClient
-      .getNoteNoCancel(id)
-      .then((data) => {
-        setData(data)
-        // console.log(data)
+        if (isActive) handleSetAsActiveNote(normalizedLocalNote)
+        setIsFoundAsLocal(true)
         setIsLoaded(true)
+        setErrorMsg(null)
       })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        setErrorMsg(typeof err === 'string' ? err : err.message || 'No err.message')
-        setIsLoaded(false)
+      .catch((_err) => {
+        setIsLoading(true)
+        setErrorMsg(null)
+        setData(null)
 
-        tryToSearchAsLocal(id)
-          .then((normalizedLocalNote) => {
-            setData(normalizedLocalNote)
-
-            if (isActive) handleSetAsActiveNote(normalizedLocalNote)
-            setIsFoundAsLocal(true)
+        httpClient
+          .getNoteNoCancel(id)
+          .then((data) => {
+            setData(data)
+            // console.log(data)
             setIsLoaded(true)
-            setErrorMsg(null)
           })
           .catch((err) => {
+            // eslint-disable-next-line no-console
+            setErrorMsg(typeof err === 'string' ? err : err.message || 'No err.message')
+            setIsLoaded(false)
+
             addDangerNotif({
               title: 'Error',
               message: typeof err === 'string' ? err : err.message || 'Not found nowhere',
             })
           })
+          .finally(() => {
+            setIsLoading(false)
+          })
       })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [isLogged, isFoundAsLocal])
+  }, [isLogged, id])
 
   return (
     <li
