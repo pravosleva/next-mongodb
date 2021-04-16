@@ -154,7 +154,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
               size="small"
               color="secondary"
               onClick={() => {
-                if (typeof noteId === 'string') handleUnpinFromLS(noteId, ELSFields.Main)
+                if (typeof noteId === 'string') handleUnpinFromLS(noteId, ELSFields.MainPinnedNamespaceMap)
                 // TODO: Notif
               }}
               endIcon={<MdiIcon path={mdiPinOff} size={0.7} />}

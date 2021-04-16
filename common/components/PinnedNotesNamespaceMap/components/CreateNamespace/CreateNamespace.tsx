@@ -117,7 +117,7 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
                 description: formData.newDescription.trim(),
                 limit: !!formData.limit ? Number(formData.limit) : 5,
               },
-              ELSFields.Main
+              ELSFields.MainPinnedNamespaceMap
             )
               .then(resetForm)
               .then(handleClose)

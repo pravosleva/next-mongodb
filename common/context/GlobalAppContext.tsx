@@ -93,7 +93,7 @@ export const GlobalAppContext = createContext({
   },
   pinnedIds: [],
   pinnedMap: null,
-  localNotesMap: null,
+  localNotesPinnedNamespaceMap: null,
   isPinnedToLS: (_id: string, _lsField: ELSFields): void | never => {
     throw new Error('isPinnedToLS method should be implemented')
   },
@@ -108,6 +108,12 @@ export const GlobalAppContext = createContext({
   },
   replaceNamespaceInLS: (_args: any, _lsField: ELSFields): void | never => {
     throw new Error('replaceNamespaceInLS method should be implemented')
+  },
+  saveLocalNote: (_arg: { title: string; description: string }): void | never => {
+    throw new Error('saveLocalNote method should be implemented')
+  },
+  removeLocalNote: (_id: string): void | never => {
+    throw new Error('removeLocalNote method should be implemented')
   },
 })
 
@@ -162,7 +168,8 @@ function reducer(state: any, action: any) {
 const getMsgStr = (err: any) => (typeof err === 'string' ? err : err.message || 'No err.message')
 
 export enum ELSFields {
-  Main = 'pinned-namespace-map',
+  MainPinnedNamespaceMap = 'pinned-namespace-map',
+  LocalNotesPinnedNamespaceMap = 'pinned-namespace-map.local',
   LocalNotes = 'my-local-notes',
 }
 
@@ -284,14 +291,14 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
   // --- LS
   const [pinnedMap, setPinnedMap] = useState<any | null>(null)
-  const [localNotesMap, setLocalNotesMap] = useState<any | null>(null)
+  const [localNotesPinnedNamespaceMap, setLocalNotesPinnedNamespaceMap] = useState<any | null>(null)
+  const [localNotes, setLocalNotes] = useState<any | null>(null)
   const { addInfoNotif, addDangerNotif, addWarningNotif } = useNotifsContext()
   const getFieldFromLS = (fieldName: ELSFields, shouldBeJson: boolean) => {
     // @ts-ignore
     if (!ls(fieldName)) {
-      createEmptyMap(fieldName)
-      setPinnedMap({})
-      // return Promise.reject(msgAsFlasEmpty)
+      // createEmptyMap(fieldName, {}, (data) => setPinnedMap(data))
+      return Promise.reject('Fuckup')
     }
 
     let dataFromLS
@@ -310,32 +317,41 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
     return Promise.resolve(dataFromLS)
   }
-  const createEmptyMap = (lsFieldName: ELSFields) => {
-    const emptyPinnedMap = {}
-    setFieldToLS(lsFieldName, emptyPinnedMap, true).then(() => {
-      setPinnedMap(emptyPinnedMap)
+  const createEmptyMap = (lsFieldName: ELSFields, initialJson: any = {}, cb: (lsData: any) => void) => {
+    setFieldToLS(lsFieldName, initialJson, true).then(() => {
+      if (!!cb) cb(initialJson)
     })
   }
   useEffect(() => {
-    // 1. Main (pinned notes)
-    getFieldFromLS(ELSFields.Main, true)
+    // 1. Namespaces: Main global notes pinned namespace map
+    getFieldFromLS(ELSFields.MainPinnedNamespaceMap, true)
       .then((lsData) => {
         setPinnedMap(lsData)
-        // addInfoNotif({ title: `cDM: ${ELSFields.Main}`, message: JSON.stringify(lsData) })
+        // addInfoNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: JSON.stringify(lsData) })
       })
       .catch(() => {
-        createEmptyMap(ELSFields.Main)
-        // addDangerNotif({ title: `cDM: ${ELSFields.Main}`, message: getMsgStr(err) })
+        createEmptyMap(ELSFields.MainPinnedNamespaceMap, {}, (data) => setPinnedMap(data))
+        // addDangerNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: getMsgStr(err) })
       })
-    // 2. For local notes
+    // 2. Namespaces: local pinned namespace map
+    getFieldFromLS(ELSFields.LocalNotesPinnedNamespaceMap, true)
+      .then((lsData) => {
+        setLocalNotesPinnedNamespaceMap(lsData)
+        // addInfoNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: JSON.stringify(lsData) })
+      })
+      .catch(() => {
+        createEmptyMap(ELSFields.LocalNotesPinnedNamespaceMap, {}, (data) => setLocalNotesPinnedNamespaceMap(data))
+        // addDangerNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: getMsgStr(err) })
+      })
+    // 3. Namespaces: Local notes
     getFieldFromLS(ELSFields.LocalNotes, true)
       .then((lsData) => {
-        setLocalNotesMap(lsData)
-        // addInfoNotif({ title: `cDM: ${ELSFields.Main}`, message: JSON.stringify(lsData) })
+        setLocalNotes(lsData)
+        // addInfoNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: JSON.stringify(lsData) })
       })
       .catch(() => {
-        createEmptyMap(ELSFields.LocalNotes)
-        // addDangerNotif({ title: `cDM: ${ELSFields.Main}`, message: getMsgStr(err) })
+        createEmptyMap(ELSFields.LocalNotes, [], (data) => setLocalNotes(data))
+        // addDangerNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: getMsgStr(err) })
       })
   }, [])
   const setFieldToLS = (fieldName: string, value: any, asJson: boolean) => {
@@ -354,7 +370,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   //       ids: [],
   //     },
   //   }
-  //   setFieldToLS(ELSFields.Main, testPinnedMap, true).then(() => {
+  //   setFieldToLS(ELSFields.MainPinnedNamespaceMap, testPinnedMap, true).then(() => {
   //     setPinnedMap(testPinnedMap)
   //   })
   // }
@@ -450,7 +466,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         const message = getMsgStr(err)
 
         // V1:
-        // setFieldToLS(ELSFields.Main, [id], true)
+        // setFieldToLS(ELSFields.MainPinnedNamespaceMap, [id], true)
         // setPinnedIds([id])
 
         // V2:
@@ -504,6 +520,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         const newIds = targetNS.ids.filter((_id: string) => _id !== id)
         const newTargetNS = { ...targetNS, ids: newIds }
         const newLsData = { ...lsData, [targetNSName]: newTargetNS }
+
         setFieldToLS(lsField, newLsData, true)
         setPinnedMap(newLsData)
       })
@@ -525,6 +542,72 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       })
 
     return result
+  }
+  // ---
+
+  // --- LOCAL NOTES:
+  const saveLocalNote = ({ title, description }: { title: string; description: string }) => {
+    if (!title || !description) {
+      addDangerNotif({ title: 'ERR: saveLocalNote', message: 'Укажите необходимые параметры' })
+      return
+    }
+
+    const id = new Date().getTime()
+
+    const newNote = {
+      id,
+      title,
+      description,
+    }
+
+    getFieldFromLS(ELSFields.LocalNotes, true)
+      .then((arr: any[]) => {
+        const newArr = [newNote, ...arr]
+
+        setFieldToLS(ELSFields.LocalNotes, newArr, true)
+          .then(() => {
+            setLocalNotes(newArr)
+          })
+          .then(() => {
+            addInfoNotif({ title: 'Local note saved', message: id })
+          })
+      })
+      .catch((err) => {
+        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+        addDangerNotif({ title: 'ERR: saveLocalNote', message })
+      })
+  }
+  const removeLocalNote = (_id: string) => {
+    getFieldFromLS(ELSFields.LocalNotes, true)
+      .then((arr: any[]) => {
+        if (!Array.isArray) {
+          addDangerNotif({ title: 'ERR: removeLocalNote', message: 'Данные повреждены' })
+          return
+        }
+
+        const targetIndex = arr.findIndex(({ id }) => id === _id)
+
+        if (targetIndex === -1) {
+          addDangerNotif({ title: 'ERR: removeLocalNote', message: 'Элемент не найден' })
+          return
+        }
+
+        const newArr = arr.filter(({ id }) => _id !== id)
+
+        setFieldToLS(ELSFields.LocalNotes, newArr, true)
+          .then(() => {
+            setLocalNotes(newArr)
+          })
+          .then(() => {
+            addInfoNotif({ title: 'Local note removed', message: _id })
+          })
+      })
+      .catch((err) => {
+        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+        addDangerNotif({ title: 'ERR: removeLocalNote', message })
+      })
   }
   // ---
 
@@ -551,12 +634,15 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         handleUnpinFromLS: removeItemFromLS,
         // pinnedIds,
         pinnedMap,
-        localNotesMap,
+        localNotesPinnedNamespaceMap,
         isPinnedToLS,
         // createTestPinnedMap,
         removeNamespace,
         createNamespacePromise,
         replaceNamespaceInLS,
+
+        saveLocalNote,
+        removeLocalNote,
       }}
     >
       {children}

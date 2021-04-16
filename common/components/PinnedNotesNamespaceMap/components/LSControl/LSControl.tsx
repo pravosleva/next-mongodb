@@ -28,7 +28,7 @@ export const LSControl = () => {
                 color={EColorValue.redNoShadow}
                 variant="contained"
                 onClick={() => {
-                  removeNamespace(key, ELSFields.Main)
+                  removeNamespace(key, ELSFields.MainPinnedNamespaceMap)
                 }}
                 endIcon={<MdiIcon path={mdiArrowDown} size={0.7} />}
               >

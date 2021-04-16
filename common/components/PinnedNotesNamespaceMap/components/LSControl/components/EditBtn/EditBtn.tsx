@@ -203,7 +203,7 @@ export const EditBtn = ({ namespace, data }: TProps) => {
   const formErrors = useMemo(() => getFormErrorsObj(normalizedData), [normalizedData])
   const { replaceNamespaceInLS } = useGlobalAppContext()
   const handleSave = useCallback(() => {
-    replaceNamespaceInLS({ normalizedData, namespace }, ELSFields.Main)
+    replaceNamespaceInLS({ normalizedData, namespace }, ELSFields.MainPinnedNamespaceMap)
   }, [normalizedData])
   const handleCancel = useCallback(() => {
     resetForm()

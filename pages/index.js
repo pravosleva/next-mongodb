@@ -252,7 +252,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             size="small"
                             color="secondary"
                             onClick={() => {
-                              handleUnpinFromLS(note._id, ELSFields.Main)
+                              handleUnpinFromLS(note._id, ELSFields.MainPinnedNamespaceMap)
                             }}
                             startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
                           >

@@ -90,7 +90,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
               color="secondary"
               onClick={() => {
                 // @ts-ignore
-                handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.Main)
+                handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.MainPinnedNamespaceMap)
                 setIsOpened(false)
               }}
               endIcon={<MdiIcon path={mdiPin} size={0.7} />}

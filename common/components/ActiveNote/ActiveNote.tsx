@@ -149,7 +149,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
                 size="small"
                 color="secondary"
                 onClick={() => {
-                  handleUnpinFromLS(_id, ELSFields.Main)
+                  handleUnpinFromLS(_id, ELSFields.MainPinnedNamespaceMap)
                 }}
                 startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
                 disabled={!isPinned}
