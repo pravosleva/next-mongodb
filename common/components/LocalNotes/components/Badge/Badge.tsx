@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { useStyles } from './styles'
 import Icon from '@mdi/react'
 import { mdiPencil, mdiDelete } from '@mdi/js'
+import { ELSFields } from '~/common/context'
 
 type TNote = {
   id: string
@@ -18,7 +19,7 @@ type TProps = {
 
 export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveNote }: TNote & TProps) => {
   const classes = useStyles()
-  const { removeLocalNote, state, handleResetActiveNote } = useGlobalAppContext()
+  const { removeLocalNote, state, handleResetActiveNote, handleUnpinFromLS, isPinnedToLS } = useGlobalAppContext()
   const { activeNote } = useMemo(() => state, [JSON.stringify(state)])
   const isActive = useMemo(() => id === activeNote?._id, [activeNote, id])
 
@@ -54,6 +55,14 @@ export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveN
         onClick={() => {
           if (isActive) handleResetActiveNote()
           removeLocalNote(id)
+          isPinnedToLS(id, ELSFields.MainPinnedNamespaceMap)
+            .then((_namespace) => {
+              console.log('YES')
+              handleUnpinFromLS(id, ELSFields.MainPinnedNamespaceMap)
+            })
+            .catch(() => {
+              console.log('NO')
+            })
         }}
       >
         <Icon path={mdiDelete} size={0.7} />
