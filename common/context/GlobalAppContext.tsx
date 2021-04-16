@@ -583,7 +583,13 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
     getFieldFromLS(ELSFields.LocalNotes, true)
       .then((arr: any[]) => {
-        const newArr = [newNote, ...arr]
+        let newArr: any[] = []
+
+        if (!Array.isArray(arr)) {
+          newArr = [newNote]
+        } else {
+          newArr = [newNote, ...arr]
+        }
 
         setFieldToLS(ELSFields.LocalNotes, newArr, true)
           .then(() => {
