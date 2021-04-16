@@ -27,8 +27,6 @@ export const Badge0 = ({ id }: TProps) => {
 
   const handleClick = useCallback(
     (id: string) => {
-      console.log(isFoundAsLocal)
-      console.log(data)
       if (isFoundAsLocal && !!data) {
         handleSetAsActiveNote({ ...data, _id: data.id, isLocal: true })
         return
