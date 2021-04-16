@@ -115,6 +115,7 @@ export const GlobalAppContext = createContext({
   removeLocalNote: (_id: string): void | never => {
     throw new Error('removeLocalNote method should be implemented')
   },
+  localNotes: [],
 })
 
 function reducer(state: any, action: any) {
@@ -632,9 +633,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         handleSetNotesResponse,
         handlePinToLS,
         handleUnpinFromLS: removeItemFromLS,
-        // pinnedIds,
         pinnedMap,
-        localNotesPinnedNamespaceMap,
         isPinnedToLS,
         // createTestPinnedMap,
         removeNamespace,
@@ -643,6 +642,8 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
         saveLocalNote,
         removeLocalNote,
+        localNotes,
+        localNotesPinnedNamespaceMap,
       }}
     >
       {children}
