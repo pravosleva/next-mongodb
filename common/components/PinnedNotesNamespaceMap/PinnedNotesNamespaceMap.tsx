@@ -3,29 +3,18 @@ import { CreateNamespace, LSControl, LSResult } from './components'
 import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 import { useGlobalAppContext } from '~/common/hooks'
 // import { useStyles } from './styles'
-
-const getLSSpace = (toFixedArg = 2) => {
-  if (typeof window === 'undefined') return 0
-
-  let allStrings = ''
-  for (const key in window.localStorage) {
-    if (window.localStorage.hasOwnProperty(key)) {
-      allStrings += window.localStorage[key]
-    }
-  }
-  return allStrings ? (3 + (allStrings.length * 16) / (8 * 1024)).toFixed(toFixedArg) + ' KB' : '0 KB'
-}
+import { getLSSpace } from '~/utils/getLSSpace'
+import { ELSFields } from '~/common/context'
 
 export const PinnedNotesNamespaceMap = () => {
   // const classes = useStyles()
   const { pinnedMap, localNotes } = useGlobalAppContext()
   const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
   // const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? new Blob(Object.values(localStorage)).size : 0), [typeof window])
-  const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? getLSSpace() : 0), [
-    typeof window,
-    pinnedMap,
-    localNotes,
-  ])
+  const totalSizeLS = useMemo(
+    () => (typeof window !== 'undefined' ? getLSSpace(2, ELSFields.MainPinnedNamespaceMap) : 0),
+    [typeof window, pinnedMap, localNotes]
+  )
 
   return (
     <div
@@ -39,7 +28,7 @@ export const PinnedNotesNamespaceMap = () => {
         <>
           <CollabsibleContent
             // titleColor="gray"
-            title={`My pinned notes (${totalSizeLS} in LS)`}
+            title={`My pinned notes | ${totalSizeLS} in LS`}
             contentRenderer={() => <LSResult />}
             isOpenedByDefault
           />

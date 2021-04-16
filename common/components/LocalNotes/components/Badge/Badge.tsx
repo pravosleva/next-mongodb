@@ -57,11 +57,10 @@ export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveN
           removeLocalNote(id)
           isPinnedToLS(id, ELSFields.MainPinnedNamespaceMap)
             .then((_namespace) => {
-              console.log('YES')
               handleUnpinFromLS(id, ELSFields.MainPinnedNamespaceMap)
             })
             .catch(() => {
-              console.log('NO')
+              // console.log('NO')
             })
         }}
       >

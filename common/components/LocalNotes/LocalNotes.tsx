@@ -5,7 +5,7 @@ import { useStyles } from './styles'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import Icon from '@mdi/react'
 import { mdiPlus } from '@mdi/js'
-import Alert from '@material-ui/lab/Alert'
+import { Alert, AlertTitle } from '@material-ui/lab'
 // import TextField from '@material-ui/core/TextField'
 
 export const LocalNotes = () => {
@@ -31,9 +31,10 @@ export const LocalNotes = () => {
 
   return (
     <>
-      {!hasAnyLocalNote && (
+      {!hasAnyLocalNote && !isEditorOpened && (
         <Alert className="info" variant="outlined" severity="info" style={{ marginBottom: '16px' }}>
-          Создайте Вашу первую локальную заметку
+          <AlertTitle>Lets try</AlertTitle>
+          Локальные заметки не учавствуют в общем поиске
         </Alert>
       )}
       {isEditorOpened ? (
