@@ -48,7 +48,10 @@ export const SidebarContent = () => {
         // activeTitleColor="#3882C4"
         // inactiveTitleColor="#a9a9a9"
         // isRightSide
-        title={`Local notes (${!!localNotes ? localNotes.length : 0}) | ${getLSSpace(2, ELSFields.LocalNotes)} in LS`}
+        title={`Local notes (${!!localNotes && Array.isArray(localNotes) ? localNotes.length : 0}) | ${getLSSpace(
+          2,
+          ELSFields.LocalNotes
+        )} in LS`}
         contentRenderer={(_collabsiblePs) => (
           <>
             <LocalNotes />
