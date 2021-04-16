@@ -22,6 +22,7 @@ const styles = {
     background: styledBy('color', {
       [EColorValue.default]: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
       [EColorValue.blue]: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+      [EColorValue.blueNoShadow]: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
       [EColorValue.red]: 'linear-gradient(45deg, #e63946 30%, #fe7f2d 90%)',
       [EColorValue.grey]: 'lightgrey',
       [EColorValue.redNoShadow]: 'linear-gradient(45deg, #e63946 30%, #fe7f2d 90%)',
@@ -35,6 +36,7 @@ const styles = {
     boxShadow: styledBy('color', {
       [EColorValue.default]: '0 3px 5px 2px rgba(255, 105, 135, .3)',
       [EColorValue.blue]: '0 3px 5px 2px rgba(33, 203, 243, .3)',
+      [EColorValue.blueNoShadow]: 'none',
       [EColorValue.red]: '0 3px 5px 2px rgba(230, 57, 70, .3)',
       [EColorValue.grey]: 'none',
       [EColorValue.redNoShadow]: 'none',
@@ -43,6 +45,7 @@ const styles = {
       background: styledBy('color', {
         [EColorValue.default]: 'linear-gradient(0deg, #FE6B8B 10%, #FF8E53 110%)',
         [EColorValue.blue]: 'linear-gradient(0deg, #2196F3 10%, #21CBF3 110%)',
+        [EColorValue.blueNoShadow]: 'linear-gradient(0deg, #2196F3 10%, #21CBF3 110%)',
         [EColorValue.red]: 'linear-gradient(0deg, #e63946 10%, #fe7f2d 110%)',
         [EColorValue.grey]: 'darkgrey',
         [EColorValue.redNoShadow]: 'linear-gradient(0deg, #e63946 10%, #fe7f2d 110%)',
@@ -50,6 +53,7 @@ const styles = {
       boxShadow: styledBy('color', {
         [EColorValue.default]: '0 3px 5px 2px rgba(255, 105, 135, .5)',
         [EColorValue.blue]: '0 3px 5px 2px rgba(33, 203, 243, .5)',
+        [EColorValue.blueNoShadow]: 'none',
         [EColorValue.red]: '0 0px 8px 2px rgba(230, 57, 70, .5)',
         [EColorValue.grey]: 'none',
         [EColorValue.redNoShadow]: 'none',

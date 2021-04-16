@@ -18,10 +18,14 @@ const getLSSpace = (toFixedArg = 2) => {
 
 export const PinnedNotesNamespaceMap = () => {
   // const classes = useStyles()
-  const { pinnedMap } = useGlobalAppContext()
+  const { pinnedMap, localNotes } = useGlobalAppContext()
   const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
   // const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? new Blob(Object.values(localStorage)).size : 0), [typeof window])
-  const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? getLSSpace() : 0), [typeof window, pinnedMap])
+  const totalSizeLS = useMemo(() => (typeof window !== 'undefined' ? getLSSpace() : 0), [
+    typeof window,
+    pinnedMap,
+    localNotes,
+  ])
 
   return (
     <div

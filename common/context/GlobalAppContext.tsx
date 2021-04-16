@@ -109,7 +109,12 @@ export const GlobalAppContext = createContext({
   replaceNamespaceInLS: (_args: any, _lsField: ELSFields): void | never => {
     throw new Error('replaceNamespaceInLS method should be implemented')
   },
-  saveLocalNote: (_arg: { title: string; description: string }): void | never => {
+  saveLocalNote: (_arg: {
+    id?: string
+    title: string
+    description: string
+    cbSuccess: (localNotes: any[]) => void
+  }): void | never => {
     throw new Error('saveLocalNote method should be implemented')
   },
   removeLocalNote: (_id: string): void | never => {
@@ -389,7 +394,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       // addWarningNotif({ title: `ERROR: createNamespace("${namespace}")`, message })
       return Promise.reject(message)
     }
-    const normalizedNamespace = slugify(namespace)
+    const normalizedNamespace = slugify(namespace).toLowerCase()
     const result = await getFieldFromLS(lsField, true)
       .then((lsData) => {
         if (!!lsData[normalizedNamespace]) {
@@ -547,13 +552,23 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   // ---
 
   // --- LOCAL NOTES:
-  const saveLocalNote = ({ title, description }: { title: string; description: string }) => {
+  const saveLocalNote = ({
+    id: __id,
+    title,
+    description,
+    cbSuccess,
+  }: {
+    id?: string
+    title: string
+    description: string
+    cbSuccess?: (notes: any[]) => void
+  }) => {
     if (!title || !description) {
       addDangerNotif({ title: 'ERR: saveLocalNote', message: 'Укажите необходимые параметры' })
       return
     }
 
-    const id = new Date().getTime()
+    const id = __id || String(new Date().getTime())
 
     const newNote = {
       id,
@@ -568,6 +583,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         setFieldToLS(ELSFields.LocalNotes, newArr, true)
           .then(() => {
             setLocalNotes(newArr)
+            if (!!cbSuccess) cbSuccess(newArr)
           })
           .then(() => {
             addInfoNotif({ title: 'Local note saved', message: id })

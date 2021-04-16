@@ -1,12 +1,14 @@
 import { PinnedNotesNamespaceMap } from '~/common/components/PinnedNotesNamespaceMap'
-// import { useGlobalAppContext } from '~/common/hooks'
+import { useGlobalAppContext } from '~/common/hooks'
 import MdiIcon from '@mdi/react'
 import { mdiPin } from '@mdi/js'
 import { useStyles } from './styles'
 import { CollabsibleContent } from '~/common/components/CollabsibleContent'
+import { LocalNotes } from '~/common/components/LocalNotes'
 
 export const SidebarContent = () => {
   const classes = useStyles()
+  const { localNotes } = useGlobalAppContext()
 
   return (
     <div className={classes.wrapper}>
@@ -44,19 +46,19 @@ export const SidebarContent = () => {
         // activeTitleColor="#3882C4"
         // inactiveTitleColor="#a9a9a9"
         // isRightSide
-        title="Local notes in LS"
+        title={`Local notes in LS (${!!localNotes ? localNotes.length : 0})`}
         contentRenderer={(_collabsiblePs) => (
           <>
+            <LocalNotes />
             <div style={{ marginBottom: '8px' }}>
               <em>Идея</em>
             </div>
             <ul style={{ paddingLeft: '20px' }}>
-              <li>Дать возможность пользователю создавать локальные заметки;</li>
+              <li>Возможность поиска по локальным заметкам;</li>
               <li>
-                Дать возможность переносить их на другие устройства с помощью QR кода, используя временное общее
-                хранилище;
+                Дать возможность переносить их на другие устройства с помощью QR кода, используя временное облако;
               </li>
-              <li>Удалять из временного хранилища после переноса;</li>
+              <li>Удалять из облака после переноса;</li>
             </ul>
           </>
         )}

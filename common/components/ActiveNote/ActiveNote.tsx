@@ -110,7 +110,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
         ))}
       {/* <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(note, null, 2)}</pre> */}
 
-      {!!_id && isTagsNessesary && (
+      {!!_id && isTagsNessesary && !initialNote?.isLocal && (
         <>
           <div style={{ borderBottom: '1px solid lightgray' }} />
           <div className={clsx(baseClasses.actionsBoxLeft, baseClasses.standardCardFooter)}>
