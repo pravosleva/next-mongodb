@@ -18,14 +18,22 @@ export const Badge0 = ({ id }: TProps) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const { isLogged } = useAuthContext()
-  const { state, handleSetAsActiveNote } = useGlobalAppContext()
+  const { state, handleSetAsActiveNote, localNotes } = useGlobalAppContext()
   const { addDangerNotif } = useNotifsContext()
   const { activeNote } = useMemo(() => state, [JSON.stringify(state)])
   const router = useRouter()
   const isActive = useMemo(() => id === activeNote?._id, [activeNote, id])
+  const [isFoundAsLocal, setIsFoundAsLocal] = useState<boolean>(false)
 
   const handleClick = useCallback(
     (id: string) => {
+      console.log(isFoundAsLocal)
+      console.log(data)
+      if (isFoundAsLocal && !!data) {
+        handleSetAsActiveNote({ ...data, _id: data.id, isLocal: true })
+        return
+      }
+
       if (router.pathname !== '/') {
         router.push(`/notes/${id}`)
       }
@@ -81,11 +89,31 @@ export const Badge0 = ({ id }: TProps) => {
         // eslint-disable-next-line no-console
         setErrorMsg(typeof err === 'string' ? err : err.message || 'No err.message')
         setIsLoaded(false)
+
+        // NOTE: 1. Попробовать найти в LS
+        try {
+          // NOTE: Если да, то setData()
+          const targetNote = localNotes.find(({ id: __id }) => __id === id)
+
+          // eslint-disable-next-line no-console
+          console.log(targetNote)
+
+          if (!!targetNote) {
+            setData(targetNote)
+            setIsFoundAsLocal(true)
+            setIsLoaded(true)
+            setErrorMsg(null)
+          }
+        } catch (err) {
+          // NOTE: Если нет, можно пока оставить
+          // TODO: Можно открепить?
+          // if (errorMsg === 'Request failed with status code 400') {}
+        }
       })
       .finally(() => {
         setIsLoading(false)
       })
-  }, [isLogged])
+  }, [isLogged, isFoundAsLocal])
 
   return (
     <li

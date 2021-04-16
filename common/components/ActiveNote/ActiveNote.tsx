@@ -10,7 +10,7 @@ import { useFreshNote } from '~/common/hooks'
 import { baseRenderers } from '~/common/react-markdown-renderers'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import clsx from 'clsx'
-import Button from '@material-ui/core/Button'
+import { Button } from '@material-ui/core'
 import { useAuthContext, useGlobalAppContext } from '~/common/hooks'
 import { useStyles } from './styles'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
@@ -161,6 +161,27 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
             <Tags title={title} />
           </div>
         </>
+      )}
+      {!!_id && isTagsNessesary && initialNote?.isLocal && (
+        <div style={{ padding: '0 8px 0 8px' }} className={baseClasses.actionsBoxLeft}>
+          {!isPinned ? (
+            <PinNote id={_id} />
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              color="secondary"
+              onClick={() => {
+                handleUnpinFromLS(_id, ELSFields.MainPinnedNamespaceMap)
+                // console.log('IN PROGRESS...')
+              }}
+              startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+              disabled={!isPinned}
+            >
+              Unpin
+            </Button>
+          )}
+        </div>
       )}
     </div>
   )

@@ -8,6 +8,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       '& > div': {
         marginBottom: theme.spacing(1),
       },
+      '& > div:last-child': {
+        marginBottom: theme.spacing(2),
+      },
     },
   })
 )
