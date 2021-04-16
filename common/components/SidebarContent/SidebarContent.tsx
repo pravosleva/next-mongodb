@@ -55,7 +55,7 @@ export const SidebarContent = () => {
             </div>
             <ul style={{ paddingLeft: '20px' }}>
               <li>✔ Ability to create Local Notes;</li>
-              <li>☐ Local Namespaces;</li>
+              <li>✔ Local notes integration to Namespaces;</li>
               <li>☐ Возможность поиска по локальным заметкам;</li>
               <li>
                 ☐ Дать возможность переносить их на другие устройства с помощью QR кода, используя временное облако;

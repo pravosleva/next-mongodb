@@ -94,9 +94,7 @@ export const GlobalAppContext = createContext({
   pinnedIds: [],
   pinnedMap: null,
   localNotesPinnedNamespaceMap: null,
-  isPinnedToLS: (_id: string, _lsField: ELSFields): void | never => {
-    throw new Error('isPinnedToLS method should be implemented')
-  },
+  isPinnedToLS: (_id: string, _lsField: ELSFields): Promise<any> => Promise.reject(false),
   // createTestPinnedMap: (): void | never => {
   //   throw new Error('createTestPinnedMap method should be implemented')
   // },
@@ -537,17 +535,24 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const isPinnedToLS = async (id: string, lsField: ELSFields) => {
     // console.log('CALLED')
     let result = false
+    let detectedNamespace
 
     await getFieldFromLS(lsField, true)
-      .then((arr) => {
-        addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
-        result = arr.includes(id)
+      .then((lsData) => {
+        for (const key in lsData) {
+          if (lsData[key].ids.includes(id)) {
+            result = true
+            detectedNamespace = key
+          }
+        }
+        // addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
+        // result = arr.includes(id)
       })
       .catch(() => {
         result = false
       })
 
-    return result
+    return result ? Promise.resolve(detectedNamespace) : Promise.reject(false)
   }
   // ---
 

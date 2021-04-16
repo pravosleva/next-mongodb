@@ -9,6 +9,7 @@ type TProps = {
     title: string
     description: string
     ids: string[]
+    ts: number
   }
 }
 

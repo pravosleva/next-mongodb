@@ -25,6 +25,19 @@ export const Badge0 = ({ id }: TProps) => {
   const isActive = useMemo(() => id === activeNote?._id, [activeNote, id])
   const [isFoundAsLocal, setIsFoundAsLocal] = useState<boolean>(false)
 
+  const tryToSearchAsLocal = (id: string): Promise<any> => {
+    // NOTE: 1. Попробовать найти в LS
+    // NOTE: Если да, то setData()
+    const targetNote = localNotes.find(({ id: __id }) => __id === id)
+
+    if (!!targetNote) {
+      // @ts-ignore
+      return Promise.resolve({ ...targetNote, _id: targetNote.id, isLocal: true })
+    } else {
+      return Promise.reject('Not found nowhere')
+    }
+  }
+
   const handleClick = useCallback(
     (id: string) => {
       if (isFoundAsLocal && !!data) {
@@ -60,15 +73,25 @@ export const Badge0 = ({ id }: TProps) => {
           .then((data) => {
             handleSetAsActiveNote(data)
           })
-          .catch((err) => {
-            addDangerNotif({
-              title: 'Error',
-              message: typeof err === 'string' ? err : err.message || 'No err.message',
-            })
+          .catch((_err) => {
+            tryToSearchAsLocal(id)
+              .then((normalizedLocalNote) => {
+                setData(normalizedLocalNote)
+                handleSetAsActiveNote(normalizedLocalNote)
+                setIsFoundAsLocal(true)
+                setIsLoaded(true)
+                setErrorMsg(null)
+              })
+              .catch((err) => {
+                addDangerNotif({
+                  title: 'Error',
+                  message: typeof err === 'string' ? err : err.message || 'Not found nowhere',
+                })
+              })
           })
       }
     },
-    [JSON.stringify(state.notes), state.activeNote, handleSetAsActiveNote]
+    [JSON.stringify(state.notes), state.activeNote, handleSetAsActiveNote, localNotes]
   )
 
   useEffect(() => {
@@ -88,25 +111,21 @@ export const Badge0 = ({ id }: TProps) => {
         setErrorMsg(typeof err === 'string' ? err : err.message || 'No err.message')
         setIsLoaded(false)
 
-        // NOTE: 1. Попробовать найти в LS
-        try {
-          // NOTE: Если да, то setData()
-          const targetNote = localNotes.find(({ id: __id }) => __id === id)
+        tryToSearchAsLocal(id)
+          .then((normalizedLocalNote) => {
+            setData(normalizedLocalNote)
 
-          // eslint-disable-next-line no-console
-          console.log(targetNote)
-
-          if (!!targetNote) {
-            setData(targetNote)
+            if (isActive) handleSetAsActiveNote(normalizedLocalNote)
             setIsFoundAsLocal(true)
             setIsLoaded(true)
             setErrorMsg(null)
-          }
-        } catch (err) {
-          // NOTE: Если нет, можно пока оставить
-          // TODO: Можно открепить?
-          // if (errorMsg === 'Request failed with status code 400') {}
-        }
+          })
+          .catch((err) => {
+            addDangerNotif({
+              title: 'Error',
+              message: typeof err === 'string' ? err : err.message || 'Not found nowhere',
+            })
+          })
       })
       .finally(() => {
         setIsLoading(false)

@@ -8,6 +8,7 @@ import { useStyles } from './styles'
 // import { ELSFields } from '~/common/context/GlobalAppContext'
 import Icon from '@mdi/react'
 import { mdiContentSave } from '@mdi/js'
+import { ELSFields } from '~/common/context'
 
 type TForm = {
   id?: string
@@ -29,7 +30,14 @@ export const CreateNewLocalNoteBtn = ({
 }) => {
   const classes = useStyles()
   // const { addDangerNotif } = useNotifsContext()
-  const { saveLocalNote, handleSetAsActiveNote, state } = useGlobalAppContext()
+  const {
+    saveLocalNote,
+    handleSetAsActiveNote,
+    state,
+    isPinnedToLS,
+    handleUnpinFromLS,
+    handlePinToLS,
+  } = useGlobalAppContext()
   const activeNote = useMemo(() => state.activeNote, [state.activeNote?._id])
 
   const { formData, handleInputChange, resetForm } = useForm(initialStateForEdit || initialState)
@@ -93,6 +101,14 @@ export const CreateNewLocalNoteBtn = ({
                   if (activeNote._id === formData.id) {
                     handleSetAsActiveNote({ ...formData, _id: formData.id, isLocal: true })
                   }
+                }
+                if (!!formData.id) {
+                  isPinnedToLS(formData.id, ELSFields.MainPinnedNamespaceMap)
+                    .then((namespace) => {
+                      handleUnpinFromLS(formData.id, ELSFields.MainPinnedNamespaceMap)
+                      handlePinToLS({ namespace, id: formData.id }, ELSFields.MainPinnedNamespaceMap)
+                    })
+                    .catch(() => {})
                 }
               },
             })

@@ -74,7 +74,8 @@ export const LSResult = () => {
                 inactiveTitleColor="#949494"
                 isRightSide
                 title={`${data.title} ${data.ids.length}/${data.limit}`}
-                contentRenderer={(_collabsiblePs) => <Namespace key={key} data={data} />}
+                // @ts-ignore
+                contentRenderer={(_collabsiblePs) => <Namespace key={`${key}-${pinnedMap[key].ts}`} data={data} />}
               />
             </div>
           )
