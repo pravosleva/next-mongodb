@@ -26,57 +26,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - socket.io@3.0.4
 - @material-ui/core@4.11.2
 
-## roadmap
-
-- [ ] **backend**
-  - [ ] socket
-    - [ ] set filter settings to params? (\*)
-    - [ ] req for update list on connection
-    - [x] webhooks: create/update/delete
-    - [x] connection support
-  - [x] jwt auth
-- [ ] **frontend**
-  - [ ] **UI**
-    - [ ] **@material-ui/core** instead of react-semantic-ui?
-    - [ ] socket
-      - [ ] on connect
-        - [ ] update list on connection
-          - [ ] by global filters
-            - [ ] build-url
-          - [x] default settings
-      - [ ] subscribers for webhooks
-        - [ ] create
-          - [ ] add if validated by current filter settings?
-          - [x] add to list
-        - [x] detete: remove from list
-          - [x] **useFreshNote** hook
-            - [x] is `activeNote` on /notes page
-            - [x] update state on /notes/[id] (Empty template)
-          - [x] inactive on /notes page
-        - [x] update: refresh note when:
-          - [x] **useFreshNote** hook
-            - [x] is `activeNote` on /notes page (useFreshNote hook)
-            - [x] update state on /notes/[id]
-          - [x] inactive on /notes page
-      - [x] notifs: [react-notifications-component](https://github.com/teodosii/react-notifications-component) create/delete/update
-      - [x] connection support
-    - [x] progress line for page loading
-    - [x] priority stars
-    - [x] auth
-      - [x] context; provider
-      - [x] signup; signin
-  - [ ] **UX**
-    - [ ] set filter settings to params (\*)
-    - [ ] mobile: fullscreen modal for `activeNote` on main pg
-    - [ ] scroll top btn
-    - [x] markdown syntax support
-- [ ] **project DX**
-  - [ ] typescript?
-  - [ ] qucik deploy
-    - [ ] deploy-app?
-  - [x] git hooks
-  - [x] eslint; prettier
-  - [x] could be started by pm2
+## [roadmap](http://code-samples.space/notes/5fd1ee767d536a022794e43e)
 
 ## api
 
@@ -108,6 +58,7 @@ module.exports = {
         JWT_SECRET: '<RANDOM_STRING>',
         EXPRESS_JWT_MAXAGE_IN_DAYS: 3,
         EXPRESS_IS_USER_SIGNUP_ENABLED: 1,
+        NEXT_APP_QR_BASE_URL: 'http://code-samples.space',
       },
     },
   ],
@@ -130,6 +81,7 @@ module.exports = {
         JWT_SECRET: '<RANDOM_STRING>',
         EXPRESS_JWT_MAXAGE_IN_DAYS: 3,
         EXPRESS_IS_USER_SIGNUP_ENABLED: 1,
+        NEXT_APP_QR_BASE_URL: 'http://code-samples.space',
       },
     },
   ],
@@ -148,6 +100,7 @@ NEXT_APP_API_ENDPOINT=http://localhost:9000/api
 NEXT_APP_SOCKET_API_ENDPOINT=http://localhost:9000
 NEXT_APP_EXPRESS_API_ENDPOINT=http://localhost:9000/e-api
 NEXT_APP_COOKIE_MAXAGE_IN_DAYS=2
+NEXT_APP_QR_BASE_URL=http://code-samples.space
 ```
 
 ### envs-production
@@ -160,6 +113,7 @@ NEXT_APP_API_ENDPOINT=http://<DOMAIN>/api
 NEXT_APP_SOCKET_API_ENDPOINT=http://<DOMAIN>
 NEXT_APP_EXPRESS_API_ENDPOINT=http://<DOMAIN>/e-api
 NEXT_APP_COOKIE_MAXAGE_IN_DAYS=2
+NEXT_APP_QR_BASE_URL=http://code-samples.space
 ```
 
 First, run the development server:
