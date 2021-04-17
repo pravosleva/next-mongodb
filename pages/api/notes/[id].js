@@ -61,7 +61,7 @@ const idApi = async (req, res) => {
         return res.status(400).json({ success: false })
       }
     default:
-      return res.status(400).json({ success: false })
+      return res.status(500).json({ success: false, message: `Не предусмотрено для method= ${method}` })
   }
 }
 

@@ -79,7 +79,15 @@ export const CreateNewLocalNoteBtn = ({
         onChange={handleInputChange}
         autoComplete="off"
         // autoFocus
-        helperText={`Use markdown syntax (${2000 - formData.description.length} left)`}
+        helperText={
+          <span>
+            Use{' '}
+            <a target="_balnk" href="/notes/5fcaa0ac50f83839dfbcfc12">
+              markdown syntax
+            </a>{' '}
+            ({2000 - formData.description.length} left)
+          </span>
+        }
         InputProps={{ inputProps: { maxLength: 2000 } }}
       />
 

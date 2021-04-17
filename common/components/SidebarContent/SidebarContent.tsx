@@ -48,10 +48,9 @@ export const SidebarContent = () => {
         // activeTitleColor="#3882C4"
         // inactiveTitleColor="#a9a9a9"
         // isRightSide
-        title={`Local notes (${!!localNotes && Array.isArray(localNotes) ? localNotes.length : 0}) | ${getLSSpace(
-          2,
-          ELSFields.LocalNotes
-        )} in LS`}
+        title={`Local notes (${!!localNotes && Array.isArray(localNotes) ? localNotes.length : 0})${
+          localNotes?.length > 0 ? ` | ${getLSSpace(2, ELSFields.LocalNotes)} in LS` : ''
+        }`}
         contentRenderer={(_collabsiblePs) => (
           <>
             <LocalNotes />
@@ -64,8 +63,25 @@ export const SidebarContent = () => {
               <li>☐ Возможность поиска по локальным заметкам;</li>
               <li>
                 ☐ Дать возможность переносить их на другие устройства с помощью QR кода, используя временное облако;
+                <ul style={{ paddingLeft: '10px' }}>
+                  <li>✔ Сохранить в облаке;</li>
+                  <li>
+                    ☐ Page <b>/crossdevice/set-local-notes</b>
+                    <ul style={{ paddingLeft: '10px' }}>
+                      <li>
+                        ☐ Get lsData on SSR by reqId (req.query.payload)
+                        <ul style={{ paddingLeft: '10px' }}>
+                          <li>☐ Удалять из облака после переноса;</li>
+                        </ul>
+                      </li>
+
+                      <li>☐ Add to ls</li>
+                    </ul>
+                  </li>
+                </ul>
               </li>
-              <li>☐ Удалять из облака после переноса;</li>
+              <li>☐ CRON для ежедневной чистки памяти временного хранилища;</li>
+              <li>☐ Реал-тайм мониторинг ресурсов;</li>
             </ul>
           </>
         )}

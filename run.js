@@ -9,6 +9,8 @@ import { socketLogic } from '~/socket-logic'
 const next = require('next')
 const expressRouter = require('./express-tools/e-api')
 
+const { crossDeviceState } = require('~/utils/next/crossDeviceState')
+
 const isDev = process.env.NODE_ENV !== 'production'
 const app = require('express')()
 const server = require('http').Server(app)
@@ -27,15 +29,12 @@ app.use('*', ipDetectorMW, geoipLiteMW)
 nextApp
   .prepare()
   .then(() => {
-    /**
-     * Router Middleware
-     * Router - /e-api/*
-     * Method - *
-     */
     app.use('/e-api', expressRouter)
 
     app.all('*', (req, res) => {
       req.io = _customIO
+      req.crossDeviceState = crossDeviceState
+
       return nextHanlder(req, res)
     })
 
