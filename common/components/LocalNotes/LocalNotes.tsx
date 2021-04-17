@@ -110,6 +110,7 @@ export const LocalNotes = () => {
               startIcon={
                 isQRLoading ? <CircularProgress color="inherit" size={20} /> : <Icon path={mdiQrcode} size={0.7} />
               }
+              disabled={isQRLoading}
             >
               Перенести на др. устройство
             </ThemedButton>
