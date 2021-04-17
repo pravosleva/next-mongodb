@@ -90,6 +90,9 @@ export const LocalNotes = () => {
                 setIsQRLoading(true)
                 addInfoNotif({
                   message: 'Coming soon...',
+                  onRemoval: () => {
+                    setIsQRLoading(false)
+                  },
                 })
                 // httpClient
                 //   .saveMyLocalNotes({ lsData: localNotes })
