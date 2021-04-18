@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import CloseIcon from '@material-ui/icons/Close'
 import React from 'react'
 import { useWindowSize } from '~/common/hooks'
+import { useRouter } from 'next/router'
 
 type TProps = {
   isMobileOnly: boolean
@@ -19,8 +20,11 @@ export const Widget: React.FC<TProps> = ({ children, isMobileOnly }) => {
   }, [setIsWidgetOpened])
   const widgetTogglerLabel = 'Sidebar'
   const { isDesktop } = useWindowSize()
+  const router = useRouter()
 
   if (isMobileOnly && isDesktop) return null
+  if (router.pathname !== '/' && router.pathname !== '/notes/[id]') return null
+
   return (
     <>
       <div
