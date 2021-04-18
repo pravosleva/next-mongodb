@@ -18,6 +18,56 @@ export const SidebarContent = () => {
         Pinned notes <MdiIcon path={mdiPin} size={0.7} />
       </h3>
       <PinnedNotesNamespaceMap />
+      <CollabsibleContent
+        // activeTitleColor="#3882C4"
+        // inactiveTitleColor="#a9a9a9"
+        // isRightSide
+        title={`Local notes (${!!localNotes && Array.isArray(localNotes) ? localNotes.length : 0})${
+          localNotes?.length > 0 ? ` | ${getLSSpace(2, ELSFields.LocalNotes)} in LS` : ''
+        }`}
+        contentRenderer={(_collabsiblePs) => (
+          <>
+            <LocalNotes />
+            <CollabsibleContent
+              activeTitleColor="#3882C4"
+              inactiveTitleColor="#a9a9a9"
+              isRightSide
+              title="Roadmap"
+              contentRenderer={(_collabsiblePs) => (
+                <ul style={{ paddingLeft: '20px' }}>
+                  <li>✔ Ability to create Local Notes;</li>
+                  <li>✔ Local notes integration to Namespaces;</li>
+                  <li>☐ Возможность поиска по локальным заметкам;</li>
+                  <li>
+                    ☐ Дать возможность переносить их на другие устройства с помощью QR кода, используя временное облако;
+                    <ul style={{ paddingLeft: '10px' }}>
+                      <li>✔ Сохранить в облаке;</li>
+                      <li>
+                        ✔ Page <b>/crossdevice/set-local-notes</b>
+                        <ul style={{ paddingLeft: '10px' }}>
+                          <li>
+                            ✔ Get lsData on SSR by reqId (req.query.payload)
+                            <ul style={{ paddingLeft: '10px' }}>
+                              <li>✔ Удалять из облака после переноса;</li>
+                            </ul>
+                          </li>
+
+                          <li>✔ Add to ls (filtered by unique id)</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    ☐ <b>Better UI</b> (add new Local note form in modal);
+                  </li>
+                  <li>☐ CRON для ежедневной чистки памяти временного хранилища;</li>
+                  <li>☐ Реал-тайм мониторинг ресурсов;</li>
+                </ul>
+              )}
+            />
+          </>
+        )}
+      />
 
       <h3>Планы</h3>
       <CollabsibleContent
@@ -40,51 +90,6 @@ export const SidebarContent = () => {
                 отфильтрованных по выбранным тегам;
               </li>
               <li>☐ Собирать статистику по наиболее востребованным тегам?</li>
-            </ul>
-          </>
-        )}
-      />
-      <CollabsibleContent
-        // activeTitleColor="#3882C4"
-        // inactiveTitleColor="#a9a9a9"
-        // isRightSide
-        title={`Local notes (${!!localNotes && Array.isArray(localNotes) ? localNotes.length : 0})${
-          localNotes?.length > 0 ? ` | ${getLSSpace(2, ELSFields.LocalNotes)} in LS` : ''
-        }`}
-        contentRenderer={(_collabsiblePs) => (
-          <>
-            <LocalNotes />
-            <div style={{ marginBottom: '8px' }}>
-              <em>Roadmap</em>
-            </div>
-            <ul style={{ paddingLeft: '20px' }}>
-              <li>✔ Ability to create Local Notes;</li>
-              <li>✔ Local notes integration to Namespaces;</li>
-              <li>☐ Возможность поиска по локальным заметкам;</li>
-              <li>
-                ☐ Дать возможность переносить их на другие устройства с помощью QR кода, используя временное облако;
-                <ul style={{ paddingLeft: '10px' }}>
-                  <li>✔ Сохранить в облаке;</li>
-                  <li>
-                    ✔ Page <b>/crossdevice/set-local-notes</b>
-                    <ul style={{ paddingLeft: '10px' }}>
-                      <li>
-                        ✔ Get lsData on SSR by reqId (req.query.payload)
-                        <ul style={{ paddingLeft: '10px' }}>
-                          <li>✔ Удалять из облака после переноса;</li>
-                        </ul>
-                      </li>
-
-                      <li>✔ Add to ls (filtered by unique id)</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                ☐ <b>Better UI</b> (add new Local note form in modal);
-              </li>
-              <li>☐ CRON для ежедневной чистки памяти временного хранилища;</li>
-              <li>☐ Реал-тайм мониторинг ресурсов;</li>
             </ul>
           </>
         )}

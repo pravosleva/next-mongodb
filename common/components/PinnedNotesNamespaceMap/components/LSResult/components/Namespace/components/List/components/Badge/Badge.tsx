@@ -40,6 +40,14 @@ export const Badge0 = ({ id }: TProps) => {
 
   const handleClick = useCallback(
     (id: string) => {
+      if (router.pathname !== '/') {
+        addDangerNotif({
+          title: 'Sorry',
+          message: 'Для роутов !homepage переход все еще в разработке...',
+        })
+        return
+      }
+
       if (isFoundAsLocal && !!data) {
         handleSetAsActiveNote({ ...data, _id: data.id, isLocal: true })
         return
