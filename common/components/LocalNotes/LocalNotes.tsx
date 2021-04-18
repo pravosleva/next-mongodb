@@ -62,7 +62,7 @@ export const LocalNotes = () => {
           ) : (
             //
             <ThemedButton
-              style={{ marginBottom: '8px' }}
+              style={{ marginBottom: !!localNotes && localNotes.length > 0 ? '8px' : '0px' }}
               fullWidth
               size="small"
               color={EColorValue.blueNoShadow}
