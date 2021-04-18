@@ -15,6 +15,21 @@ export const PinnedNotesNamespaceMap = () => {
     () => (typeof window !== 'undefined' ? getLSSpace(2, ELSFields.MainPinnedNamespaceMap) : 0),
     [typeof window, pinnedMap, localNotes]
   )
+  const totalCounter = useMemo(() => {
+    if (!pinnedMap) return 0
+
+    let result = 0
+
+    // @ts-ignore
+    for (const namespace in pinnedMap) {
+      // @ts-ignore
+      if (Array.isArray(pinnedMap[namespace].ids) && pinnedMap[namespace].ids.length > 0)
+        // @ts-ignore
+        result += pinnedMap[namespace].ids.length
+    }
+
+    return result
+  }, [pinnedMap])
 
   return (
     <div
@@ -27,10 +42,9 @@ export const PinnedNotesNamespaceMap = () => {
       {pinnedMapKeys.length > 0 && (
         <>
           <CollabsibleContent
-            // titleColor="gray"
-            title={`My pinned notes | ${totalSizeLS} in LS`}
+            title={`My pinned notes (${totalCounter}) | ${totalSizeLS} in LS`}
             contentRenderer={() => <LSResult />}
-            isOpenedByDefault
+            // isOpenedByDefault
           />
           <CollabsibleContent title="LS Control ☢️" contentRenderer={() => <LSControl />} />
         </>
