@@ -62,7 +62,7 @@ export const Layout = ({ children }) => {
         >
           <div className={classes.contentBox}>
             <div>{children}</div>
-            {isDesktop && (
+            {isDesktop && (router.pathname === '/' || router.pathname === '/notes/[id]') && (
               <div className={classes.sidebarInLayoutWrapper}>
                 <SidebarContent />
               </div>
