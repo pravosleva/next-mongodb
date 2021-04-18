@@ -98,6 +98,7 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
         fullWidth
         // placeholder="Description"
         name="limit"
+        error={!(formData.limit > 0)}
         value={formData.limit}
         onChange={handleInputChange}
         autoComplete="off"
@@ -109,6 +110,7 @@ export const CreateNamespace = ({ handleClose }: TOutputCollapsibleProps) => {
           color={EColorValue.redNoShadow}
           variant="contained"
           size="small"
+          disabled={!(formData.limit > 0) || !formData.newTitle}
           onClick={() => {
             createNamespacePromise(
               {
