@@ -21,20 +21,21 @@ export const LocalNotes = () => {
   const handleClose = useCallback(() => {
     setIsEditorOpened(false)
   }, [setIsEditorOpened])
-  const handleEdit = useCallback(
-    ({ id, title, description }: any) => {
-      setEditorDefaultState({ id, title, description })
-      handleOpen()
-      removeLocalNote(id)
-    },
-    [handleOpen]
-  )
   const hasAnyLocalNote = useMemo(() => localNotes.length > 0, [localNotes])
 
   const [qr, setQR] = useState<string | null>(null)
   const resetQR = useCallback(() => {
     setQR(null)
   }, [setQR])
+  const handleEdit = useCallback(
+    ({ id, title, description }: any) => {
+      resetQR()
+      setEditorDefaultState({ id, title, description })
+      handleOpen()
+      removeLocalNote(id)
+    },
+    [resetQR, setEditorDefaultState, removeLocalNote, handleOpen]
+  )
   const [isQRLoading, setIsQRLoading] = useState<boolean>(false)
   // const { addInfoNotif } = useNotifsContext()
 
