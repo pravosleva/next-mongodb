@@ -651,7 +651,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         for (const note of [...oldLSData, ...lsData]) ds.set(note.id, note) // NOTE: Rewrite old
 
         const newArr: any[] = []
-        for (const note of ds.keys()) newArr.push(note)
+        for (const note of ds.keys()) newArr.push(ds.get(note))
 
         setFieldToLS(ELSFields.LocalNotes, newArr, true)
           .then(() => {
