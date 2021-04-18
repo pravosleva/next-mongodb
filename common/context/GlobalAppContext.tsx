@@ -644,14 +644,14 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     getFieldFromLS(ELSFields.LocalNotes, true)
       .then((oldLSData: any[]) => {
         if (!Array.isArray(oldLSData)) throw new Error("WTF? oldData  isn't an Array")
-        // NOTE:  Filter by unique id
-        const newArr = [...lsData]
 
-        for (const note of oldLSData) {
-          if (!!note.id && !newArr.some(({ id }) => id === note.id)) {
-            newArr.push(note)
-          }
-        }
+        // NOTE: Have to filter by unique id
+
+        const ds = new Map<string, any>()
+        for (const note of [...oldLSData, ...lsData]) ds.set(note.id, note) // NOTE: Rewrite old
+
+        const newArr: any[] = []
+        for (const note of ds.keys()) newArr.push(note)
 
         setFieldToLS(ELSFields.LocalNotes, newArr, true)
           .then(() => {
