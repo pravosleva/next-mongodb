@@ -22,7 +22,8 @@ class HttpClientSingletone {
     this.getNoteCancelTokenSource = null
     this.getMyIPCancelTokenSource = null
     this.getMeCancelTokenSource = null
-    this.crossdeviceFeatureCancelTokenSource = null
+    this.crossdeviceSaveCancelTokenSource = null
+    this.crossdeviceGetCancelTokenSource = null
     this.axiosInstance = axios.create({
       baseURL: `${NEXT_APP_API_ENDPOINT}/`,
       // timeout: 1000,
@@ -31,6 +32,7 @@ class HttpClientSingletone {
     this.axiosEApiInstance = axios.create({
       baseURL: `${NEXT_APP_EXPRESS_API_ENDPOINT}/`,
     })
+    // this.getMyLocalNotes = this.getMyLocalNotes.bind(this)
   }
 
   static getInstance() {
@@ -200,7 +202,7 @@ class HttpClientSingletone {
     let result = false
     const user = await this.getMe(token)
       .then((user) => {
-        console.log(user)
+        // console.log(user)
         result = true
       })
       .catch((msg) => {
@@ -244,11 +246,10 @@ class HttpClientSingletone {
   }
 
   async saveMyLocalNotes({ lsData }, url = '/crossdevice/local-notes') {
-    if (!!this.crossdeviceFeatureCancelTokenSource)
-      this.crossdeviceFeatureCancelTokenSource.cancel('axios request cancelled')
+    if (!!this.crossdeviceSaveCancelTokenSource) this.crossdeviceSaveCancelTokenSource.cancel('axios request cancelled')
 
     const source = createCancelTokenSource()
-    this.crossdeviceFeatureCancelTokenSource = source
+    this.crossdeviceSaveCancelTokenSource = source
 
     const result = await this.axiosInstance({
       method: 'POST',
@@ -257,7 +258,7 @@ class HttpClientSingletone {
       data: {
         lsData,
       },
-      cancelToken: this.crossdeviceFeatureCancelTokenSource.token,
+      cancelToken: this.crossdeviceSaveCancelTokenSource.token,
     })
       .then(httpErrorHandler)
       .then(this.responseDataHandlerAfterHttpErrorHandler(({ success }) => success))
@@ -270,7 +271,7 @@ class HttpClientSingletone {
         return { isOk: false, res: err }
       })
 
-    this.crossdeviceFeatureCancelTokenSource = null
+    this.crossdeviceSaveCancelTokenSource = null
     if (result.isOk) {
       return Promise.resolve(result.res)
     }
@@ -278,6 +279,47 @@ class HttpClientSingletone {
       return Promise.reject(result.res.getErrorMsg())
     }
     return Promise.reject(this.getErrorMsg(result.res))
+  }
+  async getMyLocalNotes({ payload }, url = '/crossdevice/local-notes') {
+    const self = HttpClientSingletone._instance
+
+    if (!!self.crossdeviceGetCancelTokenSource) self.crossdeviceGetCancelTokenSource.cancel('axios request cancelled')
+    const source = createCancelTokenSource()
+    self.crossdeviceGetCancelTokenSource = source
+
+    const result = await self
+      .axiosInstance({
+        method: 'GET',
+        url: `${url}?payload=${payload}`,
+        // mode: 'cors',
+        cancelToken: self.crossdeviceGetCancelTokenSource.token,
+        validateStatus: (status) => status >= 200 && status < 500,
+      })
+      .then(httpErrorHandler)
+      .then(
+        self.responseDataHandlerAfterHttpErrorHandler((res) => {
+          const { success, data } = res
+
+          return success && !!data
+        })
+      )
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled', err.message)
+        } else {
+          console.log(err)
+        }
+        return { isOk: false, res: err }
+      })
+
+    self.crossdeviceGetCancelTokenSource = null
+    if (result.isOk) {
+      return Promise.resolve(result.res)
+    }
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
+    }
+    return Promise.reject(self.getErrorMsg(result.res))
   }
 }
 

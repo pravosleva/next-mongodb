@@ -66,19 +66,22 @@ export const SidebarContent = () => {
                 <ul style={{ paddingLeft: '10px' }}>
                   <li>✔ Сохранить в облаке;</li>
                   <li>
-                    ☐ Page <b>/crossdevice/set-local-notes</b>
+                    ✔ Page <b>/crossdevice/set-local-notes</b>
                     <ul style={{ paddingLeft: '10px' }}>
                       <li>
-                        ☐ Get lsData on SSR by reqId (req.query.payload)
+                        ✔ Get lsData on SSR by reqId (req.query.payload)
                         <ul style={{ paddingLeft: '10px' }}>
-                          <li>☐ Удалять из облака после переноса;</li>
+                          <li>✔ Удалять из облака после переноса;</li>
                         </ul>
                       </li>
 
-                      <li>☐ Add to ls</li>
+                      <li>✔ Add to ls (filtered by unique id)</li>
                     </ul>
                   </li>
                 </ul>
+              </li>
+              <li>
+                ☐ <b>Better UI</b> (add new Local note form in modal);
               </li>
               <li>☐ CRON для ежедневной чистки памяти временного хранилища;</li>
               <li>☐ Реал-тайм мониторинг ресурсов;</li>

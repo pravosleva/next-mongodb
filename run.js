@@ -20,9 +20,11 @@ const nextHanlder = nextApp.getRequestHandler()
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
 const ipDetectorMW = require('./express-tools/middlewares/ip-detector')
 const geoipLiteMW = require('./express-tools/middlewares/geoip-lite')
+const addRequestId = require('express-request-id')()
 
 const _customIO = socketLogic(io)
 
+app.use(addRequestId) // NOTE: New additional field req.id
 app.use('*', ipDetectorMW, geoipLiteMW)
 // NOTE: For example: const ip = req.clientIp; const geo = req.geo;
 

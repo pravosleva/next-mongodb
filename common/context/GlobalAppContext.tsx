@@ -119,6 +119,9 @@ export const GlobalAppContext = createContext({
     throw new Error('removeLocalNote method should be implemented')
   },
   localNotes: [],
+  addNewLSData: (_lsData: any[]): void | never => {
+    throw new Error('addNewLSData method should be implemented')
+  },
 })
 
 function reducer(state: any, action: any) {
@@ -637,6 +640,36 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         addDangerNotif({ title: 'ERR: removeLocalNote', message })
       })
   }
+  const addNewLSData = (lsData: any[]) => {
+    getFieldFromLS(ELSFields.LocalNotes, true)
+      .then((oldLSData: any[]) => {
+        if (!Array.isArray(oldLSData)) throw new Error("WTF? oldData  isn't an Array")
+        // NOTE:  Filter by unique id
+        const newArr = [...lsData]
+
+        for (const note of oldLSData) {
+          if (!!note.id && !newArr.some(({ id }) => id === note.id)) {
+            newArr.push(note)
+          }
+        }
+
+        setFieldToLS(ELSFields.LocalNotes, newArr, true)
+          .then(() => {
+            setLocalNotes(newArr)
+          })
+          .then(() => {
+            addInfoNotif({
+              title: 'Data added',
+              message: `Old (${oldLSData.length}) + New (${lsData.length}), Total (${newArr.length})`,
+            })
+          })
+      })
+      .catch((err) => {
+        addDangerNotif({
+          message: typeof err === 'string' ? err : err.message || 'No err.message',
+        })
+      })
+  }
   // ---
 
   return (
@@ -671,6 +704,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         removeLocalNote,
         localNotes,
         localNotesPinnedNamespaceMap,
+        addNewLSData,
       }}
     >
       {children}

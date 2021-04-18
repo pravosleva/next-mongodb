@@ -1,12 +1,12 @@
 import { useState, useCallback, useMemo } from 'react'
-import { useGlobalAppContext, useNotifsContext } from '~/common/hooks'
+import { useGlobalAppContext } from '~/common/hooks'
 import { Badge, CreateNewLocalNoteBtn } from './components'
 import { useStyles } from './styles'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import Icon from '@mdi/react'
 import { mdiPlus, mdiQrcode } from '@mdi/js'
 import { Alert, AlertTitle } from '@material-ui/lab'
-// import { httpClient } from '~/utils/httpClient'
+import { httpClient } from '~/utils/httpClient'
 // import TextField from '@material-ui/core/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -36,7 +36,7 @@ export const LocalNotes = () => {
     setQR(null)
   }, [setQR])
   const [isQRLoading, setIsQRLoading] = useState<boolean>(false)
-  const { addInfoNotif } = useNotifsContext()
+  // const { addInfoNotif } = useNotifsContext()
 
   return (
     <>
@@ -88,24 +88,24 @@ export const LocalNotes = () => {
               variant="contained"
               onClick={() => {
                 setIsQRLoading(true)
-                addInfoNotif({
-                  message: 'Coming soon...',
-                  onRemoval: () => {
-                    setIsQRLoading(false)
-                  },
-                })
-                // httpClient
-                //   .saveMyLocalNotes({ lsData: localNotes })
-                //   .then(({ qr }) => {
-                //     setQR(qr)
-                //   })
-                //   .catch((err) => {
-                //     // eslint-disable-next-line no-console
-                //     console.log(err)
-                //   })
-                //   .finally(() => {
+                // addInfoNotif({
+                //   message: 'Coming soon...',
+                //   onRemoval: () => {
                 //     setIsQRLoading(false)
-                //   })
+                //   },
+                // })
+                httpClient
+                  .saveMyLocalNotes({ lsData: localNotes })
+                  .then(({ qr }) => {
+                    setQR(qr)
+                  })
+                  .catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.log(err)
+                  })
+                  .finally(() => {
+                    setIsQRLoading(false)
+                  })
               }}
               startIcon={
                 isQRLoading ? <CircularProgress color="inherit" size={20} /> : <Icon path={mdiQrcode} size={0.7} />

@@ -1,1 +1,1 @@
-export { useGlobalAppContext } from '~/common/context/GlobalAppContext'
+export { useGlobalAppContext, ELSFields } from '~/common/context/GlobalAppContext'
