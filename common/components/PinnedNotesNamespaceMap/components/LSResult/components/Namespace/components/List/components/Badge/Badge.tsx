@@ -41,10 +41,7 @@ export const Badge0 = ({ id }: TProps) => {
   const handleClick = useCallback(
     (id: string) => {
       if (isFoundAsLocal && router.pathname !== '/') {
-        addDangerNotif({
-          title: 'Sorry [TODO]',
-          message: 'Страница локальной заметки в разработке...',
-        })
+        router.push(`/local-notes/${id}`)
         return
       }
 

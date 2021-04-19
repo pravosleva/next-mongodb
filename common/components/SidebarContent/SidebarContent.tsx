@@ -63,7 +63,7 @@ export const SidebarContent = () => {
                   <li>☐ CRON для ежедневной чистки памяти временного хранилища;</li>
                   <li>☐ Реал-тайм мониторинг ресурсов;</li>
                   <li>
-                    ☐ Page <b>/local-note/:id</b>;
+                    ✔ Page <b>/local-note/:id</b>;
                   </li>
                 </ul>
               )}

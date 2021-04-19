@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { useStyles } from './styles'
 import Icon from '@mdi/react'
 import { mdiPencil, mdiDelete } from '@mdi/js'
-import { useNotifsContext, ELSFields } from '~/common/context'
+import { ELSFields } from '~/common/context'
 import { useRouter } from 'next/router'
 
 type TNote = {
@@ -24,7 +24,7 @@ export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveN
   const { removeLocalNote, state, handleResetActiveNote, handleUnpinFromLS, isPinnedToLS } = useGlobalAppContext()
   const { activeNote } = useMemo(() => state, [JSON.stringify(state)])
   const isActive = useMemo(() => id === activeNote?._id, [activeNote, id])
-  const { addWarningNotif } = useNotifsContext()
+  // const { addWarningNotif } = useNotifsContext()
   const router = useRouter()
 
   return (
@@ -39,11 +39,8 @@ export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveN
       <div
         className={clsx(classes.truncate, classes.badgeContent)}
         onClick={() => {
-          if (router.pathname !== '/') {
-            addWarningNotif({ title: 'Sorry', message: 'Пока работает только для homepage' })
-            return
-          }
           onSetAsActiveNote({ id, title, description, isLocal: true })
+          router.push(`/local-notes/${id}`)
         }}
       >
         {title}

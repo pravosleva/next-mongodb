@@ -129,6 +129,9 @@ export const GlobalAppContext = createContext({
   resetQR: (): void | never => {
     throw new Error('resetQR method should be implemented')
   },
+  getFieldFromLS: async (_lsField: ELSFields, _shouldBeAsJson: boolean): Promise<any> => {
+    return Promise.reject('getFieldFromLS method should be implemented')
+  },
 })
 
 function reducer(state: any, action: any) {
@@ -308,7 +311,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const [localNotesPinnedNamespaceMap, setLocalNotesPinnedNamespaceMap] = useState<any | null>(null)
   const [localNotes, setLocalNotes] = useState<any | null>(null)
   const { addInfoNotif, addDangerNotif, addWarningNotif } = useNotifsContext()
-  const getFieldFromLS = (fieldName: ELSFields, shouldBeJson: boolean) => {
+  const getFieldFromLS = (fieldName: ELSFields, shouldBeJson: boolean): Promise<any> => {
     // @ts-ignore
     if (!ls(fieldName)) {
       // createEmptyMap(fieldName, {}, (data) => setPinnedMap(data))
@@ -720,6 +723,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         qr,
         setQR,
         resetQR,
+        getFieldFromLS,
       }}
     >
       {children}
