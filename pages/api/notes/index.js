@@ -1,7 +1,7 @@
 import dbConnect from '~/utils/dbConnect'
 import Note from '~/models/Note'
 import { isNumeric } from '~/utils/isNumeric'
-import { actionTypes as eTypes } from '~/socket-logic'
+import { EActions } from '~/socket-logic'
 import { authTokenValidator } from '~/utils/express/authTokenValidator'
 
 dbConnect()
@@ -113,7 +113,7 @@ const mainApi = async (req, res) => {
         }
         status = 201
 
-        req.io.emit(eTypes.NOTE_CREATED, { data: note })
+        req.io.emit(EActions.NOTE_CREATED, { data: note })
       } catch (error) {
         if (!!error?.message) {
           response.msg = error.message

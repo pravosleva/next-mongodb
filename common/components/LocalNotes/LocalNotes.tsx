@@ -9,9 +9,10 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import { httpClient } from '~/utils/httpClient'
 // import TextField from '@material-ui/core/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { useSocketContext } from '~/common/hooks'
 
 export const LocalNotes = () => {
-  const { localNotes, removeLocalNote, handleSetAsActiveNote } = useGlobalAppContext()
+  const { localNotes, removeLocalNote, handleSetAsActiveNote, qr, setQR, resetQR } = useGlobalAppContext()
   const classes = useStyles()
   const [isEditorOpened, setIsEditorOpened] = useState<boolean>(false)
   const [editorDefaultState, setEditorDefaultState] = useState<any>({})
@@ -23,10 +24,6 @@ export const LocalNotes = () => {
   }, [setIsEditorOpened])
   const hasAnyLocalNote = useMemo(() => localNotes.length > 0, [localNotes])
 
-  const [qr, setQR] = useState<string | null>(null)
-  const resetQR = useCallback(() => {
-    setQR(null)
-  }, [setQR])
   const handleEdit = useCallback(
     ({ id, title, description }: any) => {
       resetQR()
@@ -38,6 +35,7 @@ export const LocalNotes = () => {
   )
   const [isQRLoading, setIsQRLoading] = useState<boolean>(false)
   // const { addInfoNotif } = useNotifsContext()
+  const { state } = useSocketContext()
 
   return (
     <>
@@ -90,7 +88,7 @@ export const LocalNotes = () => {
                 setIsQRLoading(true)
                 // addInfoNotif({ message: 'Coming soon...', onRemoval: () => { setIsQRLoading(false) } })
                 httpClient
-                  .saveMyLocalNotes({ lsData: localNotes })
+                  .saveMyLocalNotes({ lsData: localNotes, socketId: state.socketId })
                   .then(({ qr }) => {
                     setQR(qr)
                   })
@@ -120,9 +118,10 @@ export const LocalNotes = () => {
                   }}
                 >
                   <img
+                    // @ts-ignore
                     src={qr}
                     alt="QR"
-                    style={{ width: 196, height: 196, borderRadius: '4px', marginBottom: '8px' }}
+                    style={{ width: 196, height: 196, borderRadius: '8px', marginBottom: '8px' }}
                   />
                 </div>
                 Отсканируйте QR другим устройством

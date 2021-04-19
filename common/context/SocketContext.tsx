@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
 import { createContext, useReducer, useEffect, useMemo, useContext, useRef, useCallback } from 'react'
 import io from 'socket.io-client'
-import { actionTypes as evt, IDeletedNote, IConnectSelf, IDisconnectUserBroadcast } from '~/socket-logic'
+import { EActions, IDeletedNote, IConnectSelf, IDisconnectUserBroadcast } from '~/socket-logic'
 import { useNotifsContext } from '~/common/hooks'
 import { useGlobalAppContext } from './GlobalAppContext'
 import { httpClient } from '~/utils/httpClient'
+// import { useCookies } from 'react-cookie'
 
 const NEXT_APP_SOCKET_API_ENDPOINT = process.env.NEXT_APP_SOCKET_API_ENDPOINT
 
 const initialState = {
   socket: null,
+  socketId: null,
   updatedNote: null,
   deletedNoteId: null,
 }
@@ -20,10 +22,10 @@ export const SocketContext = createContext({
 
 function reducer(state: any, action: any) {
   switch (action.type) {
-    case evt.ME_CONNECTED:
-      return { ...state, socket: action.payload }
+    case EActions.ME_CONNECTED:
+      return { ...state, socket: action.payload.socket, socketId: action.payload.socketId }
     case 'UNMOUNT':
-      return { ...state, socket: null }
+      return { ...state, socket: null, socketId: null }
     case 'REFRESH_UPDATED_NOTE':
       return { ...state, updatedNote: action.payload }
     case 'UPDATE_DELETED_NOTE_ID':
@@ -66,8 +68,10 @@ const getInfoByGeo = (geo?: TGeo): string => {
 export const SocketContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const isClient = useMemo(() => typeof window !== 'undefined', [typeof window])
-  const { addDefaultNotif, addDangerNotif } = useNotifsContext()
+  const { addDefaultNotif, addDangerNotif, addSuccessNotif } = useNotifsContext()
   // ---
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [_cookies, setCookie, _removeCookie] = useCookies()
   const {
     handleUpdateOneNote,
     handleRemoveOneNote,
@@ -75,6 +79,7 @@ export const SocketContextProvider = ({ children }: any) => {
     handleSetNotesResponse,
     handleSetAsActiveNote,
     state: globalState,
+    resetQR,
   } = useGlobalAppContext()
 
   // ---
@@ -87,6 +92,11 @@ export const SocketContextProvider = ({ children }: any) => {
     async (arg: IConnectSelf, socket: any) => {
       // console.log('--- activeNote')
       // console.log(globalState.activeNote)
+
+      // ---
+      // NOTE: Set socketId to cookie for my notifs (QR, etc.)
+      // setCookie('socket-id', arg.data.socketId)
+      // ---
 
       // -- Get my IP:
       const userDetails: TUserDetails = await httpClient.getMyIP()
@@ -134,7 +144,7 @@ export const SocketContextProvider = ({ children }: any) => {
         message: arg.data.msg,
         // type: 'success',
       })
-      dispatch({ type: evt.ME_CONNECTED, payload: socket })
+      dispatch({ type: EActions.ME_CONNECTED, payload: { socket, socketId: arg.data.socketId } })
     },
     [JSON.stringify(globalState.activeNote)]
   )
@@ -232,6 +242,13 @@ export const SocketContextProvider = ({ children }: any) => {
       // console.log(err)
     }
   }
+  const handleQRUsed = ({ message, haveToBeKilled }: { message: string; haveToBeKilled: boolean }) => {
+    if (haveToBeKilled) resetQR()
+    addSuccessNotif({
+      title: 'QR code',
+      message,
+    })
+  }
   const handleGetAllNotes = async () => {
     const res = await httpClient.getNotes('/notes') // TODO: query
 
@@ -246,7 +263,7 @@ export const SocketContextProvider = ({ children }: any) => {
       // @ts-ignore
       const socket = io.connect(NEXT_APP_SOCKET_API_ENDPOINT)
 
-      socket.on(evt.ME_CONNECTED, (arg: any) => {
+      socket.on(EActions.ME_CONNECTED, (arg: any) => {
         handleMeConnectedRef.current(arg, socket)
 
         // NOTE: is reconnect?
@@ -266,11 +283,12 @@ export const SocketContextProvider = ({ children }: any) => {
             })
         }
       })
-      socket.on(evt.NOTE_CREATED, handleCreateNote)
-      socket.on(evt.NOTE_UPDATED, handleUpdateNote)
-      socket.on(evt.NOTE_DELETED, handleDeleteNote)
-      socket.on(evt.USER_SOMEBODY_CONNECTED, handleSomebodyConnected)
-      socket.on(evt.USER_SOMEBODY_DISCONNECTED, handleSomebodyDisconnected)
+      socket.on(EActions.NOTE_CREATED, handleCreateNote)
+      socket.on(EActions.NOTE_UPDATED, handleUpdateNote)
+      socket.on(EActions.NOTE_DELETED, handleDeleteNote)
+      socket.on(EActions.USER_SOMEBODY_CONNECTED, handleSomebodyConnected)
+      socket.on(EActions.USER_SOMEBODY_DISCONNECTED, handleSomebodyDisconnected)
+      socket.on(EActions.QR_USED, handleQRUsed)
 
       return () => {
         socket.disconnect()
@@ -291,8 +309,4 @@ export const SocketContextProvider = ({ children }: any) => {
   )
 }
 
-export const useSocketContext = () => {
-  const socketContext = useContext(SocketContext)
-
-  return socketContext
-}
+export const useSocketContext = () => useContext(SocketContext)

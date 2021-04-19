@@ -245,7 +245,9 @@ class HttpClientSingletone {
     return Promise.reject(this.getErrorMsg(result.res))
   }
 
-  async saveMyLocalNotes({ lsData }, url = '/crossdevice/local-notes') {
+  async saveMyLocalNotes({ lsData, socketId }, url = '/crossdevice/local-notes') {
+    if (!socketId) return Promise.reject('ERR: socketId should be provided')
+
     if (!!this.crossdeviceSaveCancelTokenSource) this.crossdeviceSaveCancelTokenSource.cancel('axios request cancelled')
 
     const source = createCancelTokenSource()
@@ -257,6 +259,7 @@ class HttpClientSingletone {
       // mode: 'cors',
       data: {
         lsData,
+        socketId,
       },
       cancelToken: this.crossdeviceSaveCancelTokenSource.token,
     })

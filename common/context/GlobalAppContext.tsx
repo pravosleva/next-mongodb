@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState, useEffect, useRef, useContext } from 'react'
+import { createContext, useReducer, useState, useEffect, useRef, useContext, useCallback } from 'react'
 import buildUrl from 'build-url'
 import { useAuthContext, useDebounce, useNotifsContext } from '~/common/hooks'
 import { useRouter } from 'next/router'
@@ -121,6 +121,13 @@ export const GlobalAppContext = createContext({
   localNotes: [],
   addNewLSData: (_lsData: any[]): void | never => {
     throw new Error('addNewLSData method should be implemented')
+  },
+  qr: null,
+  setQR: (_str: string | null): void | never => {
+    throw new Error('setQR method should be implemented')
+  },
+  resetQR: (): void | never => {
+    throw new Error('resetQR method should be implemented')
   },
 })
 
@@ -671,6 +678,10 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       })
   }
   // ---
+  const [qr, setQR] = useState<string | null>(null)
+  const resetQR = useCallback(() => {
+    setQR(null)
+  }, [setQR])
 
   return (
     <GlobalAppContext.Provider
@@ -705,6 +716,10 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         localNotes,
         localNotesPinnedNamespaceMap,
         addNewLSData,
+        // @ts-ignore
+        qr,
+        setQR,
+        resetQR,
       }}
     >
       {children}

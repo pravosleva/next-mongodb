@@ -10,7 +10,7 @@ const genDataUrl = promisify(QRCode.toDataURL.bind(QRCode))
 
 // NOTE: Несколько других устройств для аутентификации по QR коду:
 // TODO: Could be moved to envs
-const authOnOtherDevicesLimit = 1
+const authOnOtherDevicesLimit = 2
 
 /**
  * Класс Одиночка предоставляет метод getInstance, который позволяет клиентам
@@ -64,7 +64,7 @@ class CrossDeviceSingleton {
 
     return state
   }
-  async addSomeonesLocalNotes({ reqId, lsData, qrPayload, ip, geo }) {
+  async addSomeonesLocalNotes({ reqId, lsData, qrPayload, ip, geo, socketId }) {
     const qr = await this.getQR(qrPayload)
 
     this.state.set(reqId, {
@@ -75,6 +75,7 @@ class CrossDeviceSingleton {
       lsData,
       qrPayload,
       ts: new Date().getTime(),
+      socketId,
     })
 
     return qr
@@ -90,8 +91,9 @@ class CrossDeviceSingleton {
       if (currentCounter + 1 >= authOnOtherDevicesLimit) {
         this.state.delete(reqId)
         return Promise.resolve({
-          message: 'Вы использовали данную возможность последний раз на другом устройстве',
+          message: 'Заметки были запрошены с другого устройства и удалены из временной памяти в облаке',
           data: targetLSData,
+          haveToBeKilled: true,
         })
       } else {
         const newQRUsageCounter = currentCounter + 1
@@ -102,8 +104,9 @@ class CrossDeviceSingleton {
 
         this.state.set(reqId, newData)
         return Promise.resolve({
-          message: `Вы перенесли локальные заметки на друге устройство ${newQRUsageCounter} раз`,
+          message: `Заметки были запрошены с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
           data: newData,
+          haveToBeKilled: false,
         })
       }
     } else {

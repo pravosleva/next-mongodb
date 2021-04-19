@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import { CrossDeviceSingleton, TMapValue } from '~/utils/next/_crossDeviceState'
 import Cookies from 'cookies'
+import { Socket } from 'socket.io'
+import { EActions } from '~/socket-logic'
 
 type TEnhancedReq = {
   crossDeviceState: CrossDeviceSingleton
@@ -14,6 +16,8 @@ const crossdeviceApi = async (
     method: any
     body: any
     query?: any
+    io: Socket
+    socketId: string
   } & TEnhancedReq,
   res: {
     status: (
@@ -43,15 +47,18 @@ const crossdeviceApi = async (
     method,
     body,
   } = req
+  // NOTE: https://maxschmitt.me/posts/next-js-cookies/
+  // @ts-ignore
+  const cookies = new Cookies(req, res)
 
   switch (method) {
     case 'POST':
-      const { lsData } = body
+      const { lsData, socketId } = body
 
       try {
-        if (!lsData)
+        if (!lsData || !socketId)
           return res.status(500).json({
-            message: `Проверьте данные, req.body.lsData is ${typeof lsData}`,
+            message: `Проверьте данные, req.body.lsData is ${typeof lsData}; req.body.socketId is ${typeof socketId}`,
             success: false,
             _originalReqBody: body,
           })
@@ -60,9 +67,6 @@ const crossdeviceApi = async (
         const geo = req.geo
 
         // --- Identity tool
-        // NOTE: https://maxschmitt.me/posts/next-js-cookies/
-        // @ts-ignore
-        const cookies = new Cookies(req, res)
         const maxAgeInDays = 1
 
         let reqId = cookies.get('crossdevice-req-id')
@@ -74,7 +78,6 @@ const crossdeviceApi = async (
           cookies.set('crossdevice-req-id', reqId, {
             httpOnly: true, // true by default
             maxAge: maxAgeInDays * 24 * 60 * 60 * 1000,
-            // 1618821296646
           })
           console.log('New cookie set')
         }
@@ -90,6 +93,7 @@ const crossdeviceApi = async (
           reqId: reqId || `No req.id: ${typeof reqId}`,
           lsData,
           qrPayload,
+          socketId,
         }
 
         // @ts-ignore
@@ -134,8 +138,14 @@ const crossdeviceApi = async (
         let status = 500
         const result = await req.crossDeviceState
           .getSomeonesLocalNotesOrDeletePromise(payload)
-          .then(({ message, data }) => {
+          .then(({ message, data, haveToBeKilled }) => {
             status = 200
+
+            // --- NOTE: Notificaion by socket
+            const socketId = data?.socketId
+            if (!!socketId) req.io.to(socketId).emit(EActions.QR_USED, { message, haveToBeKilled })
+            // ---
+
             return {
               data,
               message,

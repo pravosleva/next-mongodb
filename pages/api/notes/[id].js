@@ -1,6 +1,6 @@
 import dbConnect from '~/utils/dbConnect'
 import Note from '~/models/Note'
-import { actionTypes as eTypes } from '~/socket-logic'
+import { EActions } from '~/socket-logic'
 import { authTokenValidator } from '~/utils/express/authTokenValidator'
 
 dbConnect()
@@ -40,9 +40,9 @@ const idApi = async (req, res) => {
           return res.status(400).json({ success: false })
         }
 
-        req.io.emit(eTypes.NOTE_UPDATED, { data: note })
+        req.io.emit(EActions.NOTE_UPDATED, { data: note })
         // console.log(req.io.stateMap.size)
-        // req.socketBroadcast.emit(eTypes.NOTE_UPDATED, { data: note })
+        // req.socketBroadcast.emit(EActions.NOTE_UPDATED, { data: note })
         return res.status(200).json({ success: true, data: note })
       } catch (error) {
         return res.status(400).json({ success: false })
@@ -55,7 +55,7 @@ const idApi = async (req, res) => {
           return res.status(400).json({ success: false })
         }
 
-        req.io.emit(eTypes.NOTE_DELETED, { data: { ...deletedNote, id } })
+        req.io.emit(EActions.NOTE_DELETED, { data: { ...deletedNote, id } })
         return res.status(200).json({ success: true, data: {} })
       } catch (error) {
         return res.status(400).json({ success: false })
