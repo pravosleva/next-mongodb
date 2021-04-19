@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 import { CrossDeviceSingleton, TMapValue } from '~/utils/next/_crossDeviceState'
+import Cookies from 'cookies'
 
 type TEnhancedReq = {
   crossDeviceState: CrossDeviceSingleton
@@ -28,6 +30,7 @@ const crossdeviceApi = async (
           qr?: string
           _originalReqQuery?: any
           lsData?: any
+          state?: any
         }): any
         new (): any
       }
@@ -55,7 +58,30 @@ const crossdeviceApi = async (
 
         const ip = req.clientIp
         const geo = req.geo
-        const reqId = req.id // String(new Date().getTime())
+
+        // --- Identity tool
+        // NOTE: https://maxschmitt.me/posts/next-js-cookies/
+        // @ts-ignore
+        const cookies = new Cookies(req, res)
+        const maxAgeInDays = 1
+
+        let reqId = cookies.get('crossdevice-req-id')
+
+        console.log('--- redId; OLD:', reqId)
+
+        if (!reqId) {
+          reqId = req.id
+          cookies.set('crossdevice-req-id', reqId, {
+            httpOnly: true, // true by default
+            maxAge: maxAgeInDays * 24 * 60 * 60 * 1000,
+            // 1618821296646
+          })
+          console.log('New cookie set')
+        }
+
+        console.log('NEW:', reqId)
+        console.log('---')
+        // ---
 
         const qrPayload = JSON.stringify(lsData)
         const yourData: { reqId: string } & Partial<TMapValue> = {
@@ -87,8 +113,15 @@ const crossdeviceApi = async (
     case 'GET':
       try {
         const {
-          query: { payload }, // NOTE: req.id as Map structure key
+          query: { payload, tst }, // NOTE: req.id as Map structure key
         } = req
+
+        if (tst === 'state') {
+          return res.status(200).json({
+            state: req.crossDeviceState.getState(),
+            success: false,
+          })
+        }
 
         if (!payload) throw new Error('req.query.payload should be provided')
         if (!req.crossDeviceState.state.has(payload))

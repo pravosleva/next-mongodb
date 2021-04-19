@@ -122,7 +122,7 @@ export const LocalNotes = () => {
                   <img
                     src={qr}
                     alt="QR"
-                    style={{ width: 164, height: 164, borderRadius: '4px', marginBottom: '8px' }}
+                    style={{ width: 196, height: 196, borderRadius: '4px', marginBottom: '8px' }}
                   />
                 </div>
                 Отсканируйте QR другим устройством
