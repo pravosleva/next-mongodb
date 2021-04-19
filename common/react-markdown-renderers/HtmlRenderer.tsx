@@ -1,4 +1,4 @@
-import { YoutubePlayer } from './YoutubeRenderer/YoutubePlayer'
+import { YoutubePlayer, YoutubeGrid } from './YoutubeRenderer'
 import JsxParser from 'react-jsx-parser'
 import Gist from 'react-gist'
 import { Alert } from './Alert'
@@ -7,6 +7,7 @@ const componentTransforms = {
   Alert: (props: any) => <Alert text={props.value} {...props} />,
   React: (props: any) => <>{props.children}</>,
   YoutubePlayer,
+  YoutubeGrid,
   Gist: ({ gistId }: { gistId: string }) => <Gist id={gistId} />,
 }
 

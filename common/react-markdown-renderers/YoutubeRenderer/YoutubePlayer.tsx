@@ -11,7 +11,7 @@ export const YoutubePlayer = ({ videoId }: IProps) => {
 
   return (
     <>
-      {!{ videoId } ? (
+      {!videoId ? (
         <div>Incorrect props: videoId required!</div>
       ) : (
         <div className={classes.externalWrapper}>
