@@ -60,7 +60,6 @@ export const LocalNotes = () => {
               </div>
             )
           ) : (
-            //
             <ThemedButton
               style={{ marginBottom: !!localNotes && localNotes.length > 0 ? '8px' : '0px' }}
               fullWidth
@@ -89,12 +88,7 @@ export const LocalNotes = () => {
               variant="contained"
               onClick={() => {
                 setIsQRLoading(true)
-                // addInfoNotif({
-                //   message: 'Coming soon...',
-                //   onRemoval: () => {
-                //     setIsQRLoading(false)
-                //   },
-                // })
+                // addInfoNotif({ message: 'Coming soon...', onRemoval: () => { setIsQRLoading(false) } })
                 httpClient
                   .saveMyLocalNotes({ lsData: localNotes })
                   .then(({ qr }) => {
@@ -120,8 +114,6 @@ export const LocalNotes = () => {
               <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '8px' }}>
                 <div
                   style={{
-                    // border: '1px solid red',
-                    // marginBottom: '8px',
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
