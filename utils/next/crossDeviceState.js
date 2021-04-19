@@ -10,7 +10,7 @@ const genDataUrl = promisify(QRCode.toDataURL.bind(QRCode))
 
 // NOTE: Несколько других устройств для аутентификации по QR коду:
 // TODO: Could be moved to envs
-const authOnOtherDevicesLimit = 2
+const authOnOtherDevicesLimit = 1
 
 /**
  * Класс Одиночка предоставляет метод getInstance, который позволяет клиентам
