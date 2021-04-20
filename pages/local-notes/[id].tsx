@@ -3,9 +3,9 @@ import { TheNotePage } from '~/common/components/TheNotePage'
 import { useGlobalAppContext } from '~/common/hooks'
 import { useRouter } from 'next/router'
 import { Alert } from '@material-ui/lab'
-import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
-import Icon from '@mdi/react'
-import { mdiArrowRight } from '@mdi/js'
+// import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
+// import Icon from '@mdi/react'
+// import { mdiArrowRight } from '@mdi/js'
 
 const LocalNote = () => {
   const { localNotes, handleSetAsActiveNote } = useGlobalAppContext()
