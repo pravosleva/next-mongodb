@@ -139,7 +139,8 @@ export const Badge0 = ({ id }: TProps) => {
     <li
       onClick={() => handleClick(id)}
       className={clsx(classes.truncate, classes.badge, classes.defaultBadge, {
-        [classes.activeDefault]: isActive,
+        [classes.activeDefault]: isActive && !data.isLocal,
+        [classes.activeLocal]: isActive && data.isLocal,
         [classes.activePrivate]: isActive && id === data?._id && data?.isPrivate,
         [classes.defaultPrivate]: !isActive && id === data?._id && data?.isPrivate,
         [classes.defaultNotPrivate]: !isActive && !data?.isPrivate,

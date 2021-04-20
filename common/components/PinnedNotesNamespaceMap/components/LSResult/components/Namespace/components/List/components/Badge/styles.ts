@@ -54,6 +54,14 @@ export const useStyles = makeStyles((theme: Theme) =>
         // opacity: 0.7,
       },
     },
+    activeLocal: {
+      backgroundColor: theme.palette.secondary.main,
+      color: '#FFF !important',
+      '&:hover': {
+        backgroundColor: theme.palette.secondary.main,
+        // opacity: 0.7,
+      },
+    },
     activePrivate: {
       // backgroundColor: '#f44336',
       backgroundColor: '#ff8e53', // Orange

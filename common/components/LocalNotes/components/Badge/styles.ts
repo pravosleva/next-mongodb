@@ -38,11 +38,11 @@ export const useStyles = makeStyles((theme: Theme) =>
       // backgroundColor: 'rgba(25, 133, 123, 0.5)',
       backgroundColor: 'rgba(0,0,0,0.05)',
       // backgroundColor: 'transparent',
-      // color: theme.palette.primary.main,
+      // color: theme.palette.secondary.main,
       color: 'gray',
       '&:hover': {
         // backgroundColor: 'rgba(25, 133, 123, 0.65)',
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.secondary.main,
         color: '#FFF',
       },
 
@@ -66,19 +66,19 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     defaultBadge: {},
     defaultNotPrivate: {
-      // backgroundColor: theme.palette.primary.main,
+      // backgroundColor: theme.palette.secondary.main,
       backgroundColor: 'rgba(0,0,0,0.05)',
       color: 'inherit',
     },
     activeDefault: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
       '& > *': {
         color: '#FFF',
         // '&:hover': {},
       },
       color: '#FFF !important',
       '&:hover': {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.secondary.main,
         // opacity: 0.7,
       },
     },

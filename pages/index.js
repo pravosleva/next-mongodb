@@ -218,19 +218,16 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
             style={{
               lineHeight: '42px',
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
               margin: '8px 0 0 0',
-              padding: '0 0 0 8px',
+              padding: '0 8px 0 8px',
             }}
           >
-            {/* <Label>
-              <Icon name="file" /> {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}
-            </Label> */}
-            <div style={{ display: 'flex', alignItems: 'center', marginRight: '16px' }}>
-              <div style={{ color: 'rgba(0, 0, 0, 0.87)', display: 'flex', alignItems: 'center', marginRight: '5px' }}>
-                <MdiIcon path={mdiFile} size={0.85} />
-              </div>
-              <span>{showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}</span>
+            <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px', height: '42px' }}>
+              <Label>
+                <Icon name="file" /> {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}
+              </Label>
             </div>
             {!!ssrErrMsg && (
               <div style={{ border: '1px solid #fe7f2d', borderRadius: '10px', padding: '5px' }}>🔥 {ssrErrMsg}</div>
@@ -249,6 +246,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                     />
                   }
                   label="Local Notes"
+                  labelPlacement="start"
                 />
               </div>
             )}

@@ -5,7 +5,7 @@ import { useStyles } from './styles'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import Icon from '@mdi/react'
 import { mdiPlus, mdiQrcode } from '@mdi/js'
-import { Alert, AlertTitle } from '@material-ui/lab'
+import { Alert } from '@material-ui/lab'
 import { httpClient } from '~/utils/httpClient'
 // import TextField from '@material-ui/core/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -41,8 +41,8 @@ export const LocalNotes = () => {
     <>
       {!hasAnyLocalNote && !isEditorOpened && (
         <Alert className="info" variant="outlined" severity="info" style={{ marginBottom: '16px' }}>
-          <AlertTitle>Lets try</AlertTitle>
-          Локальные заметки не учавствуют в общем поиске
+          {/* <AlertTitle>Lets try</AlertTitle> */}
+          Let's try
         </Alert>
       )}
       {!qr && (
