@@ -36,7 +36,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   const baseClasses = useBaseStyles()
   const classes = useStyles()
   const freshNote = useFreshNote(initialNote)
-  const isLocal = useMemo(() => !!initialNote.isLocal, [initialNote])
+  const isLocal = useMemo(() => !!initialNote?.isLocal, [initialNote])
   const { description, priority, title, _id, isPrivate } = freshNote || {
     description: null,
     priority: 0,
