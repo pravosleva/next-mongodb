@@ -102,7 +102,9 @@ export const Badge0 = ({ id }: TProps) => {
       .then((normalizedLocalNote) => {
         setData(normalizedLocalNote)
 
+        // NOTE: Для обновления activeNote в соответствии с обновленной версией
         if (isActive) handleSetAsActiveNote(normalizedLocalNote)
+
         setIsFoundAsLocal(true)
         setIsLoaded(true)
         setErrorMsg(null)
