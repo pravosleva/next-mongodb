@@ -19,10 +19,15 @@ import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
-import { mdiPinOff, mdiAutorenew } from '@mdi/js'
+import { mdiPinOff, mdiAutorenew, mdiFile } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
 import { PinNote } from '~/common/components/PinNote'
 import { ELSFields } from '~/common/context/GlobalAppContext'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
+import CheckBoxIcon from '@material-ui/icons/CheckBox'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -72,10 +77,29 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handleSearchByTitleSetText,
     handleUnpinFromLS,
     pinnedMap,
+    localNotes,
+    showLocalNotesInList,
+    setShowLocalNotesInListToggler,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
   }
+  const filteredNotes = useMemo(
+    () =>
+      showLocalNotesInList && !!localNotes && localNotes.length > 0
+        ? localNotes
+            .filter(({ title }) =>
+              !!state.searchByTitle ? title.toLowerCase().includes(state.searchByTitle.toLowerCase()) : true
+            )
+            .filter(({ description }) =>
+              !!state.searchByDescription
+                ? description.toLowerCase().includes(state.searchByDescription.toLowerCase())
+                : true
+            )
+            .map(({ id, ...rest }) => ({ id, _id: id, ...rest, isLocal: true }))
+        : [],
+    [showLocalNotesInList, localNotes, state.searchByDescription, state.searchByTitle]
+  )
   useEffect(() => {
     init()
   }, [])
@@ -190,22 +214,54 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           )}
         </div>
         <div className="grid wrapper" style={{ marginBottom: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', margin: '8px 0 0 0' }}>
-            <Label>
-              <Icon name="file" /> {totalNotes}
-            </Label>
+          <div
+            style={{
+              lineHeight: '42px',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '8px 0 0 0',
+              padding: '0 0 0 8px',
+            }}
+          >
+            {/* <Label>
+              <Icon name="file" /> {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}
+            </Label> */}
+            <div style={{ display: 'flex', alignItems: 'center', marginRight: '16px' }}>
+              <div style={{ color: 'rgba(0, 0, 0, 0.87)', display: 'flex', alignItems: 'center', marginRight: '5px' }}>
+                <MdiIcon path={mdiFile} size={0.85} />
+              </div>
+              <span>{showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}</span>
+            </div>
             {!!ssrErrMsg && (
               <div style={{ border: '1px solid #fe7f2d', borderRadius: '10px', padding: '5px' }}>🔥 {ssrErrMsg}</div>
             )}
+            {!!localNotes && localNotes.length > 0 && (
+              <div style={{ border: '1px solid transparent' }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={showLocalNotesInList}
+                      onChange={(_e, val) => {
+                        setShowLocalNotesInListToggler(val)
+                      }}
+                      name="checkedA"
+                      color="secondary"
+                    />
+                  }
+                  label="Local Notes"
+                />
+              </div>
+            )}
           </div>
-          {notes.map((note) => {
+          {[...filteredNotes, ...notes].map((note) => {
             const isActive = !!activeNote?._id && activeNote._id === note._id
 
             return (
               <div
                 key={note._id}
                 className={clsx(baseClasses.standardCard, {
-                  'active-card-wrapper': isActive,
+                  'active-card-wrapper': isActive && !note.isLocal,
+                  'active-card-wrapper_local': isActive && note.isLocal,
                   'private-card-wrapper': note.isPrivate,
                 })}
               >
@@ -217,12 +273,12 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                     >
                       <h4>
                         {note.title}
-                        {!!note.id ? (
+                        {/* !!note.id ? (
                           <span>
                             {' '}
                             <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
                           </span>
-                        ) : null}
+                        ) : null */}
                       </h4>
                     </div>
                   </>
@@ -230,7 +286,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                     <div className={clsx(baseClasses.actionsBoxRight, baseClasses.standardCardFooter)}>
                       <>
                         <Tags title={note.title} />
-                        {isLogged && (
+                        {isLogged && !note.isLocal && (
                           <MuiButton
                             // disabled={isNotesLoading}
                             variant="outlined"
@@ -264,9 +320,13 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                           // disabled={isNotesLoading}
                           variant="contained"
                           size="small"
-                          color="primary"
+                          color={note.isLocal ? 'secondary' : 'primary'}
                           onClick={() => {
-                            router.push(`/notes/${note._id}`)
+                            if (note.isLocal) {
+                              router.push(`/local-notes/${note._id}`)
+                            } else {
+                              router.push(`/notes/${note._id}`)
+                            }
                           }}
                           startIcon={<ArrowForwardIcon />}
                         >

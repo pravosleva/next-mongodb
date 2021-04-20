@@ -132,6 +132,10 @@ export const GlobalAppContext = createContext({
   getFieldFromLS: async (_lsField: ELSFields, _shouldBeAsJson: boolean): Promise<any> => {
     return Promise.reject('getFieldFromLS method should be implemented')
   },
+  showLocalNotesInList: false,
+  setShowLocalNotesInListToggler: (_val?: boolean): void | never => {
+    throw new Error('setShowLocalNotesInListToggler method should be implemented')
+  },
 })
 
 function reducer(state: any, action: any) {
@@ -685,6 +689,17 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const resetQR = useCallback(() => {
     setQR(null)
   }, [setQR])
+  const [showLocalNotesInList, setShowLocalNotesInList] = useState<boolean>(false)
+  const setShowLocalNotesInListToggler = useCallback(
+    (val?: boolean) => {
+      if (val === true || val === false) {
+        setShowLocalNotesInList(val)
+      } else {
+        setShowLocalNotesInList((s) => !s)
+      }
+    },
+    [setShowLocalNotesInList]
+  )
 
   return (
     <GlobalAppContext.Provider
@@ -724,6 +739,8 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         setQR,
         resetQR,
         getFieldFromLS,
+        showLocalNotesInList,
+        setShowLocalNotesInListToggler,
       }}
     >
       {children}

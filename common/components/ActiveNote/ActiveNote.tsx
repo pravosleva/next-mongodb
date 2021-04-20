@@ -36,6 +36,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   const baseClasses = useBaseStyles()
   const classes = useStyles()
   const freshNote = useFreshNote(initialNote)
+  const isLocal = useMemo(() => !!initialNote.isLocal, [initialNote])
   const { description, priority, title, _id, isPrivate } = freshNote || {
     description: null,
     priority: 0,
@@ -66,7 +67,12 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   const isPinned = useMemo(() => isIdPinned(_id), [_id, isIdPinned])
 
   return (
-    <div className={clsx('todo-item', baseClasses.customizableListingWrapper, { 'todo-item_private': isPrivate })}>
+    <div
+      className={clsx('todo-item', baseClasses.customizableListingWrapper, {
+        'todo-item_private': isPrivate,
+        'todo-item_local': isLocal,
+      })}
+    >
       <div style={{ marginBottom: '0px', userSelect: 'none' }}>
         <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
       </div>
