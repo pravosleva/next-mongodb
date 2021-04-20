@@ -21,6 +21,7 @@ import { theme } from '~/common/styled-mui/theme'
 // import { ExternalPrivateFrameWidget } from '~/common/components/ExternalPrivateFrameWidget'
 import { SidebarContent } from '~/common/components/SidebarContent'
 import { Widget } from '~/common/components/Widget'
+import '~/wdyr'
 
 class MyApp extends NextApp {
   componentDidMount() {

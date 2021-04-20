@@ -122,6 +122,7 @@ export const GlobalAppContext = createContext({
   addNewLSData: (_lsData: any[]): void | never => {
     throw new Error('addNewLSData method should be implemented')
   },
+  isIdPinned: (_id: string): boolean => false,
   qr: null,
   setQR: (_str: string | null): void | never => {
     throw new Error('setQR method should be implemented')
@@ -140,6 +141,9 @@ export const GlobalAppContext = createContext({
 
 function reducer(state: any, action: any) {
   let newState = { ...state }
+
+  // console.log('--- action')
+  // console.log(action)
 
   switch (action.type) {
     case 'SEARCH_BY_TITLE@SET':
@@ -278,13 +282,16 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   }, [router.pathname])
 
   // const { isDesktop } = useWindowSize()
-  const handleSetAsActiveNote = (note: any) => {
-    // eslint-disable-next-line no-console
-    // console.log(windowParams)
-    // if (isDesktop) scrollTop(125)
-    // TODO: No scroll if current scroll position more than 125px
-    dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
-  }
+  const handleSetAsActiveNote = useCallback(
+    (note: any) => {
+      // eslint-disable-next-line no-console
+      // console.log(windowParams)
+      // if (isDesktop) scrollTop(125)
+      // TODO: No scroll if current scroll position more than 125px
+      dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
+    },
+    [dispatch]
+  )
   const handleResetActiveNote = () => {
     dispatch({ type: 'ACTIVE_NOTE@RESET' })
   }
@@ -297,18 +304,30 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const handleSearchByTitleSetText = (text: string) => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: text })
   }
-  const handleUpdateOneNote = (note: any) => {
-    dispatch({ type: 'UPDATE_ONE_NOTE', payload: note })
-  }
-  const handleRemoveOneNote = (id: string) => {
-    dispatch({ type: 'REMOVE_ONE_NOTE', payload: id })
-  }
-  const handleAddOneNote = (note: any) => {
-    dispatch({ type: 'ADD_ONE_NOTE', payload: note })
-  }
-  const handleSetNotesResponse = ({ data, pagination }: any) => {
-    dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
-  }
+  const handleUpdateOneNote = useCallback(
+    (note: any) => {
+      dispatch({ type: 'UPDATE_ONE_NOTE', payload: note })
+    },
+    [dispatch]
+  )
+  const handleRemoveOneNote = useCallback(
+    (id: string) => {
+      dispatch({ type: 'REMOVE_ONE_NOTE', payload: id })
+    },
+    [dispatch]
+  )
+  const handleAddOneNote = useCallback(
+    (note: any) => {
+      dispatch({ type: 'ADD_ONE_NOTE', payload: note })
+    },
+    [dispatch]
+  )
+  const handleSetNotesResponse = useCallback(
+    ({ data, pagination }: any) => {
+      dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
+    },
+    [dispatch]
+  )
 
   // --- LS
   const [pinnedMap, setPinnedMap] = useState<any | null>(null)
@@ -684,6 +703,24 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         })
       })
   }
+  const isIdPinned = useCallback(
+    (id: string) => {
+      if (!pinnedMap) return false
+      let result = false
+
+      // @ts-ignore
+      for (const ns in pinnedMap) {
+        // @ts-ignore
+        const ids = pinnedMap[ns].ids
+        if (!ids) result = false
+        if (ids.includes(id)) result = true
+      }
+
+      return result
+    },
+    [JSON.stringify(pinnedMap)]
+  )
+
   // ---
   const [qr, setQR] = useState<string | null>(null)
   const resetQR = useCallback(() => {
@@ -734,6 +771,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         localNotes,
         localNotesPinnedNamespaceMap,
         addNewLSData,
+        isIdPinned,
         // @ts-ignore
         qr,
         setQR,

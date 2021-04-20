@@ -1,7 +1,7 @@
-import { useEffect, useRef, useMemo, useCallback } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 // import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
-import { Icon, Label, Rating } from 'semantic-ui-react'
+import { Icon, Label } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
 import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/context'
@@ -23,11 +23,8 @@ import { mdiPinOff, mdiAutorenew, mdiFile } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
 import { PinNote } from '~/common/components/PinNote'
 import { ELSFields } from '~/common/context/GlobalAppContext'
-import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
-import CheckBoxIcon from '@material-ui/icons/CheckBox'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -62,7 +59,6 @@ const CloseBtn = ({ children, onClick }) => (
 )
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
-
 const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => {
   const {
     state,
@@ -76,10 +72,11 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     handleSearchByDescriptionSetText,
     handleSearchByTitleSetText,
     handleUnpinFromLS,
-    pinnedMap,
+    // pinnedMap,
     localNotes,
     showLocalNotesInList,
     setShowLocalNotesInListToggler,
+    isIdPinned,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
@@ -114,20 +111,6 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
   const { isMobile } = useWindowSize()
   const baseClasses = useBaseStyles()
   const router = useRouter()
-  const isIdPinned = useCallback(
-    (id) => {
-      let result
-
-      for (const ns in pinnedMap) {
-        const ids = pinnedMap[ns].ids
-        if (!ids) result = false
-        if (ids.includes(id)) result = true
-      }
-
-      return result
-    },
-    [JSON.stringify(pinnedMap)]
-  )
 
   return (
     <>
@@ -226,7 +209,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           >
             <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px', height: '42px' }}>
               <Label>
-                <Icon name="file" /> {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}
+                <Icon name="file" />
+                {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}
               </Label>
             </div>
             {!!ssrErrMsg && (
