@@ -89,7 +89,6 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
               size="small"
               color="secondary"
               onClick={() => {
-                console.log(id)
                 // @ts-ignore
                 handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.MainPinnedNamespaceMap)
                 setIsOpened(false)
