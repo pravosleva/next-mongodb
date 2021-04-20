@@ -2,6 +2,10 @@ import { useEffect, useState, useMemo } from 'react'
 import { TheNotePage } from '~/common/components/TheNotePage'
 import { useGlobalAppContext } from '~/common/hooks'
 import { useRouter } from 'next/router'
+import { Alert } from '@material-ui/lab'
+import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
+import Icon from '@mdi/react'
+import { mdiArrowRight } from '@mdi/js'
 
 const LocalNote = () => {
   const { localNotes, handleSetAsActiveNote } = useGlobalAppContext()
@@ -31,7 +35,25 @@ const LocalNote = () => {
     // @ts-ignore
     return <TheNotePage initNote={{ ...targetNote, isLocal: true }} />
   } else {
-    return <div style={{ margin: '16px 0 16px 0' }}>{specialMsg}</div>
+    return (
+      <div style={{ margin: '16px 0 16px 0' }}>
+        <Alert variant="outlined" severity="info" style={{ marginBottom: '16px' }}>
+          {/* <AlertTitle>Error</AlertTitle> */}
+          {specialMsg}
+        </Alert>
+        {/* <ThemedButton
+          size="small"
+          color={EColorValue.blueNoShadow}
+          variant="contained"
+          onClick={() => {
+            router.push('/')
+          }}
+          endIcon={<Icon path={mdiArrowRight} size={0.7} />}
+        >
+          Перейти на главную
+        </ThemedButton> */}
+      </div>
+    )
   }
 }
 

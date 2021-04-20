@@ -95,7 +95,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
   // const handleSetMinWidth = () => {
   //   setIsFullWidthContent(false)
   // }
-  const { isDesktop } = useWindowSize()
+  const { isDesktop, isMobile } = useWindowSize()
   const { addDangerNotif } = useNotifsContext()
   const copyLinkToClipboard = () => {
     try {
@@ -122,7 +122,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
           }
           className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}
         >
-          {isLogged && !isDeleting && !note.isLocal && (
+          {isLogged && !isDeleting && !note?.isLocal && (
             <>
               <ThemedButton size="small" color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete
@@ -184,7 +184,9 @@ export const TheNotePage = ({ initNote: note }: any) => {
     return (
       <>
         <h1>Oops...</h1>
-        <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
+        <div style={{ padding: isMobile ? '0px 8px 0px 8px' : '0px' }}>
+          <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
+        </div>
       </>
     )
 
