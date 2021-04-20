@@ -116,7 +116,7 @@ export const SocketContextProvider = ({ children }: any) => {
       // --
 
       // -- Update active note if necessary:
-      if (!!globalState.activeNote?._id) {
+      if (!!globalState.activeNote?._id && !globalState.activeNote.isLocal) {
         // TODO: Request activeNote._id should be requested
         console.log(`NOTE: Request for globalState.activeNote._id (${globalState.activeNote._id}) required`)
 
@@ -247,6 +247,9 @@ export const SocketContextProvider = ({ children }: any) => {
     addSuccessNotif({
       title: 'QR code',
       message,
+      dismiss: {
+        duration: 10000,
+      },
     })
   }
   const handleGetAllNotes = async () => {

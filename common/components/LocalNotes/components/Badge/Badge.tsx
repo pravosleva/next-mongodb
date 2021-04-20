@@ -40,7 +40,9 @@ export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveN
         className={clsx(classes.truncate, classes.badgeContent)}
         onClick={() => {
           onSetAsActiveNote({ id, title, description, isLocal: true })
-          router.push(`/local-notes/${id}`)
+          if (router.pathname !== '/') {
+            router.push(`/local-notes/${id}`)
+          }
         }}
       >
         {title}

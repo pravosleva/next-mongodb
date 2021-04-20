@@ -122,7 +122,7 @@ export class CrossDeviceSingleton {
       if (currentCounter + 1 >= authOnOtherDevicesLimit) {
         this.state.delete(reqId)
         return Promise.resolve({
-          message: 'Заметки были запрошены с другого устройства и удалены из временной памяти в облаке',
+          message: 'Запрос с другого устройства и удалены из временной памяти в облаке',
           data: targetLSData,
           haveToBeKilled: true,
         })
@@ -135,7 +135,7 @@ export class CrossDeviceSingleton {
 
         this.state.set(reqId, newData)
         return Promise.resolve({
-          message: `Заметки были запрошены с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
+          message: `Запрос с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
           data: newData,
           haveToBeKilled: false,
         })

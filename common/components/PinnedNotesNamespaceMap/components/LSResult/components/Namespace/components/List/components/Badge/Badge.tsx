@@ -40,14 +40,12 @@ export const Badge0 = ({ id }: TProps) => {
 
   const handleClick = useCallback(
     (id: string) => {
-      if (isFoundAsLocal && router.pathname !== '/') {
-        router.push(`/local-notes/${id}`)
-        return
-      }
-
       if (isFoundAsLocal && !!data) {
         handleSetAsActiveNote({ ...data, _id: data.id, isLocal: true })
-        return
+        if (router.pathname !== '/') {
+          router.push(`/local-notes/${id}`)
+          return
+        }
       }
 
       if (router.pathname !== '/') {

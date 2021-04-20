@@ -110,23 +110,38 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
         ))}
       {/* <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(note, null, 2)}</pre> */}
 
-      {!!_id && isTagsNessesary && !initialNote?.isLocal && (
+      {!!_id && isTagsNessesary && (
         <>
           <div style={{ borderBottom: '1px solid lightgray' }} />
           <div className={clsx(baseClasses.actionsBoxLeft, baseClasses.standardCardFooter)}>
-            <Button
-              // disabled={isNotesLoading}
-              variant="contained"
-              size="small"
-              color="primary"
-              onClick={() => {
-                router.push(`/notes/${_id}`)
-              }}
-              startIcon={<ArrowForwardIcon />}
-            >
-              View
-            </Button>
-            {isLogged && (
+            {!initialNote?.isLocal ? (
+              <Button
+                // disabled={isNotesLoading}
+                variant="contained"
+                size="small"
+                color="primary"
+                onClick={() => {
+                  router.push(`/notes/${_id}`)
+                }}
+                startIcon={<ArrowForwardIcon />}
+              >
+                View
+              </Button>
+            ) : (
+              <Button
+                // disabled={isNotesLoading}
+                variant="contained"
+                size="small"
+                color="secondary"
+                onClick={() => {
+                  router.push(`/local-notes/${_id}`)
+                }}
+                startIcon={<ArrowForwardIcon />}
+              >
+                View
+              </Button>
+            )}
+            {isLogged && !initialNote?.isLocal && (
               <Button
                 // disabled={isNotesLoading}
                 variant="outlined"
@@ -161,27 +176,6 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
             <Tags title={title} />
           </div>
         </>
-      )}
-      {!!_id && isTagsNessesary && initialNote?.isLocal && (
-        <div style={{ padding: '0 8px 0 8px' }} className={baseClasses.actionsBoxLeft}>
-          {!isPinned ? (
-            <PinNote id={_id} />
-          ) : (
-            <Button
-              variant="outlined"
-              size="small"
-              color="secondary"
-              onClick={() => {
-                handleUnpinFromLS(_id, ELSFields.MainPinnedNamespaceMap)
-                // console.log('IN PROGRESS...')
-              }}
-              startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
-              disabled={!isPinned}
-            >
-              Unpin
-            </Button>
-          )}
-        </div>
       )}
     </div>
   )

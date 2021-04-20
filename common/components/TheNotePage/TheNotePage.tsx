@@ -122,7 +122,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
           }
           className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}
         >
-          {isLogged && !isDeleting && (
+          {isLogged && !isDeleting && !note.isLocal && (
             <>
               <ThemedButton size="small" color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete

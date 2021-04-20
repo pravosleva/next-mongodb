@@ -24,6 +24,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     contentBox: {
+      // border: '1px solid red',
       display: 'flex',
       // boxSizing: 'border-box',
       width: '100%',
