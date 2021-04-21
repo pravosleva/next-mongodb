@@ -23,7 +23,8 @@ export const Widget: React.FC<TProps> = ({ children, isMobileOnly }) => {
   const router = useRouter()
 
   if (isMobileOnly && isDesktop) return null
-  if (router.pathname !== '/' && router.pathname !== '/notes/[id]') return null
+  // if (router.pathname !== '/' && router.pathname !== '/notes/[id]') return null
+  if (router.pathname === '/notes/[id]/edit') return null
 
   return (
     <>

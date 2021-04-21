@@ -135,7 +135,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
                 // disabled={isNotesLoading}
                 variant="outlined"
                 size="small"
-                color="secondary"
+                color="primary"
                 onClick={() => {
                   router.push(`/notes/${_id}/edit`)
                 }}
@@ -151,7 +151,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
               <Button
                 variant="outlined"
                 size="small"
-                color="secondary"
+                color={initialNote?.isLocal ? 'secondary' : 'primary'}
                 onClick={() => {
                   handleUnpinFromLS(_id, ELSFields.MainPinnedNamespaceMap)
                 }}
