@@ -273,7 +273,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                             // disabled={isNotesLoading}
                             variant="outlined"
                             size="small"
-                            color="secondary"
+                            color="primary"
                             onClick={() => {
                               router.push(`/notes/${note._id}/edit`)
                             }}

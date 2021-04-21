@@ -127,7 +127,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
               <ThemedButton size="small" color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete
               </ThemedButton>
-              <Button size="small" color="default" variant="outlined" onClick={handleEdit} endIcon={<EditIcon />}>
+              <Button size="small" color="primary" variant="outlined" onClick={handleEdit} endIcon={<EditIcon />}>
                 Edit
               </Button>
             </>
@@ -152,7 +152,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
             <Button
               variant="outlined"
               size="small"
-              color="secondary"
+              color={note.isLocal ? 'secondary' : 'primary'}
               onClick={() => {
                 if (typeof noteId === 'string') handleUnpinFromLS(noteId, ELSFields.MainPinnedNamespaceMap)
                 // TODO: Notif
