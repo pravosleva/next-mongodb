@@ -288,7 +288,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                           <MuiButton
                             variant="outlined"
                             size="small"
-                            color="secondary"
+                            color={note.isLocal ? 'secondary' : 'primary'}
                             onClick={() => {
                               handleUnpinFromLS(note._id, ELSFields.MainPinnedNamespaceMap)
                             }}
