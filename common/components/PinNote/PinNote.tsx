@@ -6,7 +6,7 @@ import MdiIcon from '@mdi/react'
 import { mdiPin } from '@mdi/js'
 import { ELSFields } from '~/common/context/GlobalAppContext'
 
-export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => {
+export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolean; [key: string]: any }) => {
   // eslint-disable-next-line no-console
   // const onSubmit = (data: any) => console.log(data)
   // const ref = useRef(null)
@@ -71,6 +71,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
                 {...params}
                 label="Namespace"
                 variant="outlined"
+                color={isLocal ? 'secondary' : 'primary'}
                 // size="small"
               />
             )}
@@ -87,7 +88,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
               // disabled={isNotesLoading}
               variant="contained"
               size="small"
-              color="secondary"
+              color={isLocal ? 'secondary' : 'primary'}
               onClick={() => {
                 // @ts-ignore
                 handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.MainPinnedNamespaceMap)

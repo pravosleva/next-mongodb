@@ -283,7 +283,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                           </MuiButton>
                         )}
                         {!isIdPinned(note._id) ? (
-                          <PinNote id={note._id} />
+                          <PinNote id={note._id} isLocal={note.isLocal} />
                         ) : (
                           <MuiButton
                             variant="outlined"

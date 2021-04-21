@@ -146,7 +146,7 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
             )}
 
             {!isPinned ? (
-              <PinNote id={_id} />
+              <PinNote id={_id} isLocal={initialNote.isLocal} />
             ) : (
               <Button
                 variant="outlined"

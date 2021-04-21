@@ -147,7 +147,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
           )*/}
 
           {!isPinned && !!noteId && typeof noteId === 'string' ? (
-            <PinNote id={noteId} />
+            <PinNote id={noteId} isLocal={note.isLocal} />
           ) : (
             <Button
               variant="outlined"
