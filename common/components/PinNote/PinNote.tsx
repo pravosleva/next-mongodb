@@ -38,7 +38,7 @@ export const PinNote = ({ id, ...rest }: { id: string; [key: string]: any }) => 
             // handlePinToLS({ id })
             setIsOpened(true)
           }}
-          endIcon={<MdiIcon path={mdiPin} size={0.7} />}
+          startIcon={<MdiIcon path={mdiPin} size={0.7} />}
           // disabled={isIdPinned(note._id)}
           {...rest}
         >
