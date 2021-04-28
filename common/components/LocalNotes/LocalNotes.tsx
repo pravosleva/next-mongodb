@@ -10,6 +10,10 @@ import { httpClient } from '~/utils/httpClient'
 // import TextField from '@material-ui/core/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useSocketContext } from '~/common/hooks'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/core/styles'
 
 export const LocalNotes = () => {
   const { localNotes, removeLocalNote, handleSetAsActiveNote, qr, setQR, resetQR } = useGlobalAppContext()
@@ -37,6 +41,9 @@ export const LocalNotes = () => {
   // const { addInfoNotif } = useNotifsContext()
   const { state } = useSocketContext()
 
+  const theme = useTheme()
+  const isFullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
     <>
       {!hasAnyLocalNote && !isEditorOpened && (
@@ -45,19 +52,19 @@ export const LocalNotes = () => {
           Let's try
         </Alert>
       )}
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={isEditorOpened}
+        fullScreen={isFullScreen}
+      >
+        <DialogContent dividers>
+          <CreateNewLocalNoteBtn initialStateForEdit={editorDefaultState} onClose={handleClose} />
+        </DialogContent>
+      </Dialog>
       {!qr && (
         <>
-          {isEditorOpened ? (
-            Object.keys(editorDefaultState).length > 0 && (
-              <div
-                style={{
-                  marginBottom: '8px',
-                }}
-              >
-                <CreateNewLocalNoteBtn initialStateForEdit={editorDefaultState} onClose={handleClose} />
-              </div>
-            )
-          ) : (
+          {isEditorOpened ? null : ( // ) //   </div> //     <CreateNewLocalNoteBtn initialStateForEdit={editorDefaultState} onClose={handleClose} /> //   > //     }} //       marginBottom: '8px', //     style={{ //   <div // Object.keys(editorDefaultState).length > 0 && (
             <ThemedButton
               style={{ marginBottom: !!localNotes && localNotes.length > 0 ? '8px' : '0px' }}
               fullWidth
