@@ -135,7 +135,7 @@ export const CreateNewLocalNoteBtn = ({
           onClose()
         }}
       >
-        Close
+        Close and Remove
       </ThemedButton>
     </div>
   )

@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
-import { useGlobalAppContext } from '~/common/hooks'
+import { useGlobalAppContext, useWindowSize } from '~/common/hooks'
 import { Badge, CreateNewLocalNoteBtn } from './components'
 import { useStyles } from './styles'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
@@ -43,6 +43,7 @@ export const LocalNotes = () => {
 
   const theme = useTheme()
   const isFullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const { isMobile } = useWindowSize()
 
   return (
     <>
@@ -57,8 +58,9 @@ export const LocalNotes = () => {
         aria-labelledby="customized-dialog-title"
         open={isEditorOpened}
         fullScreen={isFullScreen}
+        // maxWidth="md"
       >
-        <DialogContent dividers>
+        <DialogContent style={{ width: isMobile ? '100%' : '400px' }} dividers>
           <CreateNewLocalNoteBtn initialStateForEdit={editorDefaultState} onClose={handleClose} />
         </DialogContent>
       </Dialog>
