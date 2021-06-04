@@ -153,6 +153,7 @@ function reducer(state: any, action: any) {
     case 'SEARCH_BY_ANYTHING@RESET':
       return { ...state, searchByDescription: '', searchByTitle: '', localPage: 1 }
     case 'ACTIVE_NOTE@SET':
+      // console.log(action.payload)
       return { ...state, activeNote: action.payload }
     case 'ACTIVE_NOTE@RESET':
       return { ...state, activeNote: null }
@@ -510,7 +511,6 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         // setPinnedIds([id])
 
         // V2:
-        // TODO
         addDangerNotif({ title: 'addItemToLS()', message })
       })
   }

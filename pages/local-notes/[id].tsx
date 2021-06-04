@@ -33,7 +33,7 @@ const LocalNote = () => {
 
   if (!!targetNote) {
     // @ts-ignore
-    return <TheNotePage initNote={{ ...targetNote, isLocal: true }} />
+    return <TheNotePage key={targetNote.id} initNote={{ ...targetNote, isLocal: true }} />
   } else {
     return (
       <div style={{ margin: '16px 0 16px 0' }}>
