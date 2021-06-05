@@ -29,7 +29,7 @@ export const useStyles = makeStyles((theme) => ({
     height: '0',
     overflow: 'hidden',
     backgroundColor: '#000',
-    borderRadius: '4px',
+    borderRadius: '8px',
     // [theme.breakpoints.down('sm')]: {
     //   marginBottom: '25px',
     // },
