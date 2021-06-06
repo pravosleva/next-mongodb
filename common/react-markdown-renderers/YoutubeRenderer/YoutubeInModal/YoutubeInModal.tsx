@@ -45,7 +45,7 @@ export const YoutubeInModal = ({ previewSrc, videoId }: TProps) => {
       </div>
 
       <TransparentModal isOpened={isOpened} onClose={() => modalToggler(false)}>
-        <div style={{ width: isDesktop ? '550px' : '300px' }}>
+        <div style={{ width: isDesktop ? '750px' : '300px' }}>
           <YoutubePlayer
             videoId={videoId}
             opts={{
