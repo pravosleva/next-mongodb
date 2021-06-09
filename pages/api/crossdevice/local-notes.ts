@@ -86,7 +86,7 @@ const crossdeviceApi = async (
         console.log('---')
         // ---
 
-        const qrPayload = JSON.stringify(lsData)
+        const qrPayload = JSON.stringify({ descr: 'This obj is unnecessary. For example only.' })
         const yourData: { reqId: string } & Partial<TMapValue> = {
           ip,
           geo,
