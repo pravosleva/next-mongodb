@@ -9,16 +9,20 @@ import { useStyles } from './styles'
 import Icon from '@mdi/react'
 import { mdiContentSave } from '@mdi/js'
 import { ELSFields } from '~/common/context'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 
 type TForm = {
   id?: string
   title: string
   description: string
+  isPrivate: boolean
 }
 
 const initialState: TForm = {
   title: '',
   description: '',
+  isPrivate: false,
 }
 
 export const CreateNewLocalNoteBtn = ({
@@ -91,6 +95,13 @@ export const CreateNewLocalNoteBtn = ({
         InputProps={{ inputProps: { maxLength: 2000 } }}
       />
 
+      <FormControlLabel
+        control={
+          <Checkbox checked={formData.isPrivate} onChange={handleInputChange} name="isPrivate" color="primary" />
+        }
+        label="Is Private"
+      />
+
       {!!isFormCorrect && (
         <ThemedButton
           color={EColorValue.blueNoShadow}
@@ -102,6 +113,7 @@ export const CreateNewLocalNoteBtn = ({
               id: formData.id || undefined,
               title: formData.title.trim(),
               description: formData.description.trim(),
+              isPrivate: formData.isPrivate,
               cbSuccess: (_arr: any[]) => {
                 resetForm()
                 onClose()

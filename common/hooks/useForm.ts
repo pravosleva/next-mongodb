@@ -11,10 +11,20 @@ export const useForm = (initialState = {}): TProps => {
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    switch (e.target.type) {
+      case 'checkbox':
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.checked,
+        })
+        break
+      default:
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        })
+        break
+    }
   }
 
   return { formData, handleInputChange, resetForm }
