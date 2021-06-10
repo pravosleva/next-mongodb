@@ -30,7 +30,7 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
         <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '16px' }}>
           <AlertTitle>New notes added</AlertTitle>
           <div style={{ marginBottom: '8px' }}>{message}</div>
-          <pre style={{ whiteSpace: 'pre-wrap', margin: '0px' }}>
+          <pre style={{ whiteSpace: 'pre-wrap', margin: '0px', overflow: 'auto' }}>
             {JSON.stringify(
               {
                 ip: data.ip,
