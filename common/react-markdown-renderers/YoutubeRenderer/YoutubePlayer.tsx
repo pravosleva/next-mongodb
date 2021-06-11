@@ -4,9 +4,10 @@ import { useStyles } from './styles'
 interface IProps {
   id?: string
   videoId: string
+  opts: any
 }
 
-export const YoutubePlayer = ({ videoId }: IProps) => {
+export const YoutubePlayer = ({ videoId, opts = {} }: IProps) => {
   const classes = useStyles()
 
   return (
@@ -16,7 +17,7 @@ export const YoutubePlayer = ({ videoId }: IProps) => {
       ) : (
         <div className={classes.externalWrapper}>
           <div className={classes.reactYoutubeContainer}>
-            <YouTubeVideo videoId={videoId} className={classes.reactYoutube} />
+            <YouTubeVideo videoId={videoId} className={classes.reactYoutube} {...opts} />
           </div>
         </div>
       )}

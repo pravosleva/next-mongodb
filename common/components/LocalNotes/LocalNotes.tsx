@@ -29,9 +29,9 @@ export const LocalNotes = () => {
   const hasAnyLocalNote = useMemo(() => localNotes.length > 0, [localNotes])
 
   const handleEdit = useCallback(
-    ({ id, title, description }: any) => {
+    ({ id, title, description, isPrivate = false }: any) => {
       resetQR()
-      setEditorDefaultState({ id, title, description })
+      setEditorDefaultState({ id, title, description, isPrivate })
       handleOpen()
       removeLocalNote(id)
     },
@@ -74,7 +74,7 @@ export const LocalNotes = () => {
               color={EColorValue.blueNoShadow}
               variant="contained"
               onClick={() => {
-                setEditorDefaultState({ title: '', description: '' })
+                setEditorDefaultState({ title: '', description: '', isPrivate: false })
                 handleOpen()
               }}
               startIcon={<Icon path={mdiPlus} size={0.7} />}
@@ -97,7 +97,10 @@ export const LocalNotes = () => {
                 setIsQRLoading(true)
                 // addInfoNotif({ message: 'Coming soon...', onRemoval: () => { setIsQRLoading(false) } })
                 httpClient
-                  .saveMyLocalNotes({ lsData: localNotes, socketId: state.socketId })
+                  .saveMyLocalNotes({
+                    lsData: localNotes.filter(({ isPrivate }) => !isPrivate),
+                    socketId: state.socketId,
+                  })
                   .then(({ qr }) => {
                     setQR(qr)
                   })
@@ -142,12 +145,13 @@ export const LocalNotes = () => {
 
       {!!localNotes && localNotes.length > 0 && (
         <div className={classes.badgesList}>
-          {localNotes.map(({ id, title, description }) => (
+          {localNotes.map(({ id, title, description, isPrivate }) => (
             <Badge
               key={id}
               id={id}
               title={title}
               description={description}
+              isPrivate={isPrivate}
               onEdit={handleEdit}
               showEdit={!isEditorOpened}
               onSetAsActiveNote={(data) => {

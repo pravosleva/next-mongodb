@@ -11,6 +11,7 @@ type TNote = {
   id: string
   title: string
   description: string
+  isPrivate: boolean
 }
 type TProps = {
   onEdit: (note: TNote) => void
@@ -19,7 +20,16 @@ type TProps = {
   onDelete: () => void
 }
 
-export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveNote, onDelete }: TNote & TProps) => {
+export const Badge = ({
+  id,
+  title,
+  description,
+  isPrivate,
+  onEdit,
+  showEdit,
+  onSetAsActiveNote,
+  onDelete,
+}: TNote & TProps) => {
   const classes = useStyles()
   const { removeLocalNote, state, handleResetActiveNote, handleUnpinFromLS, isPinnedToLS } = useGlobalAppContext()
   const { activeNote } = useMemo(() => state, [JSON.stringify(state)])
@@ -39,19 +49,20 @@ export const Badge = ({ id, title, description, onEdit, showEdit, onSetAsActiveN
       <div
         className={clsx(classes.truncate, classes.badgeContent)}
         onClick={() => {
-          onSetAsActiveNote({ id, title, description, isLocal: true })
+          onSetAsActiveNote({ id, title, description, isLocal: true, isPrivate })
           if (router.pathname !== '/') {
             router.push(`/local-notes/${id}`)
           }
         }}
       >
+        {isPrivate ? '🛡️ ' : ''}
         {title}
       </div>
       {showEdit && (
         <div
           className={classes.editButton}
           onClick={() => {
-            onEdit({ id, title, description })
+            onEdit({ id, title, description, isPrivate })
           }}
         >
           <Icon path={mdiPencil} size={0.7} />

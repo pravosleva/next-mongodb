@@ -111,6 +111,7 @@ export const GlobalAppContext = createContext({
     id?: string
     title: string
     description: string
+    isPrivate: boolean
     cbSuccess: (localNotes: any[]) => void
   }): void | never => {
     throw new Error('saveLocalNote method should be implemented')
@@ -420,9 +421,10 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     title: 'New',
     description: 'Descr',
     ids: [],
+    isPrivate: false,
   }
   const createNamespacePromise = async (opts: any, lsField: ELSFields) => {
-    const { namespace, title, description, limit = defautOptions.limit } = opts
+    const { namespace, title, description, limit = defautOptions.limit, isPrivate = defautOptions.isPrivate } = opts
     if (!namespace || !title || !limit) {
       const message = 'Condition warning: !namespace || !title || !limit'
 
@@ -442,6 +444,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
             description,
             limit,
             ts: new Date().getTime(),
+            isPrivate,
           },
           ...lsData,
         }
@@ -597,11 +600,13 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     id: __id,
     title,
     description,
+    isPrivate,
     cbSuccess,
   }: {
     id?: string
     title: string
     description: string
+    isPrivate: boolean
     cbSuccess?: (notes: any[]) => void
   }) => {
     if (!title || !description) {
@@ -615,6 +620,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       id,
       title,
       description,
+      isPrivate,
     }
 
     getFieldFromLS(ELSFields.LocalNotes, true)

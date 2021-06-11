@@ -3,9 +3,11 @@ import YouTubeVideo from 'react-youtube'
 import { useStyles } from './styles'
 import clsx from 'clsx'
 import { Alert, AlertTitle } from '@material-ui/lab'
+import { YoutubeInModal } from '../YoutubeInModal'
 
 type TProps = {
   json: string
+  inModal?: boolean
 }
 
 function isJsonString(str: string) {
@@ -17,7 +19,7 @@ function isJsonString(str: string) {
   return true
 }
 
-export const YoutubeGrid = ({ json }: TProps) => {
+export const YoutubeGrid = ({ json, inModal }: TProps) => {
   const classes = useStyles()
   const isValidJson = useMemo(() => isJsonString(json), [json])
 
@@ -46,7 +48,11 @@ export const YoutubeGrid = ({ json }: TProps) => {
           {videoIds.map((id: string, i: number) => (
             <div key={i} className={clsx('grid-item', classes.externalWrapper)}>
               <div className={classes.reactYoutubeContainer}>
-                <YouTubeVideo videoId={id} className={classes.reactYoutube} />
+                {inModal ? (
+                  <YoutubeInModal videoId={id} />
+                ) : (
+                  <YouTubeVideo videoId={id} className={classes.reactYoutube} />
+                )}
               </div>
             </div>
           ))}
