@@ -108,9 +108,10 @@ const crossdeviceApi = async (
           qr,
           success: true,
         })
-      } catch (e) {
+      } catch (err) {
         return res.status(500).send({
-          message: `Error: ${e?.message || '(no err.message)'}`,
+          // @ts-ignore
+          message: typeof err === 'string' ? err : `Error: ${err?.message || '(no err.message)'}`,
           _originalReqBody: body,
         })
       }
@@ -166,10 +167,11 @@ const crossdeviceApi = async (
         // console.log('---')
 
         return res.status(status).json(result)
-      } catch (e) {
+      } catch (err) {
         return res.status(500).json({
           success: false,
-          message: `Error: ${e?.message || '(no err.message)'}`,
+          // @ts-ignore
+          message: typeof err === 'string' ? err : `Error: ${err?.message || '(no err.message)'}`,
           _originalReqQuery: req.query,
         })
       }

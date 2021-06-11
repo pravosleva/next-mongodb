@@ -107,6 +107,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
       // console.log(err)
       addDangerNotif({
         title: 'Error',
+        // @ts-ignore
         message: typeof err === 'string' ? err : err?.message || 'No err.message',
       })
     }
@@ -147,12 +148,12 @@ export const TheNotePage = ({ initNote: note }: any) => {
           )*/}
 
           {!isPinned && !!noteId && typeof noteId === 'string' ? (
-            <PinNote id={noteId} isLocal={note.isLocal} />
+            <PinNote id={noteId} isLocal={note?.isLocal} />
           ) : (
             <Button
               variant="outlined"
               size="small"
-              color={note.isLocal ? 'secondary' : 'primary'}
+              color={note?.isLocal ? 'secondary' : 'primary'}
               onClick={() => {
                 if (typeof noteId === 'string') handleUnpinFromLS(noteId, ELSFields.MainPinnedNamespaceMap)
                 // TODO: Notif
