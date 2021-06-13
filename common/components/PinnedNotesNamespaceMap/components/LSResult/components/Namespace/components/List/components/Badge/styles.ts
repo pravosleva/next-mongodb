@@ -33,13 +33,13 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     defaultBadge: {},
     defaultPrivate: {
-      backgroundColor: '#ffbf69', // Orange
+      // backgroundColor: '#ffbf69', // Orange
+      // backgroundColor: 'lightgray', // Grey
       color: 'inherit',
-      '&:hover': {
-        backgroundColor: '#ff8e53',
-        color: '#FFF',
-        // opacity: 0.7,
-      },
+      // '&:hover': {
+      //   backgroundColor: '#b09e99',
+      //   color: '#FFF',
+      // },
     },
     defaultNotPrivate: {
       // backgroundColor: theme.palette.primary.main,
@@ -64,11 +64,13 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     activePrivate: {
       // backgroundColor: '#f44336',
-      backgroundColor: '#ff8e53', // Orange
+      // backgroundColor: '#ff8e53', // Orange
+      backgroundColor: '#b09e99', // Grey
       color: '#FFF !important',
       '&:hover': {
         // backgroundColor: '#f44336',
-        backgroundColor: '#ff8e53',
+        // backgroundColor: '#ff8e53', // Orange
+        backgroundColor: '#b09e99', // Grey
         // opacity: 0.75,
       },
     },

@@ -184,15 +184,16 @@ h1 {
 }
 .private-card-wrapper {
   /* border: 2px dashed red; */
-  /* background: linear-gradient(45deg, #ffe1a8 30%, #ffbf69 90%); */
-  background: linear-gradient(180deg, #ff8e53 30%, #ffbf69 90%);
+  /* background: linear-gradient(45deg, #ffe1a8 30%, #fee9e1 90%); */
+  background: linear-gradient(180deg, #b09e99 30%, #fee9e1 90%);
 }
 .private-card-wrapper {
   color: #fff !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
 }
 
 .active-card-wrapper.private-card-wrapper {
-  border: 2px solid #ff8e53 !important;
+  border: 2px solid #b09e99 !important;
 }
 
 .navbar {
@@ -315,7 +316,7 @@ h1 {
 }
 .todo-item_private {
   /* border-top: 8px solid #f44336; */
-  border-top: 8px solid #ff8e53;
+  border-top: 8px solid #b09e99;
 }
 .todo-item_local {
   /* border-top: 8px solid #f44336; */

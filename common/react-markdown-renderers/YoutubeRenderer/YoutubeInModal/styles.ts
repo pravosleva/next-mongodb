@@ -16,7 +16,10 @@ export const useStyles = makeStyles((theme) => ({
 
     borderRadius: '8px',
     [theme.breakpoints.down('sm')]: {
-      marginBottom: '25px',
+      marginBottom: '8px',
+    },
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '8px',
     },
     cursor: 'pointer',
 
