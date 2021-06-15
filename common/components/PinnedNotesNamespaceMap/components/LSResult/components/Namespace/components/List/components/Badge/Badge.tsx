@@ -6,6 +6,7 @@ import { useAuthContext } from '~/common/hooks'
 import { CircularProgress } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useNotifsContext, useGlobalAppContext } from '~/common/hooks'
+import { useWidgetContext, EWidgetNames } from '~/common/components/Widget'
 
 type TProps = {
   id: string
@@ -24,6 +25,7 @@ export const Badge0 = ({ id }: TProps) => {
   const router = useRouter()
   const isActive = useMemo(() => id === activeNote?._id, [activeNote, id])
   const [isFoundAsLocal, setIsFoundAsLocal] = useState<boolean>(false)
+  const { widgetToggler } = useWidgetContext()
 
   const tryToSearchAsLocal = (id: string): Promise<any> => {
     // NOTE: 1. Попробовать найти в LS
@@ -60,6 +62,7 @@ export const Badge0 = ({ id }: TProps) => {
       const fromState = state.notes.find(({ _id }: any) => _id === id)
       if (!!fromState) {
         handleSetAsActiveNote(fromState)
+        widgetToggler(EWidgetNames.AnyNotes)
       } else {
         // addDefaultNotif({
         //   title: 'TODO',
@@ -78,12 +81,14 @@ export const Badge0 = ({ id }: TProps) => {
             setIsFoundAsLocal(true)
             setIsLoaded(true)
             setErrorMsg(null)
+            widgetToggler(EWidgetNames.AnyNotes)
           })
           .catch((_err) => {
             httpClient
               .getNote(id)
               .then((data) => {
                 handleSetAsActiveNote(data)
+                widgetToggler(EWidgetNames.AnyNotes)
               })
               .catch((err) => {
                 addDangerNotif({

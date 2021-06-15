@@ -20,7 +20,7 @@ import { theme } from '~/common/styled-mui/theme'
 // import { ExternalChatWidget } from '~/common/components/ExternalChatWidget'
 // import { ExternalPrivateFrameWidget } from '~/common/components/ExternalPrivateFrameWidget'
 import { SidebarContent } from '~/common/components/SidebarContent'
-import { Widget } from '~/common/components/Widget'
+import { Widget, EWidgetNames, WidgetContextProvider } from '~/common/components/Widget'
 import '~/wdyr'
 
 class MyApp extends NextApp {
@@ -57,9 +57,11 @@ class MyApp extends NextApp {
                   <SocketContextProvider>
                     <Layout>
                       <Component {...pageProps} />
-                      <Widget isMobileOnly>
-                        <SidebarContent />
-                      </Widget>
+                      <WidgetContextProvider>
+                        <Widget isMobileOnly widgetName={EWidgetNames.AnyNotes}>
+                          <SidebarContent />
+                        </Widget>
+                      </WidgetContextProvider>
                     </Layout>
                   </SocketContextProvider>
                 </GlobalAppContextProvider>

@@ -6,6 +6,7 @@ import Icon from '@mdi/react'
 import { mdiPencil, mdiDelete } from '@mdi/js'
 import { ELSFields } from '~/common/context'
 import { useRouter } from 'next/router'
+import { useWidgetContext, EWidgetNames } from '~/common/components/Widget'
 
 type TNote = {
   id: string
@@ -36,6 +37,7 @@ export const Badge = ({
   const isActive = useMemo(() => id === activeNote?._id, [activeNote, id])
   // const { addWarningNotif } = useNotifsContext()
   const router = useRouter()
+  const { widgetToggler } = useWidgetContext()
 
   return (
     <div
@@ -53,6 +55,7 @@ export const Badge = ({
           if (router.pathname !== '/') {
             router.push(`/local-notes/${id}`)
           }
+          widgetToggler(EWidgetNames.AnyNotes)
         }}
       >
         {isPrivate ? '🛡️ ' : ''}
