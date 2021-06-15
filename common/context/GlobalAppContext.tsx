@@ -134,6 +134,9 @@ export const GlobalAppContext = createContext({
   getFieldFromLS: async (_lsField: ELSFields, _shouldBeAsJson: boolean): Promise<any> => {
     return Promise.reject('getFieldFromLS method should be implemented')
   },
+  setFieldToLS: async (_fieldName: string, _value: any, _asJson: boolean): Promise<any> => {
+    return Promise.reject('setFieldToLS method should be implemented')
+  },
   showLocalNotesInList: false,
   setShowLocalNotesInListToggler: (_val?: boolean): void | never => {
     throw new Error('setShowLocalNotesInListToggler method should be implemented')
@@ -198,6 +201,7 @@ export enum ELSFields {
   MainPinnedNamespaceMap = 'pinned-namespace-map',
   LocalNotesPinnedNamespaceMap = 'pinned-namespace-map.local',
   LocalNotes = 'my-local-notes',
+  PinnedNotesSearchField = 'pinned-notes-search-field',
 }
 
 export const GlobalAppContextProvider = ({ children }: any) => {
@@ -783,6 +787,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         setQR,
         resetQR,
         getFieldFromLS,
+        setFieldToLS,
         showLocalNotesInList,
         setShowLocalNotesInListToggler,
       }}

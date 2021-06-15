@@ -174,7 +174,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                 boundaryCount={3}
                 color="primary"
                 count={totalPages}
-                variant="otlined"
+                variant="outlined"
               />
             </div>
           </Box>
@@ -337,7 +337,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                     boundaryCount={3}
                     color="primary"
                     count={totalPages}
-                    variant="otlined"
+                    variant="outlined"
                   />
                 </div>
               </Box>

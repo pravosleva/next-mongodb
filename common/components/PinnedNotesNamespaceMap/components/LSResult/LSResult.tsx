@@ -1,10 +1,12 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useEffect } from 'react'
 import { useGlobalAppContext, useForm } from '~/common/hooks'
+import { ELSFields } from '~/common/context/GlobalAppContext'
 import TextField from '@material-ui/core/TextField'
 import { useStyles } from './styles'
 import { Namespace } from './components'
 import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 import clsx from 'clsx'
+import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 
 type TForm = {
   byTitleOrDescr: string
@@ -16,7 +18,7 @@ const initialState: TForm = {
 
 export const LSResult = () => {
   const classes = useStyles()
-  const { pinnedMap } = useGlobalAppContext()
+  const { pinnedMap, setFieldToLS, getFieldFromLS } = useGlobalAppContext()
   const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
   const { formData, handleInputChange } = useForm(initialState)
   const checkByTitleOrDescr = useCallback(
@@ -34,6 +36,39 @@ export const LSResult = () => {
     },
     [formData.byTitleOrDescr]
   )
+  const clearSerch = useCallback(() => {
+    handleInputChange({ target: { value: '', name: 'byTitleOrDescr' } })
+    setFieldToLS(ELSFields.PinnedNotesSearchField, { byTitleOrDescr: '' }, true)
+  }, [handleInputChange, setFieldToLS])
+  useEffect(() => {
+    getFieldFromLS(ELSFields.PinnedNotesSearchField, true)
+      .then((jsonFromLS) => {
+        if (!!jsonFromLS.byTitleOrDescr) {
+          handleInputChange({ target: { value: jsonFromLS.byTitleOrDescr, name: 'byTitleOrDescr' } })
+        }
+      })
+      .catch(() => {})
+  }, [])
+  // const pinnedKeysToDisplay = useMemo(
+  //   () =>
+  //     pinnedMapKeys
+  //       .map((key) => {
+  //         // @ts-ignore
+  //         // const data = pinnedMap ? pinnedMap[key] : null
+  //         const shouldBeDisplayed = checkByTitleOrDescr({
+  //           // @ts-ignore
+  //           title: pinnedMap[key].title,
+  //           // @ts-ignore
+  //           description: pinnedMap[key].description || '',
+  //         })
+
+  //         if (!shouldBeDisplayed) return 0
+  //         return 1
+  //         // return <Namespace key={key} data={data} />
+  //       })
+  //       .filter((elm) => elm === 1),
+  //   [pinnedMapKeys, pinnedMap, checkByTitleOrDescr]
+  // )
 
   return (
     <div className={classes.wrapper}>
@@ -41,6 +76,7 @@ export const LSResult = () => {
       {pinnedMapKeys.length > 0 && (
         <TextField
           className="search"
+          // style={{ marginBottom: '8px' }}
           // autoFocus
           size="small"
           label="Search by title or description"
@@ -51,10 +87,25 @@ export const LSResult = () => {
           placeholder="Search..."
           name="byTitleOrDescr"
           value={formData.byTitleOrDescr}
-          onChange={handleInputChange}
+          onChange={(e) => {
+            handleInputChange(e)
+            setFieldToLS(ELSFields.PinnedNotesSearchField, { byTitleOrDescr: e.target.value }, true)
+          }}
           autoComplete="off"
         />
       )}
+      <ThemedButton
+        size="small"
+        color={EColorValue.grey}
+        variant="contained"
+        onClick={clearSerch}
+        className="clear-btn"
+        // fullWidth
+        // endIcon={<MdiIcon path={mdiPencil} size={0.7} />}
+        disabled={formData.byTitleOrDescr.length === 0}
+      >
+        Clear
+      </ThemedButton>
       {!!pinnedMap &&
         pinnedMapKeys.map((key) => {
           // @ts-ignore

@@ -3,7 +3,10 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrapper: {
-      '& > .search': { marginBottom: theme.spacing(2) },
+      '& > .search': { marginBottom: theme.spacing(1) },
+      '& > .clear-btn': {
+        marginBottom: theme.spacing(2),
+      },
       display: 'flex',
       flexDirection: 'column',
       '& > div.collapsible-wrapper:last-child > div': {

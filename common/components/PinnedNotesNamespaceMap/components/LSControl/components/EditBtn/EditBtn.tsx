@@ -153,7 +153,7 @@ const initialState = {
 // @ts-ignore
 export const EditBtn = ({ namespace, data }: TProps) => {
   const classes = useStyles()
-  const [isFromOpened, setIsFormOpened] = useState<boolean>(false)
+  const [isFormOpened, setIsFormOpened] = useState<boolean>(false)
   const handleOpen = useCallback(() => {
     setIsFormOpened(true)
   }, [setIsFormOpened])
@@ -213,7 +213,7 @@ export const EditBtn = ({ namespace, data }: TProps) => {
 
   return (
     <div className={classes.wrapper}>
-      {!isFromOpened ? (
+      {!isFormOpened ? (
         <ThemedButton
           size="small"
           color={EColorValue.grey}
