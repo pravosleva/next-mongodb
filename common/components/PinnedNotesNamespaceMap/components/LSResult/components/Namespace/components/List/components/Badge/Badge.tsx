@@ -81,14 +81,12 @@ export const Badge0 = ({ id }: TProps) => {
             setIsFoundAsLocal(true)
             setIsLoaded(true)
             setErrorMsg(null)
-            widgetToggler(EWidgetNames.AnyNotes)
           })
           .catch((_err) => {
             httpClient
               .getNote(id)
               .then((data) => {
                 handleSetAsActiveNote(data)
-                widgetToggler(EWidgetNames.AnyNotes)
               })
               .catch((err) => {
                 addDangerNotif({
@@ -96,6 +94,9 @@ export const Badge0 = ({ id }: TProps) => {
                   message: typeof err === 'string' ? err : err.message || 'Not found nowhere',
                 })
               })
+          })
+          .finally(() => {
+            widgetToggler(EWidgetNames.AnyNotes)
           })
       }
     },

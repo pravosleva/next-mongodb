@@ -55,14 +55,14 @@ class MyApp extends NextApp {
                 <ExternalPrivateFrameWidget src="https://selection4test.ru/projects/threejs-ts-course" /> */}
                 <GlobalAppContextProvider>
                   <SocketContextProvider>
-                    <Layout>
-                      <Component {...pageProps} />
-                      <WidgetContextProvider>
+                    <WidgetContextProvider>
+                      <Layout>
+                        <Component {...pageProps} />
                         <Widget isMobileOnly widgetName={EWidgetNames.AnyNotes}>
                           <SidebarContent />
                         </Widget>
-                      </WidgetContextProvider>
-                    </Layout>
+                      </Layout>
+                    </WidgetContextProvider>
                   </SocketContextProvider>
                 </GlobalAppContextProvider>
               </AuthContextProvider>
