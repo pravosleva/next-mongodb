@@ -197,6 +197,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const renderCountRef = useRef(0)
   const { isLogged } = useAuthContext()
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     renderCountRef.current += 1
@@ -229,8 +230,8 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
     }
 
-    if (renderCountRef.current >= 2) fetchData()
-  }, [debouncedPage, debouncedSearchByTitle, debouncedSearchByDescription, isLogged])
+    if (renderCountRef.current >= 1 && router.pathname === '/') fetchData()
+  }, [debouncedPage, debouncedSearchByTitle, debouncedSearchByDescription, isLogged, router.pathname])
   const handleSearchByTitleClear = () => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: '' })
     setFieldToLS(ELSFields.MainSearch, { searchByTitle: '' }, true)
@@ -241,7 +242,6 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const handleSearchByAnythingClear = () => {
     dispatch({ type: 'SEARCH_BY_ANYTHING@RESET' })
   }
-  const router = useRouter()
 
   useEffect(() => {
     handleScrollTop(true)
