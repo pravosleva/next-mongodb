@@ -4,7 +4,7 @@ import fetch from 'isomorphic-unfetch'
 import { Icon, Label } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
-import { useGlobalAppContext, getInitialState, useAuthContext } from '~/common/context'
+import { useGlobalAppContext, getInitialState, useAuthContext, ELSFields } from '~/common/context'
 import { useWindowSize } from '~/common/hooks'
 import { EmptyTemplate } from '~/common/components/EmptyTemplate'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
@@ -19,10 +19,9 @@ import { Tags } from '~/common/components/Tags'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
-import { mdiPinOff, mdiAutorenew, mdiFile } from '@mdi/js'
+import { mdiPinOff, mdiAutorenew } from '@mdi/js'
 // <MdiIcon path={mdiPin} size={0.7} />
 import { PinNote } from '~/common/components/PinNote'
-import { ELSFields } from '~/common/context/GlobalAppContext'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 
@@ -77,6 +76,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
     showLocalNotesInList,
     setShowLocalNotesInListToggler,
     isIdPinned,
+    getFieldFromLS,
+    // setFieldToLS,
   } = useGlobalAppContext()
   const init = () => {
     initState(getInitialState({ notes: initNotes, pagination: initPag }))
@@ -100,6 +101,17 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
   useEffect(() => {
     init()
   }, [])
+  // --- NOTE: May be necessary for index page?
+  useEffect(() => {
+    getFieldFromLS(ELSFields.MainSearch, true)
+      .then((jsonFromLS) => {
+        if (!!jsonFromLS.searchByTitle) {
+          setTimeout(() => handleSearchByTitleSetText(jsonFromLS.searchByTitle), 500)
+        }
+      })
+      .catch(() => {})
+  }, [])
+  // ---
   const { totalPages, totalNotes, currentPage } = state.pagination
   const renderCountRef = useRef(0)
   useEffect(() => {
@@ -350,6 +362,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
 }
 
 Index.getInitialProps = async (ctx) => {
+  /*
   const headers = getStandardHeadersByCtx(ctx)
 
   // const me = await fetch(`${NEXT_APP_EXPRESS_API_ENDPOINT}/users/me`, {
@@ -378,11 +391,15 @@ Index.getInitialProps = async (ctx) => {
     console.log(err)
     errMsg = err?.message || 'Has err, but no err.message'
   }
+  */
 
   return {
-    notes: data || [],
-    pagination: pagination || { totalPages: 1, totalNotes: 0, currentPage: 1 },
-    errMsg,
+    // notes: data || [],
+    // pagination: pagination || { totalPages: 1, totalNotes: 0, currentPage: 1 },
+    // errMsg,
+    notes: [],
+    pagination: { totalPages: 1, totalNotes: 0, currentPage: 1 },
+    errMsg: null,
   }
 }
 

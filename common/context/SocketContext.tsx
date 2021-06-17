@@ -3,7 +3,10 @@ import { createContext, useReducer, useEffect, useMemo, useContext, useRef, useC
 import io from 'socket.io-client'
 import { EActions, IDeletedNote, IConnectSelf, IDisconnectUserBroadcast } from '~/socket-logic'
 import { useNotifsContext } from '~/common/hooks'
-import { useGlobalAppContext } from './GlobalAppContext'
+import {
+  useGlobalAppContext,
+  // ELSFields,
+} from './GlobalAppContext'
 import { httpClient } from '~/utils/httpClient'
 // import { useCookies } from 'react-cookie'
 
@@ -80,6 +83,7 @@ export const SocketContextProvider = ({ children }: any) => {
     handleSetAsActiveNote,
     state: globalState,
     resetQR,
+    // getFieldFromLS,
   } = useGlobalAppContext()
 
   // ---
@@ -253,7 +257,21 @@ export const SocketContextProvider = ({ children }: any) => {
     })
   }
   const handleGetAllNotes = async () => {
-    const res = await httpClient.getNotes('/notes') // TODO: query
+    // let q = '?'
+    let res: any[] = []
+
+    /*
+    await getFieldFromLS(ELSFields.MainSearch, true)
+      .then(async (jsonFromLS) => {
+        if (!!jsonFromLS.searchByTitle) q += `q_title=${jsonFromLS.searchByTitle}`
+        res = await httpClient.getNotes(`/notes${q}`) // TODO: query
+      })
+      .catch(async (err) => {
+        console.log(err)
+        res = await httpClient.getNotes('/notes')
+      })
+    */
+    res = await httpClient.getNotes('/notes')
 
     return res
   }

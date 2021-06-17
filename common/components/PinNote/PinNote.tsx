@@ -72,7 +72,7 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
                 label="Namespace"
                 variant="outlined"
                 color={isLocal ? 'secondary' : 'primary'}
-                // size="small"
+                size="small"
               />
             )}
             style={

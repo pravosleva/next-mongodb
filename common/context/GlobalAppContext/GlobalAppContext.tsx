@@ -5,25 +5,12 @@ import { useRouter } from 'next/router'
 import { data as defaultPaginationData } from '~/common/constants/default-pagination'
 import { scrollTop } from '~/utils/scrollTo'
 import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
-// import { useWindowSize } from '~/common/hooks'
 import ls from 'local-storage'
 import slugify from 'slugify'
+import { ELSFields, IState } from './interfaces'
+import { getMsgStr } from '~/utils/errors/getMsgStr'
 
 const NEXT_APP_API_ENDPOINT: string = process.env.NEXT_APP_API_ENDPOINT || ''
-
-type TPagination = {
-  curentPage: number
-  totalPages: number
-  totalNotes: number
-}
-interface IState {
-  notes: any
-  pagination: TPagination
-  searchByTitle: string
-  searchByDescription: string
-  activeNote: any | null
-  localPage: number
-}
 
 export const getInitialState = (base: Partial<IState>): IState => ({
   notes: [],
@@ -95,9 +82,7 @@ export const GlobalAppContext = createContext({
   pinnedMap: null,
   localNotesPinnedNamespaceMap: null,
   isPinnedToLS: (_id: string, _lsField: ELSFields): Promise<any> => Promise.reject(false),
-  // createTestPinnedMap: (): void | never => {
-  //   throw new Error('createTestPinnedMap method should be implemented')
-  // },
+  // createTestPinnedMap: (): void | never => { throw new Error('createTestPinnedMap method should be implemented') },
   removeNamespace: (_namespace: string, _lsField: ELSFields): void | never => {
     throw new Error('removeNamespace method should be implemented')
   },
@@ -146,9 +131,6 @@ export const GlobalAppContext = createContext({
 function reducer(state: any, action: any) {
   let newState = { ...state }
 
-  // console.log('--- action')
-  // console.log(action)
-
   switch (action.type) {
     case 'SEARCH_BY_TITLE@SET':
       return { ...state, searchByTitle: action.payload, localPage: 1 }
@@ -157,7 +139,6 @@ function reducer(state: any, action: any) {
     case 'SEARCH_BY_ANYTHING@RESET':
       return { ...state, searchByDescription: '', searchByTitle: '', localPage: 1 }
     case 'ACTIVE_NOTE@SET':
-      // console.log(action.payload)
       return { ...state, activeNote: action.payload }
     case 'ACTIVE_NOTE@RESET':
       return { ...state, activeNote: null }
@@ -195,15 +176,6 @@ function reducer(state: any, action: any) {
   }
 }
 
-const getMsgStr = (err: any) => (typeof err === 'string' ? err : err.message || 'No err.message')
-
-export enum ELSFields {
-  MainPinnedNamespaceMap = 'pinned-namespace-map',
-  LocalNotesPinnedNamespaceMap = 'pinned-namespace-map.local',
-  LocalNotes = 'my-local-notes',
-  PinnedNotesSearchField = 'pinned-notes-search-field',
-}
-
 export const GlobalAppContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, getInitialState({}))
   const debouncedSearchByTitle = useDebounce(state.searchByTitle, 1000)
@@ -212,17 +184,10 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     setTimeout(() => {
       if (typeof window !== 'undefined') {
         if (window.location.href.indexOf('#') === -1) scrollTop(0, noAnimation)
-        // else {
-        //   console.log(
-        //     window.location.href.substr(window.location.href.indexOf('#') + 1, window.location.href.length - 1)
-        //     // OUTPUT: hash wihout #
-        //   )
-        // }
       }
     }, 0)
     return Promise.resolve()
   }
-
   const handlePageChange = (_ev: any, data: any) => {
     handleScrollTop(true).then(() => {
       dispatch({ type: 'SET_LOCAL_PAGE', payload: data.activePage })
@@ -235,7 +200,6 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
   useEffect(() => {
     renderCountRef.current += 1
-    if (renderCountRef.current > 0 && renderCountRef.current <= 1) return
 
     const fetchData = async () => {
       setIsLoading(true)
@@ -265,14 +229,11 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
     }
 
-    fetchData()
+    if (renderCountRef.current >= 2) fetchData()
   }, [debouncedPage, debouncedSearchByTitle, debouncedSearchByDescription, isLogged])
-  // useEffect(() => {
-  //   // eslint-disable-next-line no-console
-  //   console.log('ROUTE')
-  // }, [debouncedSearchByTitle, debouncedSearchByDescription])
   const handleSearchByTitleClear = () => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: '' })
+    setFieldToLS(ELSFields.MainSearch, { searchByTitle: '' }, true)
   }
   const handleSearchByDescriptionClear = () => {
     dispatch({ type: 'SEARCH_BY_DESCRIPTION@SET', payload: '' })
@@ -287,13 +248,16 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     handleSearchByAnythingClear()
   }, [router.pathname])
 
-  // const { isDesktop } = useWindowSize()
+  const setFieldToLS = (fieldName: string, value: any, asJson: boolean) => {
+    const stuff = asJson ? JSON.stringify(value) : String(value)
+
+    ls(fieldName, stuff)
+
+    return Promise.resolve()
+  }
+
   const handleSetAsActiveNote = useCallback(
     (note: any) => {
-      // eslint-disable-next-line no-console
-      // console.log(windowParams)
-      // if (isDesktop) scrollTop(125)
-      // TODO: No scroll if current scroll position more than 125px
       dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
     },
     [dispatch]
@@ -309,7 +273,9 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   }
   const handleSearchByTitleSetText = (text: string) => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: text })
+    setFieldToLS(ELSFields.MainSearch, { searchByTitle: text }, true)
   }
+
   const handleUpdateOneNote = useCallback(
     (note: any) => {
       dispatch({ type: 'UPDATE_ONE_NOTE', payload: note })
@@ -342,10 +308,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const { addInfoNotif, addDangerNotif, addWarningNotif } = useNotifsContext()
   const getFieldFromLS = (fieldName: ELSFields, shouldBeJson: boolean): Promise<any> => {
     // @ts-ignore
-    if (!ls(fieldName)) {
-      // createEmptyMap(fieldName, {}, (data) => setPinnedMap(data))
-      return Promise.reject('Fuckup')
-    }
+    if (!ls(fieldName)) return Promise.reject('Fuckup')
 
     let dataFromLS
 
@@ -400,26 +363,6 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         // addDangerNotif({ title: `cDM: ${ELSFields.MainPinnedNamespaceMap}`, message: getMsgStr(err) })
       })
   }, [])
-  const setFieldToLS = (fieldName: string, value: any, asJson: boolean) => {
-    const stuff = asJson ? JSON.stringify(value) : String(value)
-
-    ls(fieldName, stuff)
-
-    return Promise.resolve()
-  }
-  // const createTestPinnedMap = () => {
-  //   const testPinnedMap = {
-  //     'tst-namespace': {
-  //       limit: 2,
-  //       description: 'Test namespace descr',
-  //       title: 'Test namespace title',
-  //       ids: [],
-  //     },
-  //   }
-  //   setFieldToLS(ELSFields.MainPinnedNamespaceMap, testPinnedMap, true).then(() => {
-  //     setPinnedMap(testPinnedMap)
-  //   })
-  // }
   const defautOptions = {
     limit: 2,
     title: 'New',
@@ -576,7 +519,6 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       })
   }
   const isPinnedToLS = async (id: string, lsField: ELSFields) => {
-    // console.log('CALLED')
     let result = false
     let detectedNamespace
 
