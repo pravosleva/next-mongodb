@@ -204,7 +204,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               justifyContent: 'space-between',
               alignItems: 'center',
               margin: '8px 0 0 0',
-              padding: '0 8px 0 8px',
+              padding: '0 8px 0 0',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px', height: '42px' }}>
