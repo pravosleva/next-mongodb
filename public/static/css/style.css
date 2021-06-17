@@ -327,6 +327,7 @@ h1 {
   padding-top: 24px;
   padding-bottom: 24px;
   white-space: pre-wrap;
+  word-break: break-word;
   overflow-y: auto;
 }
 .description-markdown h1,
