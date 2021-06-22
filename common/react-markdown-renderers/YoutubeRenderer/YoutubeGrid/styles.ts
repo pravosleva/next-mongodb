@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme) => ({
       borderRadius: '8px',
     },
 
-    marginBottom: '20px',
+    marginBottom: '16px',
   },
 
   reactYoutubeContainer: {
