@@ -72,6 +72,7 @@
     "markdown-it": "^12.0.2",
     "mongoose": "^5.9.6",
     "next": "^9.3.6",
+    "next-pwa": "^5.2.21",
     "nextjs-progressbar": "^0.0.7",
     "qrcode": "^1.4.4",
     "react": "16.13.1",
@@ -95,6 +96,7 @@
     "slugify": "^1.5.0",
     "socket.io": "^3.0.4",
     "socket.io-client": "^3.0.4",
+    "url": "^0.11.0",
     "yarn": "^1.22.10"
   },
   "devDependencies": {

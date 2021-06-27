@@ -21,6 +21,8 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
 const ipDetectorMW = require('./express-tools/middlewares/ip-detector')
 const geoipLiteMW = require('./express-tools/middlewares/geoip-lite')
 const addRequestId = require('express-request-id')()
+const { parse } = require('url')
+const { join } = require('path')
 
 const _customIO = socketLogic(io)
 
@@ -37,7 +39,15 @@ nextApp
       req.io = _customIO
       req.crossDeviceState = crossDeviceState
 
-      return nextHanlder(req, res)
+      const parsedUrl = parse(req.url, true)
+      const { pathname } = parsedUrl
+
+      if (pathname === '/sw.js' || /^\/(workbox|worker|fallback)-\w+\.js$/.test(pathname)) {
+        const filePath = join(__dirname, '.next', pathname)
+        nextApp.serveStatic(req, res, filePath)
+      } else {
+        return nextHanlder(req, res, parsedUrl)
+      }
     })
 
     server.listen(PORT, (err) => {
