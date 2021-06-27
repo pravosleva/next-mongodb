@@ -6,13 +6,14 @@ import MuiSpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
-import { useScrollPosition, useAuthContext } from '~/common/hooks'
+import { useScrollPosition, useAuthContext, useWindowSize } from '~/common/hooks'
 import { scrollTop } from '~/utils/scrollTo'
 import AddIcon from '@material-ui/icons/Add'
 import InfoIcon from '@material-ui/icons/Info'
 import HomeIcon from '@material-ui/icons/Home'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 export const SpeedDial = () => {
   const classes = useStyles()
@@ -30,6 +31,7 @@ export const SpeedDial = () => {
   }, [])
   const router = useRouter()
   const { isLogged } = useAuthContext()
+  const { isMobile } = useWindowSize()
   // NOTE: Снизу вверх -> Сверху вниз
   const actions = useMemo(
     () => [
@@ -72,9 +74,18 @@ export const SpeedDial = () => {
         },
         isVisible: isMoreThanTrackedY,
       },
+      {
+        icon: <ExitToAppIcon />,
+        name: 'Exit',
+        onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+          e.preventDefault()
+          if (!!window) window.close()
+        },
+        isVisible: isMobile,
+      },
       // { icon: <FavoriteIcon />, name: 'Like' },
     ],
-    [router.pathname, isMoreThanTrackedY, isLogged]
+    [router.pathname, isMoreThanTrackedY, isLogged, isMobile]
   )
 
   return (
