@@ -9,7 +9,7 @@ import { LinkRenderer } from './LinkRenderer'
 export * from './BlockquoteRenderer'
 export * from './CodeRenderer'
 export * from './HeadingRenderer'
-export * from './ImageRenderer'
+export * from './ImageRenderer/ImageRenderer'
 export * from './LinkRenderer'
 
 export const baseRenderers = {
