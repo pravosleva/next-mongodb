@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       // backgroundColor: 'lightgray', // Grey
       color: 'inherit',
       // '&:hover': {
-      //   backgroundColor: '#b09e99',
+      //   backgroundColor: 'gray',
       //   color: '#FFF',
       // },
     },
@@ -65,12 +65,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     activePrivate: {
       // backgroundColor: '#f44336',
       // backgroundColor: '#ff8e53', // Orange
-      backgroundColor: '#b09e99', // Grey
+      backgroundColor: 'gray', // Grey
       color: '#FFF !important',
       '&:hover': {
         // backgroundColor: '#f44336',
         // backgroundColor: '#ff8e53', // Orange
-        backgroundColor: '#b09e99', // Grey
+        backgroundColor: 'gray', // Grey
         // opacity: 0.75,
       },
     },
