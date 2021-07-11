@@ -185,7 +185,7 @@ h1 {
 .private-card-wrapper {
   /* border: 2px dashed red; */
   /* background: linear-gradient(45deg, #ffe1a8 30%, #DFE0E0 90%); */
-  background: linear-gradient(180deg, gray 30%, #DFE0E0 90%);
+  background: linear-gradient(180deg, #a0a0a0 15%, #bdbebd 90%);
 }
 .private-card-wrapper {
   color: #fff !important;
