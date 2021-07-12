@@ -185,7 +185,7 @@ h1 {
 .private-card-wrapper {
   /* border: 2px dashed red; */
   /* background: linear-gradient(45deg, #ffe1a8 30%, #DFE0E0 90%); */
-  background: linear-gradient(180deg, #a0a0a0 15%, #bdbebd 90%);
+  background: linear-gradient(180deg, #a0a0a0 15%, lightgray 90%);
 }
 .private-card-wrapper {
   color: #fff !important;
@@ -421,7 +421,7 @@ h1 {
   display: block;
   object-fit: contain;
 
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 @media (max-width: 767px) {

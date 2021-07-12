@@ -40,21 +40,43 @@ export const defaultTheme = {
   // },
   // [theme.breakpoints.down('xs')]: {},
 
-  // overrides: {
-  //   MuiPaper: {
-  //     root: {
-  //       backgroundColor: '#FFF !important',
-  //     },
-  //   },
-  //   MuiCssBaseline: {
-  //     '@global': {
-  //       // '@font-face': ['Fira Sans'],
-  //     },
-  //     body: {
-  //       'overflow-x': 'hidden',
-  //     },
-  //   },
-  // },
+  overrides: {
+    // MuiPaper: {
+    //   root: {
+    //     backgroundColor: '#FFF !important',
+    //   },
+    // },
+    // MuiCssBaseline: {
+    //   '@global': {
+    //     // '@font-face': ['Fira Sans'],
+    //   },
+    //   body: {
+    //     'overflow-x': 'hidden',
+    //   },
+    // },
+    MuiSelect: {
+      root: {
+        borderRadius: '8px',
+      },
+    },
+    MuiOutlinedInput: {
+      root: {
+        borderRadius: '8px',
+      },
+    },
+    MuiButton: {
+      root: {
+        borderRadius: '8px',
+      },
+      outlined: {
+        backgroundColor: '#FFF',
+        '& :hover': {
+          backgroundColor: 'rgba(255,255,255,0.5)',
+        },
+        // border: '1px solid dimgray',
+      },
+    },
+  },
 }
 
 const {

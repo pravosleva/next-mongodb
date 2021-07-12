@@ -1,6 +1,10 @@
 // import { Alert } from './Alert'
 import { BlockquoteRenderer } from './BlockquoteRenderer'
-import { CodeRendererSynthwave84, CodeRendererMaterialOceanic } from './CodeRenderer'
+import {
+  // CodeRendererSynthwave84,
+  CodeRendererMaterialOceanic,
+  CodeRendererMaterialDark,
+} from './CodeRenderer'
 import { HeadingRenderer } from './HeadingRenderer'
 import { ImageRenderer } from './ImageRenderer'
 import { HtmlRenderer } from './HtmlRenderer'
@@ -14,7 +18,7 @@ export * from './LinkRenderer'
 
 export const baseRenderers = {
   blockquote: BlockquoteRenderer,
-  code: CodeRendererSynthwave84,
+  code: CodeRendererMaterialDark,
   html: HtmlRenderer,
   image: ImageRenderer,
   link: LinkRenderer,
@@ -31,7 +35,7 @@ export const theNotePageRenderers = {
 
 export const dialogRenderers = {
   blockquote: BlockquoteRenderer,
-  code: CodeRendererSynthwave84,
+  code: CodeRendererMaterialDark,
   html: HtmlRenderer,
   image: ImageRenderer,
   link: LinkRenderer,

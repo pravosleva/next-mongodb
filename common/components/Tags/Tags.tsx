@@ -18,6 +18,9 @@ export const Tags = ({ title }: IProps) => {
       {tags.length > 0 &&
         tags.map((tag: string, i: number) => (
           <Button
+            style={{
+              backgroundColor: '#FFF',
+            }}
             key={`${i}-${tag}`}
             startIcon={<LocalOfferIcon />}
             disabled={
