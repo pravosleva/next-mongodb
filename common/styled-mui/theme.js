@@ -54,6 +54,11 @@ export const defaultTheme = {
     //     'overflow-x': 'hidden',
     //   },
     // },
+    MuiAlert: {
+      root: {
+        borderRadius: '8px',
+      },
+    },
     MuiSelect: {
       root: {
         borderRadius: '8px',
@@ -67,13 +72,14 @@ export const defaultTheme = {
     MuiButton: {
       root: {
         borderRadius: '8px',
+        borderWidth: '2px !important',
       },
       outlined: {
-        backgroundColor: '#FFF',
+        // borderWidth: '2px',
+        backgroundColor: '#FFF !important',
         '& :hover': {
-          backgroundColor: 'rgba(255,255,255,0.5)',
+          // backgroundColor: 'rgba(255,255,255,0.5)',
         },
-        // border: '1px solid dimgray',
       },
     },
   },
