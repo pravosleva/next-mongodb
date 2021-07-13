@@ -4,14 +4,14 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     badge: {
-      borderRadius: '4px',
+      borderRadius: '8px',
 
       display: 'flex',
       flexDirection: 'row',
     },
     badgeContent: {
       cursor: 'pointer',
-      fontSize: '13px',
+      fontSize: '12px',
       transition: 'all 0.2s linear',
       backgroundColor: 'rgba(0,0,0,0.05)',
       '&:hover': {
@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
 
       padding: theme.spacing(1),
-      borderRadius: '4px 0 0 4px',
+      borderRadius: '8px 0 0 8px',
     },
     truncate: {
       whiteSpace: 'nowrap',
@@ -54,7 +54,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       cursor: 'pointer',
       color: '#FFF',
       padding: theme.spacing(1),
-      borderRadius: '0 4px 4px 0',
+      borderRadius: '0 8px 8px 0',
       background: 'linear-gradient(45deg, #e63946 30%, #fe7f2d 90%)',
       '&:hover': {
         background: 'linear-gradient(0deg, #e63946 10%, #fe7f2d 110%)',

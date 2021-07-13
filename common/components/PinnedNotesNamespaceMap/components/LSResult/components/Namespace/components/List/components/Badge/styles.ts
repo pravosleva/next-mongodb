@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontSize: '13px',
       padding: theme.spacing(1),
       [theme.breakpoints.up('md')]: {
-        borderRadius: '4px',
+        borderRadius: '8px',
       },
       [theme.breakpoints.down('sm')]: {
         // borderRadius: '4px 0px 0px 4px',
