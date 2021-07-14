@@ -72,7 +72,7 @@ body .bg-fixed_the-note-page {
 }
 
 h1 {
-  text-align: center;
+  text-align: left;
 }
 
 .no-padded {
@@ -330,7 +330,6 @@ h1 {
   word-break: break-word;
   overflow-y: auto;
 }
-.description-markdown h1,
 .description-markdown h2,
 .description-markdown h3,
 .description-markdown h4,

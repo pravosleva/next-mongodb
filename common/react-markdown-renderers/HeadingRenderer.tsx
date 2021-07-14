@@ -17,5 +17,6 @@ export function HeadingRenderer(props: any) {
 
   var slug = slugify(`${props.level}-${text}`).toLowerCase() // .replace(/\W/g, '-')
 
+  if (props.level === 1) return React.createElement('h1', { id: slug, className: 'big-text' }, props.children)
   return React.createElement('h' + props.level, { id: slug }, props.children)
 }

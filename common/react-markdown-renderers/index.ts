@@ -19,6 +19,7 @@ export * from './LinkRenderer'
 export const baseRenderers = {
   blockquote: BlockquoteRenderer,
   code: CodeRendererMaterialDark,
+  heading: HeadingRenderer,
   html: HtmlRenderer,
   image: ImageRenderer,
   link: LinkRenderer,
@@ -36,6 +37,7 @@ export const theNotePageRenderers = {
 export const dialogRenderers = {
   blockquote: BlockquoteRenderer,
   code: CodeRendererMaterialDark,
+  heading: HeadingRenderer,
   html: HtmlRenderer,
   image: ImageRenderer,
   link: LinkRenderer,
