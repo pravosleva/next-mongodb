@@ -75,9 +75,10 @@ export const defaultTheme = {
         borderWidth: '2px !important',
       },
       outlined: {
-        // borderWidth: '2px',
+        borderColor: '#D0D0D0',
         backgroundColor: '#FFF !important',
-        '& :hover': {
+        '&:hover': {
+          borderColor: '#A9A9A9',
           // backgroundColor: 'rgba(255,255,255,0.5)',
         },
       },
