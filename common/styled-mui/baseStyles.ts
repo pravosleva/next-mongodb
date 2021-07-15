@@ -223,11 +223,13 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       border: '2px solid #fff',
       borderRadius: '8px',
       boxShadow: 'unset',
-      transition: 'box-shadow 0.3s linear',
+      // transition: 'box-shadow 0.3s linear',
       '&:hover': {
         boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
       },
-      padding: theme.spacing(1),
+      '& > div': {
+        padding: theme.spacing(1),
+      },
       '& h4': {
         [theme.breakpoints.up('md')]: {
           fontSize: '13px !important',

@@ -176,6 +176,9 @@ h1 {
   color: #2185d0;
 }
 
+.card {
+  transition: all 0.2s linear;
+}
 .active-card-wrapper {
   border: 2px solid #3882c4 !important;
 }
@@ -329,6 +332,9 @@ h1 {
   white-space: pre-wrap;
   word-break: break-word;
   overflow-y: auto;
+}
+.description-markdown h1 {
+  margin-bottom: 25px;
 }
 .description-markdown h2,
 .description-markdown h3,

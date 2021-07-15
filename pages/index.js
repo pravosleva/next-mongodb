@@ -253,29 +253,27 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
             return (
               <div
                 key={note._id}
-                className={clsx(baseClasses.standardCard, {
+                className={clsx(baseClasses.standardCard, 'card', {
                   'active-card-wrapper': isActive && !note.isLocal,
                   'active-card-wrapper_local': isActive && note.isLocal,
                   'private-card-wrapper': note.isPrivate,
                 })}
               >
                 <>
-                  <>
-                    <div
-                      className={clsx(baseClasses.standardCardHeader, baseClasses.cursorPointer)}
-                      onClick={() => handleSetAsActiveNote(note)}
-                    >
-                      <h4>
-                        {note.title}
-                        {/* !!note.id ? (
-                          <span>
-                            {' '}
-                            <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
-                          </span>
-                        ) : null */}
-                      </h4>
-                    </div>
-                  </>
+                  <div
+                    className={clsx(baseClasses.standardCardHeader, baseClasses.cursorPointer)}
+                    onClick={() => handleSetAsActiveNote(note)}
+                  >
+                    <h4>
+                      {note.title}
+                      {/* !!note.id ? (
+                        <span>
+                          {' '}
+                          <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
+                        </span>
+                      ) : null */}
+                    </h4>
+                  </div>
                   {isMobile && (
                     <div className={clsx(baseClasses.actionsBoxRight, baseClasses.standardCardFooter)}>
                       <>
