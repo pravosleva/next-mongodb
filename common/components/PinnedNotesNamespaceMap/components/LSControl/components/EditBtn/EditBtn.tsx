@@ -6,7 +6,7 @@ import { Stepper } from '~/common/components/Stepper'
 import { useStyles } from './styles'
 import { ELSFields } from '~/common/context/GlobalAppContext'
 import { useForm, useGlobalAppContext } from '~/common/hooks'
-import TextField from '@material-ui/core/TextField'
+import { TextField, Grid } from '@material-ui/core'
 
 export type TNamespaceData = {
   ids: string[]
@@ -17,6 +17,7 @@ export type TNamespaceData = {
 type TProps = {
   data: TNamespaceData
   namespace: string
+  leftBtn: React.FC
 }
 
 type TStepContentProps = {
@@ -151,7 +152,7 @@ const initialState = {
 }
 
 // @ts-ignore
-export const EditBtn = ({ namespace, data }: TProps) => {
+export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
   const classes = useStyles()
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false)
   const handleOpen = useCallback(() => {
@@ -214,16 +215,42 @@ export const EditBtn = ({ namespace, data }: TProps) => {
   return (
     <div className={classes.wrapper}>
       {!isFormOpened ? (
-        <ThemedButton
-          size="small"
-          color={EColorValue.grey}
-          variant="contained"
-          onClick={handleOpen}
-          fullWidth
-          endIcon={<MdiIcon path={mdiPencil} size={0.7} />}
-        >
-          Edit
-        </ThemedButton>
+        <>
+          {!!leftBtn ? (
+            <>
+              <Grid container spacing={0}>
+                <Grid item xs={6}>
+                  {leftBtn({})}
+                </Grid>
+                <Grid item xs={6}>
+                  <ThemedButton
+                    size="small"
+                    color={EColorValue.grey}
+                    variant="contained"
+                    onClick={handleOpen}
+                    fullWidth
+                    endIcon={<MdiIcon path={mdiPencil} size={0.7} />}
+                    style={{ borderRadius: !!leftBtn ? '0px 8px 0px 0px' : '8px 8px 0px 0px' }}
+                  >
+                    Edit
+                  </ThemedButton>
+                </Grid>
+              </Grid>
+            </>
+          ) : (
+            <ThemedButton
+              size="small"
+              color={EColorValue.grey}
+              variant="contained"
+              onClick={handleOpen}
+              fullWidth
+              endIcon={<MdiIcon path={mdiPencil} size={0.7} />}
+              style={{ borderRadius: !!leftBtn ? '0px 8px 8px 0px' : '8px 8px 0px 0px' }}
+            >
+              Edit
+            </ThemedButton>
+          )}
+        </>
       ) : (
         <Stepper
           onClose={handleClose}
@@ -239,7 +266,7 @@ export const EditBtn = ({ namespace, data }: TProps) => {
         />
       )}
       {showDiffs && (
-        <div style={{ marginTop: '8px', color: '#ff1744' }}>
+        <div style={{ color: '#ff1744' }}>
           <b>
             <em>Diffs:</em>
           </b>

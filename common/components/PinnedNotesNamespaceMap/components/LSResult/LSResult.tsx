@@ -7,6 +7,7 @@ import { Namespace } from './components'
 import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 import clsx from 'clsx'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
+import CloseIcon from '@material-ui/icons/Close'
 
 type TForm = {
   byTitleOrDescr: string
@@ -74,38 +75,42 @@ export const LSResult = () => {
     <div className={classes.wrapper}>
       {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
       {pinnedMapKeys.length > 0 && (
-        <TextField
-          className="search"
-          // style={{ marginBottom: '8px' }}
-          // autoFocus
-          size="small"
-          label="Search by title or description"
-          // required
-          type="text"
-          variant="outlined"
-          fullWidth
-          placeholder="Search..."
-          name="byTitleOrDescr"
-          value={formData.byTitleOrDescr}
-          onChange={(e) => {
-            handleInputChange(e)
-            setFieldToLS(ELSFields.PinnedNotesSearchField, { byTitleOrDescr: e.target.value }, true)
-          }}
-          autoComplete="off"
-        />
+        <>
+          <TextField
+            className="search"
+            // style={{ marginBottom: '8px' }}
+            // autoFocus
+            size="small"
+            label="Search by title or description"
+            // required
+            type="text"
+            variant="outlined"
+            fullWidth
+            // placeholder="Search..."
+            name="byTitleOrDescr"
+            value={formData.byTitleOrDescr}
+            onChange={(e) => {
+              handleInputChange(e)
+              setFieldToLS(ELSFields.PinnedNotesSearchField, { byTitleOrDescr: e.target.value }, true)
+            }}
+            autoComplete="off"
+          />
+          {formData.byTitleOrDescr.length > 0 && (
+            <ThemedButton
+              size="small"
+              color={EColorValue.grey}
+              variant="contained"
+              onClick={clearSerch}
+              className="clear-btn"
+              // fullWidth
+              endIcon={<CloseIcon />}
+              disabled={formData.byTitleOrDescr.length === 0}
+            >
+              Clear
+            </ThemedButton>
+          )}
+        </>
       )}
-      <ThemedButton
-        size="small"
-        color={EColorValue.grey}
-        variant="contained"
-        onClick={clearSerch}
-        className="clear-btn"
-        // fullWidth
-        // endIcon={<MdiIcon path={mdiPencil} size={0.7} />}
-        disabled={formData.byTitleOrDescr.length === 0}
-      >
-        Clear
-      </ThemedButton>
       {!!pinnedMap &&
         pinnedMapKeys.map((key) => {
           // @ts-ignore
@@ -118,17 +123,20 @@ export const LSResult = () => {
           })
 
           if (!shouldBeDisplayed) return null
-          return (
+          return !!data ? (
             <div key={key} className={clsx(classes.collapsibleWrapper, 'collapsible-wrapper')}>
               <CollabsibleContent
                 activeTitleColor="#3882C4"
                 inactiveTitleColor="#949494"
                 isRightSide
+                // @ts-ignore
                 title={`${data.title} ${data.ids.length}/${data.limit}`}
                 // @ts-ignore
                 contentRenderer={(_collabsiblePs) => <Namespace key={`${key}-${pinnedMap[key].ts}`} data={data} />}
               />
             </div>
+          ) : (
+            <div>No data for {key}</div>
           )
           // return <Namespace key={key} data={data} />
         })}
