@@ -218,6 +218,10 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
 
+    cardsWrapper: {
+      border: '1px solid red',
+    },
+
     standardCard: {
       backgroundColor: '#FFF',
       border: '2px solid #fff',

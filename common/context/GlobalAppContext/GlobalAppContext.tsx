@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { createContext, useReducer, useState, useEffect, useRef, useContext, useCallback, useMemo } from 'react'
 import buildUrl from 'build-url'
 import { useAuthContext, useDebounce, useNotifsContext } from '~/common/hooks'
 import { useRouter } from 'next/router'
@@ -9,13 +9,14 @@ import ls from 'local-storage'
 import slugify from 'slugify'
 import { ELSFields, IState } from './interfaces'
 import { getMsgStr } from '~/utils/errors/getMsgStr'
+import { getNormalizedQuery, TNormalizedQuery } from '~/utils/getNormalizedQuery'
 
 const NEXT_APP_API_ENDPOINT: string = process.env.NEXT_APP_API_ENDPOINT || ''
 
 export const getInitialState = (base: Partial<IState>): IState => ({
   notes: [],
   pagination: {
-    curentPage: 0,
+    currentPage: 0,
     totalPages: 0,
     totalNotes: 0,
   },
@@ -177,7 +178,19 @@ function reducer(state: any, action: any) {
 }
 
 export const GlobalAppContextProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer(reducer, getInitialState({}))
+  const router = useRouter()
+  const normalizedQuery: TNormalizedQuery = useMemo(() => getNormalizedQuery(router.query), [router.query])
+  const [state, dispatch] = useReducer(
+    reducer,
+    getInitialState({
+      pagination: {
+        currentPage: normalizedQuery.page || 1,
+        totalPages: 0,
+        totalNotes: 0,
+      },
+      localPage: normalizedQuery.page || 1,
+    })
+  )
   const debouncedSearchByTitle = useDebounce(state.searchByTitle, 1000)
   const debouncedSearchByDescription = useDebounce(state.searchByDescription, 1000)
   const handleScrollTop = (noAnimation: boolean = false) => {
@@ -188,16 +201,31 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     }, 0)
     return Promise.resolve()
   }
-  const handlePageChange = (_ev: any, data: any) => {
-    handleScrollTop(true).then(() => {
-      dispatch({ type: 'SET_LOCAL_PAGE', payload: data.activePage })
-    })
-  }
-  const debouncedPage = useDebounce(state.localPage, 1000)
-  const renderCountRef = useRef(0)
+  const handlePageChange = useCallback(
+    (_ev: any, data: any) => {
+      handleScrollTop(true)
+        .then(() => {
+          // dispatch({ type: 'SET_LOCAL_PAGE', payload: data.activePage })
+          return data.activePage
+        })
+        .then((activePage) => {
+          const newUrl = buildUrl('/', {
+            path: router.pathname,
+            queryParams: {
+              page: activePage,
+              // @ts-ignore
+              limit: normalizedQuery.limit || defaultPaginationData.limit,
+            },
+          })
+          router.push(newUrl, undefined, { shallow: true })
+        })
+    },
+    [handleScrollTop, dispatch, router, normalizedQuery]
+  )
+  // const debouncedPage = useDebounce(state.localPage, 1000)
+  const renderCountRef = useRef(0) // NOTE: unused
   const { isLogged } = useAuthContext()
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     renderCountRef.current += 1
@@ -205,7 +233,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     const fetchData = async () => {
       setIsLoading(true)
       const queryParams: any = {
-        limit: defaultPaginationData.limit,
+        limit: normalizedQuery.limit || defaultPaginationData.limit,
       }
       if (!!debouncedSearchByTitle) {
         queryParams.q_title = debouncedSearchByTitle
@@ -213,9 +241,12 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       if (!!debouncedSearchByDescription) {
         queryParams.q_description = debouncedSearchByDescription
       }
-      if (!!debouncedPage && debouncedPage !== 1) {
-        queryParams.page = debouncedPage
+      if (!!normalizedQuery.page) {
+        queryParams.page = normalizedQuery.page
       }
+      // else if (!!debouncedPage) {
+      //   queryParams.page = debouncedPage
+      // }
       const url = buildUrl(NEXT_APP_API_ENDPOINT, {
         path: '/notes',
         queryParams,
@@ -230,8 +261,27 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
     }
 
-    if (renderCountRef.current >= 1 && router.pathname === '/') fetchData()
-  }, [debouncedPage, debouncedSearchByTitle, debouncedSearchByDescription, isLogged, router.pathname])
+    let _sendReqTimeout: any
+    function startReq() {
+      _sendReqTimeout = setTimeout(fetchData, 1000)
+    }
+    function stopReq() {
+      clearTimeout(_sendReqTimeout)
+    }
+    if (router.pathname === '/') startReq()
+
+    return () => {
+      if (!!_sendReqTimeout) stopReq()
+    }
+  }, [
+    // debouncedPage,
+    debouncedSearchByTitle,
+    debouncedSearchByDescription,
+    isLogged,
+    router.pathname,
+    normalizedQuery,
+  ])
+
   const handleSearchByTitleClear = () => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: '' })
     setFieldToLS(ELSFields.MainSearch, { searchByTitle: '' }, true)
@@ -239,13 +289,13 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const handleSearchByDescriptionClear = () => {
     dispatch({ type: 'SEARCH_BY_DESCRIPTION@SET', payload: '' })
   }
-  const handleSearchByAnythingClear = () => {
-    dispatch({ type: 'SEARCH_BY_ANYTHING@RESET' })
-  }
+  // const handleSearchByAnythingClear = () => {
+  //   dispatch({ type: 'SEARCH_BY_ANYTHING@RESET' })
+  // }
 
   useEffect(() => {
     handleScrollTop(true)
-    handleSearchByAnythingClear()
+    // handleSearchByAnythingClear()
   }, [router.pathname])
 
   const setFieldToLS = (fieldName: string, value: any, asJson: boolean) => {
@@ -702,7 +752,8 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         isNotesLoading: isLoading,
         initState,
         // @ts-ignore
-        page: state.localPage,
+        // page: state.localPage,
+        page: state.pagination.currentPage,
         handleSearchByDescriptionSetText,
         handleSearchByTitleSetText,
         handleUpdateOneNote,

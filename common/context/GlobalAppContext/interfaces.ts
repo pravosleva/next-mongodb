@@ -7,7 +7,7 @@ export enum ELSFields {
 }
 
 export type TPagination = {
-  curentPage: number
+  currentPage: number
   totalPages: number
   totalNotes: number
 }

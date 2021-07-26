@@ -1,13 +1,13 @@
 import { useEffect, useRef, useMemo } from 'react'
 // import Link from 'next/link'
-import fetch from 'isomorphic-unfetch'
+// import fetch from 'isomorphic-unfetch'
 import { Icon, Label } from 'semantic-ui-react'
 import { ActiveNote, MobileDialogIfNecessary } from '~/common/components/ActiveNote'
 import clsx from 'clsx'
 import { useGlobalAppContext, getInitialState, useAuthContext, ELSFields } from '~/common/context'
 import { useWindowSize } from '~/common/hooks'
 import { EmptyTemplate } from '~/common/components/EmptyTemplate'
-import { data as defaultPaginationData } from '~/common/constants/default-pagination'
+// import { data as defaultPaginationData } from '~/common/constants/default-pagination'
 import { Button as MuiButton, Box, TextField } from '@material-ui/core'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import EditIcon from '@material-ui/icons/Edit'
@@ -16,7 +16,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { useRouter } from 'next/router'
 import { Tags } from '~/common/components/Tags'
-import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
+// import { getStandardHeadersByCtx } from '~/utils/next/getStandardHeadersByCtx'
 import { Sample0 } from '~/common/styled-mui/custom-pagination'
 import MdiIcon from '@mdi/react'
 import { mdiPinOff, mdiAutorenew } from '@mdi/js'
@@ -24,6 +24,7 @@ import { mdiPinOff, mdiAutorenew } from '@mdi/js'
 import { PinNote } from '~/common/components/PinNote'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import { getNormalizedQuery, TNormalizedQuery } from '~/utils/getNormalizedQuery'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -247,91 +248,108 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               </div>
             )}
           </div>
-          {[...filteredNotes, ...notes].map((note) => {
-            const isActive = !!activeNote?._id && activeNote._id === note._id
+          {!isLoading ? (
+            [...filteredNotes, ...notes].map((note) => {
+              const isActive = !!activeNote?._id && activeNote._id === note._id
 
-            return (
-              <div
-                key={note._id}
-                className={clsx(baseClasses.standardCard, 'card', {
-                  'active-card-wrapper': isActive && !note.isLocal,
-                  'active-card-wrapper_local': isActive && note.isLocal,
-                  'private-card-wrapper': note.isPrivate,
-                })}
-              >
-                <>
-                  <div
-                    className={clsx(baseClasses.standardCardHeader, baseClasses.cursorPointer)}
-                    onClick={() => handleSetAsActiveNote(note)}
-                  >
-                    <h4>
-                      {note.title}
-                      {/* !!note.id ? (
-                        <span>
-                          {' '}
-                          <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
-                        </span>
-                      ) : null */}
-                    </h4>
-                  </div>
-                  {isMobile && (
-                    <div className={clsx(baseClasses.actionsBoxRight, baseClasses.standardCardFooter)}>
-                      <>
-                        <Tags title={note.title} />
-                        {isLogged && !note.isLocal && (
+              return (
+                <div
+                  key={note._id}
+                  className={clsx(baseClasses.standardCard, 'card', {
+                    'active-card-wrapper': isActive && !note.isLocal,
+                    'active-card-wrapper_local': isActive && note.isLocal,
+                    'private-card-wrapper': note.isPrivate,
+                  })}
+                  style={{
+                    opacity: 1,
+                  }}
+                >
+                  <>
+                    <div
+                      className={clsx(baseClasses.standardCardHeader, baseClasses.cursorPointer)}
+                      onClick={() => handleSetAsActiveNote(note)}
+                    >
+                      <h4>
+                        {note.title}
+                        {/* !!note.id ? (
+                          <span>
+                            {' '}
+                            <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
+                          </span>
+                        ) : null */}
+                      </h4>
+                    </div>
+                    {isMobile && (
+                      <div className={clsx(baseClasses.actionsBoxRight, baseClasses.standardCardFooter)}>
+                        <>
+                          <Tags title={note.title} />
+                          {isLogged && !note.isLocal && (
+                            <MuiButton
+                              // disabled={isNotesLoading}
+                              variant="outlined"
+                              size="small"
+                              color="primary"
+                              onClick={() => {
+                                router.push(`/notes/${note._id}/edit`)
+                              }}
+                              startIcon={<EditIcon />}
+                            >
+                              Edit
+                            </MuiButton>
+                          )}
+                          {!isIdPinned(note._id) ? (
+                            <PinNote id={note._id} isLocal={note.isLocal} />
+                          ) : (
+                            <MuiButton
+                              variant="outlined"
+                              size="small"
+                              color={note.isLocal ? 'secondary' : 'primary'}
+                              onClick={() => {
+                                handleUnpinFromLS(note._id, ELSFields.MainPinnedNamespaceMap)
+                              }}
+                              startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+                            >
+                              Unpin
+                            </MuiButton>
+                          )}
+
                           <MuiButton
                             // disabled={isNotesLoading}
-                            variant="outlined"
-                            size="small"
-                            color="primary"
-                            onClick={() => {
-                              router.push(`/notes/${note._id}/edit`)
-                            }}
-                            startIcon={<EditIcon />}
-                          >
-                            Edit
-                          </MuiButton>
-                        )}
-                        {!isIdPinned(note._id) ? (
-                          <PinNote id={note._id} isLocal={note.isLocal} />
-                        ) : (
-                          <MuiButton
-                            variant="outlined"
+                            variant="contained"
                             size="small"
                             color={note.isLocal ? 'secondary' : 'primary'}
                             onClick={() => {
-                              handleUnpinFromLS(note._id, ELSFields.MainPinnedNamespaceMap)
+                              if (note.isLocal) {
+                                router.push(`/local-notes/${note._id}`)
+                              } else {
+                                router.push(`/notes/${note._id}`)
+                              }
                             }}
-                            startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+                            startIcon={<ArrowForwardIcon />}
                           >
-                            Unpin
+                            View
                           </MuiButton>
-                        )}
-
-                        <MuiButton
-                          // disabled={isNotesLoading}
-                          variant="contained"
-                          size="small"
-                          color={note.isLocal ? 'secondary' : 'primary'}
-                          onClick={() => {
-                            if (note.isLocal) {
-                              router.push(`/local-notes/${note._id}`)
-                            } else {
-                              router.push(`/notes/${note._id}`)
-                            }
-                          }}
-                          startIcon={<ArrowForwardIcon />}
-                        >
-                          View
-                        </MuiButton>
-                      </>
-                    </div>
-                  )}
-                </>
-              </div>
-            )
-          })}
-          {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
+                        </>
+                      </div>
+                    )}
+                  </>
+                </div>
+              )
+            })
+          ) : (
+            <div
+              style={{
+                height: '250px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                // border: '1px solid red',
+              }}
+            >
+              <MdiIcon color="gray" path={mdiAutorenew} size={4} spin />
+            </div>
+          )}
+          {!isLoading && state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
             // state.pagination.totalPages > 1 &&
             <div className="search-wrapper">
               <Box m={1}>
@@ -391,12 +409,25 @@ Index.getInitialProps = async (ctx) => {
   }
   */
 
+  const { req } = ctx
+  let normalizedQuery
+  if (!!req) {
+    normalizedQuery = getNormalizedQuery(req.query)
+  } else {
+    if (!!window) {
+      const urlSearchParams = new URLSearchParams(window.location.search)
+      const params = Object.fromEntries(urlSearchParams.entries())
+
+      normalizedQuery = getNormalizedQuery(params)
+    }
+  }
+
   return {
     // notes: data || [],
     // pagination: pagination || { totalPages: 1, totalNotes: 0, currentPage: 1 },
     // errMsg,
     notes: [],
-    pagination: { totalPages: 1, totalNotes: 0, currentPage: 1 },
+    pagination: { totalPages: 1, totalNotes: 0, currentPage: normalizedQuery?.page || 1 },
     errMsg: null,
   }
 }
