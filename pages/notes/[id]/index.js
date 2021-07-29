@@ -1,4 +1,4 @@
-import { Head } from 'next/document'
+import Head from 'next/head'
 import { TheNotePage } from '~/common/components/TheNotePage'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
@@ -13,18 +13,20 @@ const Note = ({ note }) => {
         <meta property="og:image" content="http://code-samples.space/static/icons/apple-touch-icon.png" />
 
         <meta name="twitter:url" content="http://code-samples.space" />
-        <meta name="twitter:title" content="Code Samples" />
+        <meta name="twitter:title" content="Code Samples 2.0" />
         <meta name="twitter:image" content="http://code-samples.space/static/icons/icon-512x512.png" />
         <meta name="twitter:creator" content="@pravosleva86" />
         <meta name="twitter:card" content="summary" />
-        {!!note?.id ? (
+        {!!note?._id ? (
           <>
+            <title>{note.title}</title>
             <meta property="og:title" content={note.title} />
             <meta property="og:description" content={note.description} />
             <meta name="twitter:description" content={note.description} />
           </>
         ) : (
           <>
+            <title>WTF?</title>
             <meta property="og:title" content="Code Samples 2.0" />
             <meta property="og:description" content="No description" />
             <meta name="twitter:description" content="Смотри что я нашел!" />

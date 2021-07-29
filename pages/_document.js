@@ -16,7 +16,7 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="/static/css/react-notifications-component.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic" />
 
-          <meta name="application-name" content="Code Samples" />
+          <meta name="application-name" content="Code Samples 2.0" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
           <meta name="apple-mobile-web-app-title" content="Code Samples" />

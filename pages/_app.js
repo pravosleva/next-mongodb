@@ -36,7 +36,6 @@ class MyApp extends NextApp {
     return (
       <>
         <Head>
-          <title>Code Samples 2.0</title>
           <meta charSet="utf-8" />
           <link rel="icon" href="/static/favicon.ico" />
           {/* PWA primary color */}
