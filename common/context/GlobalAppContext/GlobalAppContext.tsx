@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState, useEffect, useRef, useContext, useCallback, useMemo } from 'react'
+import { createContext, useReducer, useState, useEffect, useContext, useCallback, useMemo } from 'react'
 import buildUrl from 'build-url'
 import { useAuthContext, useDebounce, useNotifsContext } from '~/common/hooks'
 import { useRouter } from 'next/router'
@@ -223,12 +223,12 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     [handleScrollTop, dispatch, router, normalizedQuery]
   )
   // const debouncedPage = useDebounce(state.localPage, 1000)
-  const renderCountRef = useRef(0) // NOTE: unused
+  // const renderCountRef = useRef(0) // NOTE: unused
   const { isLogged } = useAuthContext()
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    renderCountRef.current += 1
+    // renderCountRef.current += 1
 
     const fetchData = async () => {
       setIsLoading(true)

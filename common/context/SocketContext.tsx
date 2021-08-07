@@ -106,7 +106,7 @@ export const SocketContextProvider = ({ children }: any) => {
       const userDetails: TUserDetails = await httpClient.getMyIP()
       const { success, geo, ip } = userDetails
 
-      console.log(userDetails)
+      // console.log(userDetails)
       if (success && !!ip) {
         const geoInfo = getInfoByGeo(geo)
         addDefaultNotif({
@@ -256,9 +256,10 @@ export const SocketContextProvider = ({ children }: any) => {
       },
     })
   }
-  const handleGetAllNotes = async () => {
+  const handleGetAllNotes = useCallback(async () => {
     // let q = '?'
     let res: any[] = []
+    const { searchByTitle, searchByDescription } = globalState
 
     /*
     await getFieldFromLS(ELSFields.MainSearch, true)
@@ -271,15 +272,15 @@ export const SocketContextProvider = ({ children }: any) => {
         res = await httpClient.getNotes('/notes')
       })
     */
-    res = await httpClient.getNotes('/notes')
+    res = await httpClient.getNotes('/notes', { searchByTitle, searchByDescription })
 
     return res
-  }
-  const renderCounterRef = useRef<number>(0)
+  }, [globalState.searchByTitle, globalState.searchByDescription])
+  // const renderCounterRef = useRef<number>(0)
 
   useEffect(() => {
-    renderCounterRef.current += 1
-    if (renderCounterRef.current < firstRendersToSkip) return
+    // renderCounterRef.current += 1
+    // if (renderCounterRef.current < firstRendersToSkip) return
     if (isClient) {
       // @ts-ignore
       const socket = io.connect(NEXT_APP_SOCKET_API_ENDPOINT)
@@ -287,22 +288,31 @@ export const SocketContextProvider = ({ children }: any) => {
       socket.on(EActions.ME_CONNECTED, (arg: any) => {
         handleMeConnectedRef.current(arg, socket)
 
-        // NOTE: is reconnect?
-        if (renderCounterRef.current > firstRendersToSkip + 1) {
-          handleGetAllNotes()
-            .then((res) => {
-              handleSetNotesResponse(res)
-            })
-            .catch((err) => {
-              if (typeof err === 'string') {
-                addDangerNotif({
-                  title: 'ERR: Update list by new socket connection',
-                  message: err,
-                })
-              }
-              console.log(err)
-            })
-        }
+        // const fetchData = () => {
+        //   handleGetAllNotes()
+        //     .then(handleSetNotesResponse)
+        //     .catch((err) => {
+        //       if (typeof err === 'string') {
+        //         addDangerNotif({
+        //           title: 'ERR: Update list by new socket connection',
+        //           message: err,
+        //         })
+        //       }
+        //       console.log(err)
+        //     })
+        // }
+        // let _sendReqTimeout: any
+        // function startReq() {
+        //   _sendReqTimeout = setTimeout(fetchData, 3000)
+        // }
+        // function stopReq() {
+        //   clearTimeout(_sendReqTimeout)
+        // }
+        // startReq()
+
+        // return () => {
+        //   if (!!_sendReqTimeout) stopReq()
+        // }
       })
       socket.on(EActions.NOTE_CREATED, handleCreateNote)
       socket.on(EActions.NOTE_UPDATED, handleUpdateNote)

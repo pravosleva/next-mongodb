@@ -68,14 +68,18 @@ class HttpClientSingletone {
     return !!data?.message ? data?.message : 'Извините, что-то пошло не так'
   }
 
-  async getNotes(url) {
+  async getNotes(url, { searchByTitle, searchByDescription }) {
     if (!!this.getNotesCancelTokenSource) this.getNotesCancelTokenSource.cancel('axios request cancelled')
 
     const source = createCancelTokenSource()
     this.getNotesCancelTokenSource = source
+    const params = {}
+    if (!!searchByTitle) params.q_title = encodeURIComponent(searchByTitle)
+    if (!!searchByDescription) params.q_description = encodeURIComponent(searchByDescription)
 
     const result = await this.axiosInstance({
       method: 'GET',
+      params,
       url,
       // mode: 'cors',
       cancelToken: this.getNotesCancelTokenSource.token,
