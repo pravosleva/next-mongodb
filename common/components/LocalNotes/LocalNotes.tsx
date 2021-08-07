@@ -14,6 +14,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
+// import CloseIcon from '@material-ui/icons/Close'
 
 export const LocalNotes = () => {
   const { localNotes, removeLocalNote, handleSetAsActiveNote, qr, setQR, resetQR } = useGlobalAppContext()
@@ -136,7 +137,18 @@ export const LocalNotes = () => {
                     style={{ width: 196, height: 196, borderRadius: '8px', marginBottom: '8px' }}
                   />
                 </div>
-                Отсканируйте QR другим устройством
+                <div style={{ marginBottom: '8px' }}>Отсканируйте QR другим устройством</div>
+                <ThemedButton
+                  // style={{ marginBottom: '8px' }}
+                  fullWidth
+                  size="small"
+                  color={EColorValue.grey}
+                  variant="contained"
+                  onClick={resetQR}
+                  // endIcon={<CloseIcon />}
+                >
+                  Сброс
+                </ThemedButton>
               </Alert>
             </>
           )}

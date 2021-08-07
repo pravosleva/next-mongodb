@@ -248,7 +248,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               </div>
             )}
           </div>
-          {!isLoading ? (
+          {
+            // !isLoading ? (
             [...filteredNotes, ...notes].map((note) => {
               const isActive = !!activeNote?._id && activeNote._id === note._id
 
@@ -336,20 +337,22 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                 </div>
               )
             })
-          ) : (
-            <div
-              style={{
-                height: '250px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                // border: '1px solid red',
-              }}
-            >
-              <MdiIcon color="gray" path={mdiAutorenew} size={4} spin />
-            </div>
-          )}
-          {!isLoading && state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
+            // )
+            // : (
+            //   <div
+            //     style={{
+            //       height: '250px',
+            //       display: 'flex',
+            //       justifyContent: 'center',
+            //       alignItems: 'center',
+            //       // border: '1px solid red',
+            //     }}
+            //   >
+            //     <MdiIcon color="gray" path={mdiAutorenew} size={4} spin />
+            //   </div>
+            // )
+          }
+          {state.notes.length > 0 && totalPages > 0 && !!currentPage && !!state.pagination && (
             // state.pagination.totalPages > 1 &&
             <div className="search-wrapper">
               <Box m={1}>

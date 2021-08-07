@@ -10,6 +10,7 @@ import slugify from 'slugify'
 import { ELSFields, IState } from './interfaces'
 import { getMsgStr } from '~/utils/errors/getMsgStr'
 import { getNormalizedQuery, TNormalizedQuery } from '~/utils/getNormalizedQuery'
+import { httpClient } from '~/utils/httpClient'
 
 const NEXT_APP_API_ENDPOINT: string = process.env.NEXT_APP_API_ENDPOINT || ''
 
@@ -725,6 +726,22 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
   // ---
   const [qr, setQR] = useState<string | null>(null)
+  useEffect(() => {
+    // console.log(typeof httpClient.getQRByLoggedReqId)
+    const fetch = async () => {
+      const res = await httpClient
+        .getQRByLoggedReqId()
+        .then(({ qrData }: any) => {
+          return qrData
+        })
+        .catch((err: any) => {
+          // eslint-disable-next-line no-console
+          console.log(err)
+        })
+      if (!!res?.qr && typeof res?.qr === 'string') setQR(res?.qr)
+    }
+    fetch()
+  }, [httpClient])
   const resetQR = useCallback(() => {
     setQR(null)
   }, [setQR])

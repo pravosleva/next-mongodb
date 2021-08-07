@@ -24,6 +24,7 @@ class HttpClientSingletone {
     this.getMeCancelTokenSource = null
     this.crossdeviceSaveCancelTokenSource = null
     this.crossdeviceGetCancelTokenSource = null
+    this.getQRByLoggedReqIdCancelTokenSource = null
     this.axiosInstance = axios.create({
       baseURL: `${NEXT_APP_API_ENDPOINT}/`,
       // timeout: 1000,
@@ -316,6 +317,48 @@ class HttpClientSingletone {
       })
 
     self.crossdeviceGetCancelTokenSource = null
+    if (result.isOk) {
+      return Promise.resolve(result.res)
+    }
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
+    }
+    return Promise.reject(self.getErrorMsg(result.res))
+  }
+  async getQRByLoggedReqId(_opts, url = '/crossdevice/get-qr') {
+    const self = HttpClientSingletone._instance
+
+    if (!!self.getQRByLoggedReqIdCancelTokenSource)
+      self.getQRByLoggedReqIdCancelTokenSource.cancel('axios request cancelled')
+    const source = createCancelTokenSource()
+    self.getQRByLoggedReqIdCancelTokenSource = source
+
+    const result = await self
+      .axiosInstance({
+        method: 'GET',
+        url: url,
+        // mode: 'cors',
+        cancelToken: self.getQRByLoggedReqIdCancelTokenSource.token,
+        validateStatus: (status) => status >= 200 && status < 500,
+      })
+      .then(httpErrorHandler)
+      .then(
+        self.responseDataHandlerAfterHttpErrorHandler((res) => {
+          const { success, qrData } = res
+
+          return success && !!qrData
+        })
+      )
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled', err.message)
+        } else {
+          console.log(err)
+        }
+        return { isOk: false, res: err }
+      })
+
+    self.getQRByLoggedReqIdCancelTokenSource = null
     if (result.isOk) {
       return Promise.resolve(result.res)
     }

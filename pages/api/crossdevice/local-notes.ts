@@ -76,7 +76,7 @@ const crossdeviceApi = async (
         if (!reqId) {
           reqId = req.id
           cookies.set('crossdevice-req-id', reqId, {
-            httpOnly: true, // true by default
+            httpOnly: false, // true by default
             maxAge: maxAgeInDays * 24 * 60 * 60 * 1000,
           })
           console.log('New cookie set')
