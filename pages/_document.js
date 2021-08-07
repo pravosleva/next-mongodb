@@ -16,11 +16,11 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="/static/css/react-notifications-component.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic" />
 
-          <meta name="application-name" content="Code Samples" />
+          <meta name="application-name" content="Code Samples 2.0" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
           <meta name="apple-mobile-web-app-title" content="Code Samples" />
-          <meta name="description" content="Best Code Samples in the world" />
+          <meta name="description" content="Смотри что я нашел!" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           {/* <meta name='msapplication-config' content='/static/icons/browserconfig.xml' /> */}
@@ -39,21 +39,6 @@ export default class MyDocument extends Document {
           <link rel="mask-icon" href="/static/icons/safari-pinned-tab.svg" color="#5bbad5" />
           <link rel="shortcut icon" href="/favicon.ico" />
           {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" /> */}
-
-          {/*
-          <meta name="twitter:card" content="summary" />
-          <meta name="twitter:url" content="http://code-samples.space" />
-          <meta name="twitter:title" content="Code Samples" />
-          <meta name="twitter:description" content="Best Code Samples in the world" />
-          <meta name="twitter:image" content="http://code-samples.space/static/icons/android-chrome-192x192.png" />
-          <meta name="twitter:creator" content="@DavidWShadow" />
-          */}
-          <meta property="og:type" content="website" />
-          <meta property="og:title" content="Code Samples" />
-          <meta property="og:description" content="Best Code Samples in the world" />
-          <meta property="og:site_name" content="Code Samples" />
-          <meta property="og:url" content="http://code-samples.space" />
-          <meta property="og:image" content="http://code-samples.space/static/icons/apple-touch-icon.png" />
         </Head>
         <body>
           <Main />
