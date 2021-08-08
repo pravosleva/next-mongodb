@@ -80,6 +80,25 @@ class CrossDeviceSingleton {
 
     return qr
   }
+  replaceSocketId({ newSocketId, reqIdAsUniqueKey, ip, geo }) {
+    let result = false
+    const data = this.state.get(reqIdAsUniqueKey)
+
+    if (!!data) {
+      const modifiedData = {
+        ...data,
+        socketId: newSocketId,
+        ts: new Date().getTime(),
+        ip,
+        geo,
+      }
+
+      this.state.set(reqIdAsUniqueKey, modifiedData)
+      result = true
+    }
+
+    return result
+  }
   getSomeonesLocalNotesOrDeletePromise(reqId) {
     if (this.state.has(reqId)) {
       const targetLSData = this.state.get(reqId)
@@ -104,14 +123,14 @@ class CrossDeviceSingleton {
 
         this.state.set(reqId, newData)
         return Promise.resolve({
-          message: `Запрос с другого устройства с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
+          message: `Запрос с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
           data: newData,
           haveToBeKilled: false,
         })
       }
     } else {
       return Promise.reject({
-        message: 'Извините, мы про#6@ли Ваши данные. С уважением, code-samples.space',
+        message: '🚫 Извините, мы про#6@ли Ваши данные. С уважением, code-samples.space',
         data: null,
       })
     }

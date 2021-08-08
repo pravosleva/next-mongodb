@@ -119,17 +119,38 @@ export const SocketContextProvider = ({ children }: any) => {
       }
       // --
 
+      // -- Update socket.id in remote state for EAction.QR_USED support (socket emit)
+      httpClient
+        .replaceSocketIdInRemoteState({
+          newSocketId: socket.id,
+        })
+        .then(() => {
+          addSuccessNotif({
+            title: 'Socket: Remote state details',
+            message: 'socket.id updated in state; key taken from cookies',
+            dismiss: {
+              duration: 7000,
+            },
+          })
+        })
+        .catch((err) => {
+          // addDangerNotif({
+          //   title: 'Socket: Remote state details',
+          //   message: typeof err === 'string' ? err : err.message || 'No err.message',
+          //   dismiss: { duration: 10000, },
+          // })
+          console.log('ERR: Socket: Remote state details')
+          console.log(err)
+        })
+      // --
+
       // -- Update active note if necessary:
       if (!!globalState.activeNote?._id && !globalState.activeNote.isLocal) {
         // TODO: Request activeNote._id should be requested
         console.log(`NOTE: Request for globalState.activeNote._id (${globalState.activeNote._id}) required`)
 
         handleGetNote(globalState.activeNote._id)
-          .then((res) => {
-            // console.log('Received:')
-            console.log(res)
-            handleSetAsActiveNote(res)
-          })
+          .then(handleSetAsActiveNote)
           .catch((err) => {
             if (typeof err === 'string') {
               addDangerNotif({

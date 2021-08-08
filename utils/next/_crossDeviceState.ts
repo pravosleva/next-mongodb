@@ -79,6 +79,35 @@ export class CrossDeviceSingleton {
 
     return state
   }
+  replaceSocketId({
+    newSocketId,
+    reqIdAsUniqueKey,
+    ip,
+    geo,
+  }: {
+    newSocketId: string
+    reqIdAsUniqueKey: string
+    ip: string
+    geo: any
+  }) {
+    let result = false
+    const data = this.state.get(reqIdAsUniqueKey)
+
+    if (!!data) {
+      const modifiedData = {
+        ...data,
+        socketId: newSocketId,
+        ts: new Date().getTime(),
+        ip,
+        geo,
+      }
+
+      this.state.set(reqIdAsUniqueKey, modifiedData)
+      result = true
+    }
+
+    return result
+  }
   public async addSomeonesLocalNotes({
     ip,
     geo,

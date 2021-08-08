@@ -25,6 +25,7 @@ class HttpClientSingletone {
     this.crossdeviceSaveCancelTokenSource = null
     this.crossdeviceGetCancelTokenSource = null
     this.getQRByLoggedReqIdCancelTokenSource = null
+    this.replaceSocketIdInRemoteStateCancelTokenSource = null
     this.axiosInstance = axios.create({
       baseURL: `${NEXT_APP_API_ENDPOINT}/`,
       // timeout: 1000,
@@ -325,7 +326,7 @@ class HttpClientSingletone {
     }
     return Promise.reject(self.getErrorMsg(result.res))
   }
-  async getQRByLoggedReqId(_opts, url = '/crossdevice/get-qr') {
+  async getQRByLoggedReqId(_opts, url = '/crossdevice/get-qr-by-unique-key') {
     const self = HttpClientSingletone._instance
 
     if (!!self.getQRByLoggedReqIdCancelTokenSource)
@@ -359,6 +360,43 @@ class HttpClientSingletone {
       })
 
     self.getQRByLoggedReqIdCancelTokenSource = null
+    if (result.isOk) {
+      return Promise.resolve(result.res)
+    }
+    if (result.res instanceof HttpError) {
+      return Promise.reject(result.res.getErrorMsg())
+    }
+    return Promise.reject(self.getErrorMsg(result.res))
+  }
+  async replaceSocketIdInRemoteState({ newSocketId }) {
+    // NOTE: reqIdAsUniqueKey will be taken from cookies
+    const self = HttpClientSingletone._instance
+
+    if (!!self.replaceSocketIdInRemoteStateCancelTokenSource)
+      self.replaceSocketIdInRemoteStateCancelTokenSource.cancel('axios request cancelled')
+    const source = createCancelTokenSource()
+    self.replaceSocketIdInRemoteStateCancelTokenSource = source
+
+    const result = await self
+      .axiosInstance({
+        method: 'GET',
+        url: `/crossdevice/replace-socket-id-in-remote-state?new_socket_id=${newSocketId}`,
+        // mode: 'cors',
+        cancelToken: self.replaceSocketIdInRemoteStateCancelTokenSource.token,
+        validateStatus: (status) => status >= 200 && status < 500,
+      })
+      .then(httpErrorHandler)
+      .then(self.responseDataHandlerAfterHttpErrorHandler((res) => res?.success === true))
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log('Request canceled', err.message)
+        } else {
+          console.log(err)
+        }
+        return { isOk: false, res: err }
+      })
+
+    self.replaceSocketIdInRemoteStateCancelTokenSource = null
     if (result.isOk) {
       return Promise.resolve(result.res)
     }

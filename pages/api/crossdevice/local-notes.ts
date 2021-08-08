@@ -71,28 +71,27 @@ const crossdeviceApi = async (
 
         let reqId = cookies.get('crossdevice-req-id')
 
-        console.log('--- redId; OLD:', reqId)
+        // console.log('--- redId; OLD:', reqId)
 
         if (!reqId) {
           reqId = req.id
           cookies.set('crossdevice-req-id', reqId, {
-            httpOnly: false, // true by default
+            httpOnly: true, // true by default
             maxAge: maxAgeInDays * 24 * 60 * 60 * 1000,
           })
-          console.log('New cookie set')
+          // console.log('New cookie set')
         }
 
-        console.log('NEW:', reqId)
-        console.log('---')
+        // console.log('NEW:', reqId)
+        // console.log('---')
         // ---
 
-        const qrPayload = JSON.stringify({ descr: 'This obj is unnecessary. For example only.' })
         const yourData: { reqId: string } & Partial<TMapValue> = {
           ip,
           geo,
-          reqId: reqId || `No req.id: ${typeof reqId}`,
+          reqId,
           lsData,
-          qrPayload,
+          qrPayload: reqId,
           socketId,
         }
 
@@ -124,7 +123,7 @@ const crossdeviceApi = async (
         if (tst === 'state') {
           return res.status(200).json({
             state: req.crossDeviceState.getState(),
-            success: false,
+            success: true,
           })
         }
 
