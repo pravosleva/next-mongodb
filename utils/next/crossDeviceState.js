@@ -64,11 +64,6 @@ class CrossDeviceSingleton {
 
     return state
   }
-  getQRByLoggedReqId(loggedReqId) {
-    const data = this.state.get(loggedReqId)
-
-    return data || null
-  }
   async addSomeonesLocalNotes({ reqId, lsData, qrPayload, ip, geo, socketId }) {
     const qr = await this.getQR(qrPayload)
 

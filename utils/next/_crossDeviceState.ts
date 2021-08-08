@@ -79,11 +79,6 @@ export class CrossDeviceSingleton {
 
     return state
   }
-  public getQRByLoggedReqId(loggedReqId: string) {
-    const data = this.state.get(loggedReqId)
-
-    return data || null
-  }
   public async addSomeonesLocalNotes({
     ip,
     geo,

@@ -71,12 +71,13 @@ const crossdeviceApi = async (
         let status = 500
         let result: any
         // const qrData = req.crossDeviceState.getQRByLoggedReqId(logged_req_id)
-        const qrData = req.crossDeviceState.state.get(logged_req_id)
+        // const qrData = req.crossDeviceState.state.get(logged_req_id)
+        const qr = await req.crossDeviceState.getQR(logged_req_id)
 
-        if (!!qrData) {
+        if (!!qr) {
           status = 200
           result = {
-            qrData,
+            qr,
             success: true,
             _originalReqQuery: req.query,
           }

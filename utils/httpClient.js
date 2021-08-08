@@ -344,9 +344,9 @@ class HttpClientSingletone {
       .then(httpErrorHandler)
       .then(
         self.responseDataHandlerAfterHttpErrorHandler((res) => {
-          const { success, qrData } = res
+          const { success, qr } = res
 
-          return success && !!qrData
+          return success && !!qr
         })
       )
       .catch((err) => {

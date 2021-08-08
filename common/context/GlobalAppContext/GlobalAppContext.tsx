@@ -731,12 +731,13 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     const fetch = async () => {
       const res = await httpClient
         .getQRByLoggedReqId()
-        .then(({ qrData }: any) => {
-          return qrData
+        .then(({ qr }: { qr: string }) => {
+          return { qr }
         })
         .catch((err: any) => {
           // eslint-disable-next-line no-console
           console.log(err)
+          return null
         })
       if (!!res?.qr && typeof res?.qr === 'string') setQR(res?.qr)
     }
