@@ -35,28 +35,45 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
           {message}
         </Alert>
       ) : (
-        <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '16px' }}>
-          <AlertTitle>New notes added</AlertTitle>
-          <div style={{ marginBottom: '8px' }}>{message}</div>
-          {/*
-          <pre style={{ whiteSpace: 'pre-wrap', margin: '0px', overflow: 'auto' }}>
-            {JSON.stringify(
-              {
-                ip: data.ip,
-                geo: data.geo,
-                lsData: data.lsData,
-              },
-              null,
-              2
-            )}
-          </pre>
-          */}
+        <>
+          <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '16px' }}>
+            <AlertTitle>New notes added</AlertTitle>
+            <div
+            // style={{ marginBottom: '8px' }}
+            >
+              {message}
+            </div>
+            {/*
+            <pre style={{ whiteSpace: 'pre-wrap', margin: '0px', overflow: 'auto' }}>
+              {JSON.stringify(
+                {
+                  ip: data.ip,
+                  geo: data.geo,
+                  lsData: data.lsData,
+                },
+                null,
+                2
+              )}
+            </pre>
+            */}
+          </Alert>
           {isClient && (
             <Suspense fallback={<div>Loading...</div>}>
-              <ReactJson src={data} />
+              <div
+                style={{
+                  width: '100%',
+                  // border: '1px solid lightgray',
+                  overflowX: 'auto',
+                  marginBottom: '16px',
+                  // borderRadius: '8px',
+                  // padding: '8px 0',
+                }}
+              >
+                <ReactJson src={data} collapsed />
+              </div>
             </Suspense>
           )}
-        </Alert>
+        </>
       )}
       <ThemedButton
         // style={{ marginBottom: '8px' }}
