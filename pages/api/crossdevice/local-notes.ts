@@ -145,7 +145,7 @@ const crossdeviceApi = async (
             // --- NOTE: Notificaion by socket
             const socketId = data?.socketId
             if (!!socketId)
-              req.io.to(socketId).emit(EActions.QR_USED, { message: `${req.clientIp} | ${message}`, haveToBeKilled })
+              req.io.to(socketId).emit(EActions.QR_USED, { message: `${message} [${req.clientIp}]`, haveToBeKilled })
             // ---
 
             return {

@@ -81,7 +81,7 @@ class CrossDeviceSingleton {
     return qr
   }
   replaceSocketId({ newSocketId, reqIdAsUniqueKey, ip, geo }) {
-    let result = false
+    let success = false
     const data = this.state.get(reqIdAsUniqueKey)
 
     if (!!data) {
@@ -94,10 +94,10 @@ class CrossDeviceSingleton {
       }
 
       this.state.set(reqIdAsUniqueKey, modifiedData)
-      result = true
+      success = true
     }
 
-    return result
+    return { success, oldSocketId: data?.socketId }
   }
   getSomeonesLocalNotesOrDeletePromise(reqId) {
     if (this.state.has(reqId)) {
