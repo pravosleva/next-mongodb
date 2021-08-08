@@ -141,14 +141,16 @@ const crossdeviceApi = async (
           .getSomeonesLocalNotesOrDeletePromise(payload)
           .then(({ message, data, haveToBeKilled }) => {
             status = 200
+            const modifiedData = { ...data, newDevice: { geo: req.geo, ip: req.clientIp } }
 
             // --- NOTE: Notificaion by socket
             const socketId = data?.socketId
-            if (!!socketId) req.io.to(socketId).emit(EActions.QR_USED, { message, haveToBeKilled })
+            if (!!socketId)
+              req.io.to(socketId).emit(EActions.QR_USED, { message: `${req.clientIp} | ${message}`, haveToBeKilled })
             // ---
 
             return {
-              data,
+              data: modifiedData,
               message,
               success: true,
             }

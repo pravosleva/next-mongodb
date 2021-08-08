@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { httpClient } from '~/utils/httpClient'
 import {
   useGlobalAppContext,
@@ -9,6 +9,12 @@ import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import { useRouter } from 'next/router'
 import Icon from '@mdi/react'
 import { mdiArrowRight } from '@mdi/js'
+// import ReactJson from 'react-json-view'
+const ReactJson = lazy(
+  () =>
+    // @ts-ignore
+    import(/* webpackChunkName: "ReactJson" */ 'react-json-view')
+)
 
 const SetLocalNotesPage = ({ data, message, isOk }: any) => {
   const { addNewLSData } = useGlobalAppContext()
@@ -18,6 +24,8 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
   useEffect(() => {
     if (isOk && !!data.lsData) addNewLSData(data.lsData)
   }, [])
+  const isClient = useMemo(() => typeof window !== 'undefined', [typeof window])
+
   return (
     <div>
       <h1>isOk={String(isOk)}</h1>
@@ -30,6 +38,7 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
         <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '16px' }}>
           <AlertTitle>New notes added</AlertTitle>
           <div style={{ marginBottom: '8px' }}>{message}</div>
+          {/*
           <pre style={{ whiteSpace: 'pre-wrap', margin: '0px', overflow: 'auto' }}>
             {JSON.stringify(
               {
@@ -41,6 +50,12 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
               2
             )}
           </pre>
+          */}
+          {isClient && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <ReactJson src={data} />
+            </Suspense>
+          )}
         </Alert>
       )}
       <ThemedButton
