@@ -52,17 +52,13 @@ const crossdeviceApi = async (
   } = req
   // NOTE: https://maxschmitt.me/posts/next-js-cookies/
   // @ts-ignore
-  // const cookies = new Cookies(req, res)
+  const cookies = new Cookies(req, res)
+  const logged_req_id = cookies.get('crossdevice-req-id')
 
   switch (method) {
     case 'GET':
       try {
-        // const {
-        //   query: { logged_req_id },
-        // } = req
-        // @ts-ignore
-        const cookies = new Cookies(req, res)
-        let logged_req_id = cookies.get('crossdevice-req-id')
+        // const { query: { logged_req_id } } = req
 
         if (!logged_req_id) throw new Error('req.query.logged_req_id should be provided')
         if (!req.crossDeviceState.state.has(logged_req_id))
@@ -74,19 +70,22 @@ const crossdeviceApi = async (
 
         let status = 500
         let result: any
-        const qrData = req.crossDeviceState.getQRByLoggedReqId(logged_req_id)
+        // const qrData = req.crossDeviceState.getQRByLoggedReqId(logged_req_id)
+        const qrData = req.crossDeviceState.state.get(logged_req_id)
 
         if (!!qrData) {
           status = 200
           result = {
             qrData,
             success: true,
+            _originalReqQuery: req.query,
           }
         } else {
           status = 404
           result = {
             message: 'Not found in state',
             success: false,
+            _originalReqQuery: req.query,
           }
         }
 
