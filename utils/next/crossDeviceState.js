@@ -103,14 +103,14 @@ class CrossDeviceSingleton {
     if (this.state.has(reqId)) {
       const targetLSData = this.state.get(reqId)
 
-      if (!targetLSData) return Promise.reject('ERR: Внутренняя ошибка ts (impossible case)')
+      if (!targetLSData) return Promise.reject('Server ERR: Внутренняя ошибка ts (impossible case)')
 
       const currentCounter = targetLSData.qrUsageCounter
 
       if (currentCounter + 1 >= authOnOtherDevicesLimit) {
         this.state.delete(reqId)
         return Promise.resolve({
-          message: 'Запрос с другого устройства',
+          message: 'Server msg: Запрос с другого устройства',
           data: targetLSData,
           haveToBeKilled: true,
         })
@@ -123,14 +123,14 @@ class CrossDeviceSingleton {
 
         this.state.set(reqId, newData)
         return Promise.resolve({
-          message: `Запрос с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
+          message: `Server msg: Запрос с другого устройства ${newQRUsageCounter} раз из ${authOnOtherDevicesLimit} возможных`,
           data: newData,
           haveToBeKilled: false,
         })
       }
     } else {
       return Promise.reject({
-        message: '🚫 Извините, мы про#6@ли Ваши данные. С уважением, code-samples.space',
+        message: 'Server msg: 🚫 Извините, мы про#6@ли Ваши данные. С уважением, code-samples.space',
         data: null,
       })
     }

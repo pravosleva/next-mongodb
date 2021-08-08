@@ -74,6 +74,7 @@
     "next": "^9.3.6",
     "next-pwa": "^5.2.21",
     "nextjs-progressbar": "^0.0.7",
+    "plural-ru": "^2.0.2",
     "qrcode": "^1.4.4",
     "react": "16.13.1",
     "react-cookie": "^4.0.3",

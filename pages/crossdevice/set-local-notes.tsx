@@ -10,6 +10,8 @@ import { useRouter } from 'next/router'
 import Icon from '@mdi/react'
 import { mdiArrowRight } from '@mdi/js'
 // import ReactJson from 'react-json-view'
+import plural from 'plural-ru'
+
 const ReactJson = lazy(
   () =>
     // @ts-ignore
@@ -25,10 +27,18 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
     if (isOk && !!data.lsData) addNewLSData(data.lsData)
   }, [])
   const isClient = useMemo(() => typeof window !== 'undefined', [typeof window])
+  const uiMsg = useMemo(
+    () =>
+      `В память данного устройства ${plural(data?.lsData?.length, 'добавлена', 'добавлены', 'добавлено')} ${
+        data?.lsData?.length
+      } ${plural(data?.lsData?.length, 'заметка', 'заметки', 'заметок')}`,
+
+    [data?.lsData?.length]
+  )
 
   return (
     <div>
-      <h1>isOk={String(isOk)}</h1>
+      <h1>isOk: {String(isOk)}</h1>
       {!isOk ? (
         <Alert className="info" variant="outlined" severity="error" style={{ marginBottom: '16px' }}>
           <AlertTitle>Error</AlertTitle>
@@ -37,11 +47,11 @@ const SetLocalNotesPage = ({ data, message, isOk }: any) => {
       ) : (
         <>
           <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '16px' }}>
-            <AlertTitle>New notes added</AlertTitle>
+            <AlertTitle>QR Used: New Local Notes</AlertTitle>
             <div
             // style={{ marginBottom: '8px' }}
             >
-              {message}
+              {uiMsg}
             </div>
             {/*
             <pre style={{ whiteSpace: 'pre-wrap', margin: '0px', overflow: 'auto' }}>
