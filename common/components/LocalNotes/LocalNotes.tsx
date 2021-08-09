@@ -48,8 +48,8 @@ export const LocalNotes = () => {
 
   return (
     <>
-      {!hasAnyLocalNote && !isEditorOpened && (
-        <Alert className="info" variant="outlined" severity="info" style={{ marginBottom: '16px' }}>
+      {!hasAnyLocalNote && (
+        <Alert className="info" variant="outlined" severity="info" style={{ marginBottom: '8px' }}>
           {/* <AlertTitle>Lets try</AlertTitle> */}
           Let's try
         </Alert>
@@ -85,76 +85,77 @@ export const LocalNotes = () => {
           )}
         </>
       )}
-      {!!localNotes && localNotes.length > 0 && (
-        <>
-          {!qr ? (
-            <ThemedButton
-              style={{ marginBottom: '8px' }}
-              fullWidth
-              size="small"
-              color={EColorValue.grey}
-              variant="contained"
-              onClick={() => {
-                setIsQRLoading(true)
-                // addInfoNotif({ message: 'Coming soon...', onRemoval: () => { setIsQRLoading(false) } })
-                httpClient
-                  .saveMyLocalNotes({
-                    lsData: localNotes.filter(({ isPrivate }) => !isPrivate),
-                    socketId: state.socketId,
-                  })
-                  .then(({ qr }) => {
-                    setQR(qr)
-                  })
-                  .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.log(err)
-                  })
-                  .finally(() => {
-                    setIsQRLoading(false)
-                  })
-              }}
-              startIcon={
-                isQRLoading ? <CircularProgress color="inherit" size={20} /> : <Icon path={mdiQrcode} size={0.7} />
-              }
-              disabled={isQRLoading}
-            >
-              Перенести на др. устройство
-            </ThemedButton>
-          ) : (
-            <>
-              <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '8px' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                  }}
-                >
-                  <img
-                    // @ts-ignore
-                    src={qr}
-                    alt="QR"
-                    style={{ width: 196, height: 196, borderRadius: '8px', marginBottom: '8px' }}
-                  />
-                </div>
-                <div style={{ marginBottom: '8px' }}>Отсканируйте QR другим устройством</div>
-                <ThemedButton
-                  // style={{ marginBottom: '8px' }}
-                  fullWidth
-                  size="small"
-                  color={EColorValue.grey}
-                  variant="contained"
-                  onClick={resetQR}
-                  // endIcon={<CloseIcon />}
-                >
-                  Сброс
-                </ThemedButton>
-              </Alert>
-            </>
-          )}
-        </>
-      )}
-
+      <>
+        {!qr ? (
+          <>
+            {!!localNotes && localNotes.length > 0 && (
+              <ThemedButton
+                style={{ marginBottom: '8px' }}
+                fullWidth
+                size="small"
+                color={EColorValue.grey}
+                variant="contained"
+                onClick={() => {
+                  setIsQRLoading(true)
+                  // addInfoNotif({ message: 'Coming soon...', onRemoval: () => { setIsQRLoading(false) } })
+                  httpClient
+                    .saveMyLocalNotes({
+                      lsData: localNotes.filter(({ isPrivate }) => !isPrivate),
+                      socketId: state.socketId,
+                    })
+                    .then(({ qr }) => {
+                      setQR(qr)
+                    })
+                    .catch((err) => {
+                      // eslint-disable-next-line no-console
+                      console.log(err)
+                    })
+                    .finally(() => {
+                      setIsQRLoading(false)
+                    })
+                }}
+                startIcon={
+                  isQRLoading ? <CircularProgress color="inherit" size={20} /> : <Icon path={mdiQrcode} size={0.7} />
+                }
+                disabled={isQRLoading}
+              >
+                Перенести на др. устройство
+              </ThemedButton>
+            )}
+          </>
+        ) : (
+          <>
+            <Alert className="info" variant="outlined" severity="success" style={{ marginBottom: '8px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  // @ts-ignore
+                  src={qr}
+                  alt="QR"
+                  style={{ width: 196, height: 196, borderRadius: '8px', marginBottom: '8px' }}
+                />
+              </div>
+              <div style={{ marginBottom: '8px' }}>Отсканируйте QR другим устройством</div>
+              <ThemedButton
+                // style={{ marginBottom: '8px' }}
+                fullWidth
+                size="small"
+                color={EColorValue.grey}
+                variant="contained"
+                onClick={resetQR}
+                // endIcon={<CloseIcon />}
+              >
+                Сброс
+              </ThemedButton>
+            </Alert>
+          </>
+        )}
+      </>
       {!!localNotes && localNotes.length > 0 && (
         <div className={classes.badgesList}>
           {localNotes.map(({ id, title, description, isPrivate }) => (

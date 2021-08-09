@@ -40,10 +40,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       // backgroundColor: 'transparent',
       // color: theme.palette.secondary.main,
       color: 'gray',
+      transition: 'all 0.2s linear',
       '&:hover': {
         // backgroundColor: 'rgba(25, 133, 123, 0.65)',
-        backgroundColor: theme.palette.secondary.main,
-        color: '#FFF',
+        // backgroundColor: theme.palette.secondary.main,
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        color: 'dimgray',
       },
 
       display: 'flex',

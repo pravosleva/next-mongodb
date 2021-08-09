@@ -28,6 +28,7 @@ export const SidebarContent = () => {
         contentRenderer={(_collabsiblePs) => (
           <>
             <LocalNotes />
+            {/*
             <CollabsibleContent
               activeTitleColor="#3882C4"
               inactiveTitleColor="#a9a9a9"
@@ -68,6 +69,7 @@ export const SidebarContent = () => {
                 </ul>
               )}
             />
+            */}
           </>
         )}
       />
