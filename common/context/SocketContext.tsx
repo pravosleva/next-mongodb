@@ -163,10 +163,9 @@ export const SocketContextProvider = ({ children }: any) => {
       }
       // --
 
-      // console.log(arg)
       addDefaultNotif({
-        title: `Me connected (online: ${arg.data.totalConnections})`,
-        message: arg.data.msg,
+        message: `Me connected (online: ${arg.data.totalConnections})`,
+        // message: arg.data.msg,
         // type: 'success',
       })
       dispatch({ type: EActions.ME_CONNECTED, payload: { socket, socketId: arg.data.socketId } })
@@ -178,7 +177,6 @@ export const SocketContextProvider = ({ children }: any) => {
     handleMeConnectedRef.current = handleMeConnected
   }, [handleMeConnected])
   const handleCreateNote = (arg: any) => {
-    // console.log(arg)
     try {
       const title: string = arg.data.title
 
@@ -201,8 +199,8 @@ export const SocketContextProvider = ({ children }: any) => {
       } = arg
 
       addDefaultNotif({
-        title: 'Updated',
-        message: _id,
+        message: `Updated: ${_id}`,
+        // message: _id,
         type: 'info',
       })
       dispatch({ type: 'REFRESH_UPDATED_NOTE', payload: arg.data })
@@ -225,8 +223,7 @@ export const SocketContextProvider = ({ children }: any) => {
       } = arg
 
       addDefaultNotif({
-        title: 'Deleted',
-        message: id,
+        message: `Deleted: ${id}`,
         type: 'info',
       })
       handleUpdateDeletedNoteId(id)
@@ -239,12 +236,15 @@ export const SocketContextProvider = ({ children }: any) => {
     // console.log(arg)
     try {
       const {
-        data: { msg, totalConnections },
+        data: {
+          // msg,
+          totalConnections,
+        },
       } = arg
 
       addDefaultNotif({
-        title: `Somebody connected (online: ${totalConnections})`,
-        message: msg,
+        message: `Somebody connected (online: ${totalConnections})`,
+        // message: msg,
         type: 'info',
       })
     } catch (err) {
@@ -255,12 +255,15 @@ export const SocketContextProvider = ({ children }: any) => {
     // console.log(arg)
     try {
       const {
-        data: { msg, totalConnections },
+        data: {
+          // msg,
+          totalConnections,
+        },
       } = arg
 
       addDefaultNotif({
-        title: `Somebody disconnected (online: ${totalConnections})`,
-        message: msg,
+        message: `Somebody disconnected (online: ${totalConnections})`,
+        // message: msg,
         type: 'info',
       })
     } catch (err) {
@@ -270,8 +273,8 @@ export const SocketContextProvider = ({ children }: any) => {
   const handleQRUsed = ({ message, haveToBeKilled }: { message: string; haveToBeKilled: boolean }) => {
     if (haveToBeKilled) resetQR()
     addSuccessNotif({
-      title: 'QR code',
-      message,
+      // title: 'QR code',
+      message: `QR code: ${message}`,
       dismiss: {
         duration: 10000,
       },
@@ -331,6 +334,12 @@ export const SocketContextProvider = ({ children }: any) => {
       socket.on(EActions.USER_SOMEBODY_CONNECTED, handleSomebodyConnected)
       socket.on(EActions.USER_SOMEBODY_DISCONNECTED, handleSomebodyDisconnected)
       socket.on(EActions.QR_USED, handleQRUsed)
+      socket.on('disconnect', () => {
+        addDangerNotif({
+          // title: 'Socket connection',
+          message: 'Socket connection lost',
+        })
+      })
 
       return () => {
         socket.disconnect()
