@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         // backgroundColor: 'rgba(25, 133, 123, 0.65)',
         // backgroundColor: theme.palette.secondary.main,
         backgroundColor: 'rgba(0,0,0,0.1)',
-        color: 'dimgray',
+        // color: 'dimgray',
       },
 
       display: 'flex',
