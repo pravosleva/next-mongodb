@@ -222,8 +222,8 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
           >
             <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px', height: '42px' }}>
               <Label>
-                <Icon name="file" />
-                {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}
+                {isLoading ? <Icon name="spinner" loading /> : <Icon name="file" />}
+                {showLocalNotesInList ? totalNotes + filteredNotes.length : totalNotes}{' '}
               </Label>
             </div>
             {!!ssrErrMsg && (

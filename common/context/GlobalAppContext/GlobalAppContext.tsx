@@ -192,8 +192,8 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       localPage: normalizedQuery.page || 1,
     })
   )
-  const debouncedSearchByTitle = useDebounce(state.searchByTitle, 1000)
-  const debouncedSearchByDescription = useDebounce(state.searchByDescription, 1000)
+  const debouncedSearchByTitle = useDebounce(state.searchByTitle, 500)
+  const debouncedSearchByDescription = useDebounce(state.searchByDescription, 500)
   const handleScrollTop = (noAnimation: boolean = false) => {
     setTimeout(() => {
       if (typeof window !== 'undefined') {
@@ -225,6 +225,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   )
   // const debouncedPage = useDebounce(state.localPage, 1000)
   const renderCountRef = useRef(0) // NOTE: unused
+  const _skipFirstRendersNumber = 1
   const { isLogged } = useAuthContext()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -233,8 +234,13 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
     const fetchData = async () => {
       setIsLoading(true)
+      const limit = !!normalizedQuery.limit
+        ? normalizedQuery.limit <= defaultPaginationData.limit
+          ? normalizedQuery.limit
+          : defaultPaginationData.limit
+        : defaultPaginationData.limit
       const queryParams: any = {
-        limit: normalizedQuery.limit || defaultPaginationData.limit,
+        limit,
       }
       if (!!debouncedSearchByTitle) {
         queryParams.q_title = debouncedSearchByTitle
@@ -264,12 +270,12 @@ export const GlobalAppContextProvider = ({ children }: any) => {
 
     let _sendReqTimeout: any
     function startReq() {
-      _sendReqTimeout = setTimeout(fetchData, 1000)
+      _sendReqTimeout = setTimeout(fetchData, 500)
     }
     function stopReq() {
       clearTimeout(_sendReqTimeout)
     }
-    if (router.pathname === '/') startReq()
+    if (router.pathname === '/' && renderCountRef.current > _skipFirstRendersNumber) startReq()
 
     return () => {
       if (!!_sendReqTimeout) stopReq()
@@ -282,6 +288,11 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     router.pathname,
     normalizedQuery,
   ])
+  useEffect(() => {
+    if (!!router.query.page) {
+      router.push('/')
+    }
+  }, [debouncedSearchByTitle, debouncedSearchByDescription])
 
   const handleSearchByTitleClear = () => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: '' })
@@ -679,7 +690,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const addNewLSData = (lsData: any[]) => {
     getFieldFromLS(ELSFields.LocalNotes, true)
       .then((oldLSData: any[]) => {
-        if (!Array.isArray(oldLSData)) throw new Error("WTF? oldData  isn't an Array")
+        if (!Array.isArray(oldLSData)) throw new Error("WTF? oldData isn't an Array")
 
         // NOTE: Have to filter by unique id
 
