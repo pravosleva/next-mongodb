@@ -184,8 +184,8 @@ export const TheNotePage = ({ initNote: note }: any) => {
   if (!note)
     return (
       <>
-        <h1>Oops...</h1>
-        <div style={{ padding: isMobile ? '0px 8px 0px 8px' : '0px' }}>
+        <div style={{ padding: isMobile ? '16px 8px 0px 8px' : '16px 0px' }}>
+          <h1>Oops...</h1>
           <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
         </div>
       </>
