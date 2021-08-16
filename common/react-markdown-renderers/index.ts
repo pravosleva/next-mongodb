@@ -18,7 +18,7 @@ export * from './LinkRenderer'
 
 export const baseRenderers = {
   blockquote: BlockquoteRenderer,
-  code: CodeRendererMaterialDark,
+  code: CodeRendererMaterialOceanic,
   heading: HeadingRenderer,
   html: HtmlRenderer,
   image: ImageRenderer,
@@ -27,7 +27,7 @@ export const baseRenderers = {
 
 export const theNotePageRenderers = {
   blockquote: BlockquoteRenderer,
-  code: CodeRendererMaterialOceanic,
+  code: CodeRendererMaterialDark,
   heading: HeadingRenderer,
   html: HtmlRenderer,
   image: ImageRenderer,
@@ -36,7 +36,7 @@ export const theNotePageRenderers = {
 
 export const dialogRenderers = {
   blockquote: BlockquoteRenderer,
-  code: CodeRendererMaterialDark,
+  code: CodeRendererMaterialOceanic,
   heading: HeadingRenderer,
   html: HtmlRenderer,
   image: ImageRenderer,

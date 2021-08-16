@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fetch from 'isomorphic-unfetch'
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useRouter } from 'next/router'
@@ -17,8 +18,10 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import { ThemedButton, EColorValue } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
-// import ZoomInIcon from '@material-ui/icons/ZoomIn'
-// import ZoomOutIcon from '@material-ui/icons/ZoomOut'
+import ZoomInIcon from '@material-ui/icons/ZoomIn'
+import ArrowBack from '@material-ui/icons/ArrowBack'
+import ArrowForward from '@material-ui/icons/ArrowForward'
+import ZoomOutIcon from '@material-ui/icons/ZoomOut'
 import { useWindowSize, useNotifsContext, useGlobalAppContext } from '~/common/hooks'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import { Alert, EType as EAlertType } from '~/common/react-markdown-renderers/Alert'
@@ -29,6 +32,7 @@ import {
   mdiPinOff,
 } from '@mdi/js'
 import { ELSFields } from '~/common/context/GlobalAppContext'
+import { httpClient } from '~/utils/httpClient'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -61,6 +65,35 @@ export const TheNotePage = ({ initNote: note }: any) => {
     }
   }
   const noteId = useMemo(() => router.query.id, [router.query.id])
+
+  // --- NOTE: Derty hack
+  const { isLogged } = useAuthContext()
+  const [noteData, seNoteData] = useState(note || null)
+  const { query } = router
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (isLogged && !note?._id && !!query.id) {
+      try {
+        setIsLoading(true)
+        httpClient
+          .getNote(query.id)
+          .then((data) => {
+            seNoteData({ ...data, id: data._id })
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => {
+            setIsLoading(false)
+          })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }, [isLogged, setIsLoading])
+  // ---
+
   const { pinnedMap, handleUnpinFromLS } = useGlobalAppContext()
   const isIdPinned = useCallback(
     (id) => {
@@ -87,14 +120,14 @@ export const TheNotePage = ({ initNote: note }: any) => {
     setIsDeleting(true)
     handleClose()
   }
-  const { isLogged } = useAuthContext()
-  // const [isFullWidthContent, setIsFullWidthContent] = useState(false)
-  // const handleSetFullWidth = () => {
-  //   setIsFullWidthContent(true)
-  // }
-  // const handleSetMinWidth = () => {
-  //   setIsFullWidthContent(false)
-  // }
+
+  const [isFullWidthContent, setIsFullWidthContent] = useState(false)
+  const handleSetFullWidth = () => {
+    setIsFullWidthContent(true)
+  }
+  const handleSetMinWidth = () => {
+    setIsFullWidthContent(false)
+  }
   const { isDesktop, isMobile } = useWindowSize()
   const { addDangerNotif } = useNotifsContext()
   const copyLinkToClipboard = () => {
@@ -123,7 +156,33 @@ export const TheNotePage = ({ initNote: note }: any) => {
           }
           className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}
         >
-          {isLogged && !isDeleting && !note?.isLocal && (
+          {isDesktop && (
+            <>
+              {!isFullWidthContent ? (
+                <ThemedButton
+                  color={EColorValue.blue}
+                  onClick={handleSetFullWidth}
+                  size="small"
+                  startIcon={<ArrowBack />}
+                  endIcon={<ZoomInIcon />}
+                >
+                  Max width
+                </ThemedButton>
+              ) : (
+                <ThemedButton
+                  color={EColorValue.blue}
+                  onClick={handleSetMinWidth}
+                  size="small"
+                  startIcon={<ArrowForward />}
+                  endIcon={<ZoomOutIcon />}
+                >
+                  Min width
+                </ThemedButton>
+              )}
+            </>
+          )}
+
+          {isLogged && !isDeleting && !noteData?.isLocal && (
             <>
               <ThemedButton size="small" color={EColorValue.red} onClick={handleOpen} endIcon={<DeleteIcon />}>
                 Delete
@@ -133,27 +192,14 @@ export const TheNotePage = ({ initNote: note }: any) => {
               </Button>
             </>
           )}
-          {/* isDesktop && (
-            <>
-              {!isFullWidthContent ? (
-                <ThemedButton color="blue" onClick={handleSetFullWidth} endIcon={<ZoomInIcon />}>
-                  Full width
-                </ThemedButton>
-              ) : (
-                <ThemedButton color="blue" onClick={handleSetMinWidth} endIcon={<ZoomOutIcon />}>
-                  Min width
-                </ThemedButton>
-              )}
-            </>
-          )*/}
 
           {!isPinned && !!noteId && typeof noteId === 'string' ? (
-            <PinNote id={noteId} isLocal={note?.isLocal} />
+            <PinNote id={noteId} isLocal={noteData?.isLocal} />
           ) : (
             <Button
               variant="outlined"
               size="small"
-              color={note?.isLocal ? 'secondary' : 'primary'}
+              color={noteData?.isLocal ? 'secondary' : 'primary'}
               onClick={() => {
                 if (typeof noteId === 'string') handleUnpinFromLS(noteId, ELSFields.MainPinnedNamespaceMap)
                 // TODO: Notif
@@ -181,13 +227,19 @@ export const TheNotePage = ({ initNote: note }: any) => {
     [handleOpen, handleEdit, isLogged, isDeleting, isDesktop]
   )
 
-  if (!note)
+  if (!noteData)
     return (
       <>
         <div style={{ padding: isMobile ? '16px 8px 0px 8px' : '16px 0px' }}>
           <h1>Oops...</h1>
           <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
+          <pre>{JSON.stringify(noteData, null, 2)}</pre>
         </div>
+        {isLoading && (
+          <div style={{ marginTop: '24px' }}>
+            <Loader active inline="centered" />
+          </div>
+        )}
       </>
     )
 
@@ -200,15 +252,16 @@ export const TheNotePage = ({ initNote: note }: any) => {
         ) : (
           <div
             style={{
-              // maxWidth: isFullWidthContent ? '100%' : '700px',
+              maxWidth: isFullWidthContent ? '100%' : '600px',
               // maxWidth: '700px',
               width: '100%',
               transition: 'all 0.3s linear',
+              marginLeft: 'auto',
             }}
           >
-            {!!note && (
+            {!!noteData && (
               <ActiveNote
-                note={note}
+                note={noteData}
                 descriptionRenderer={({ description }) => {
                   return (
                     <div className="description-markdown">

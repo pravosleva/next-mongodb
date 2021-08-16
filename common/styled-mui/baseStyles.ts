@@ -11,6 +11,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(1),
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'end',
       alignItems: 'center',
       flexWrap: 'wrap',
       '& > *:not(:last-child)': {

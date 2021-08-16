@@ -72,7 +72,7 @@ export const defaultTheme = {
     MuiButton: {
       root: {
         borderRadius: '8px',
-        borderWidth: '2px !important',
+        // borderWidth: '2px !important',
       },
       outlined: {
         borderColor: '#D0D0D0',
