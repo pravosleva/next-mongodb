@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
 import Head from 'next/head'
 import { TheNotePage } from '~/common/components/TheNotePage'
+import { useGlobalAppContext } from '~/common/hooks'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
 const Note = ({ note }) => {
+  const { state } = useGlobalAppContext()
+
   return (
     <>
       <Head>
@@ -35,7 +38,7 @@ const Note = ({ note }) => {
         )}
       </Head>
 
-      <TheNotePage initNote={note} key={note?.id || 'the-note-page-init-key'} />
+      <TheNotePage initNote={note} key={state.activeNote?._id || note?.id || 'the-note-page-init-key'} />
     </>
   )
 }
