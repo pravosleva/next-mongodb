@@ -38,6 +38,7 @@ class MyApp extends NextApp {
         <Head>
           <meta charSet="utf-8" />
           <link rel="icon" href="/static/favicon.ico" />
+          <title>Code Samples 2.0</title>
           {/* PWA primary color */}
           {/* <meta name="theme-color" content={theme.palette.primary.main} /> */}
           <meta name="theme-color" content="#000" />
