@@ -33,6 +33,8 @@ import {
 } from '@mdi/js'
 import { ELSFields } from '~/common/context/GlobalAppContext'
 import { httpClient } from '~/utils/httpClient'
+import Icon from '@mdi/react'
+import { mdiReload } from '@mdi/js'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
@@ -71,27 +73,24 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const [noteData, seNoteData] = useState(note || null)
   const { query } = router
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    if (isLogged && !note?._id && !!query.id) {
-      try {
-        setIsLoading(true)
-        httpClient
-          .getNote(query.id)
-          .then((data) => {
-            seNoteData({ ...data, id: data._id })
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-          .finally(() => {
-            setIsLoading(false)
-          })
-      } catch (err) {
-        console.log(err)
-      }
+  const tryDertyHack = useCallback(() => {
+    try {
+      setIsLoading(true)
+      httpClient
+        .getNote(query.id)
+        .then((data) => {
+          seNoteData({ ...data, id: data._id })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    } catch (err) {
+      console.log(err)
     }
-  }, [isLogged, setIsLoading])
+  }, [setIsLoading, seNoteData])
   // ---
 
   const { pinnedMap, handleUnpinFromLS } = useGlobalAppContext()
@@ -233,11 +232,23 @@ export const TheNotePage = ({ initNote: note }: any) => {
         <div style={{ padding: isMobile ? '16px 8px 0px 8px' : '16px 0px' }}>
           <h1>Oops...</h1>
           <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
-          <pre>{JSON.stringify(noteData, null, 2)}</pre>
         </div>
         {isLoading && (
-          <div style={{ marginTop: '24px' }}>
+          <div style={{ margin: '24px 0 24px 0' }}>
             <Loader active inline="centered" />
+          </div>
+        )}
+        {isLogged && !note?._id && !!query.id && !isLoading && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <ThemedButton
+              type="submit"
+              color={EColorValue.blueNoShadow}
+              variant="contained"
+              onClick={tryDertyHack}
+              endIcon={<Icon path={mdiReload} size={0.7} />}
+            >
+              Try Again
+            </ThemedButton>
           </div>
         )}
       </>
