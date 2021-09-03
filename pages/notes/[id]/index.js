@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import Head from 'next/head'
 import { TheNotePage } from '~/common/components/TheNotePage'
 import { useGlobalAppContext } from '~/common/hooks'
@@ -9,11 +9,15 @@ const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 const Note = ({ note }) => {
   const {
     state: { activeNote },
+    handleSetAsActiveNote,
   } = useGlobalAppContext()
   const key = useMemo(() => activeNote?._id || note?.id || `the-note-page-init-key-${Math.random()}`, [
     activeNote?._id,
     note?.id,
   ])
+  useEffect(() => {
+    if (!!note) handleSetAsActiveNote(note)
+  }, [note])
 
   return (
     <>

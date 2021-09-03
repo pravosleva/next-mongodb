@@ -71,6 +71,11 @@ export const LSResult = () => {
   //   [pinnedMapKeys, pinnedMap, checkByTitleOrDescr]
   // )
 
+  const { state } = useGlobalAppContext()
+  const { activeNote } = useMemo(() => state, [JSON.stringify(state)])
+  const activeId = useMemo(() => activeNote?._id, [activeNote])
+  const checkHasActiveId = useCallback((ids: string[]) => ids.includes(activeId), [activeId])
+
   return (
     <div className={classes.wrapper}>
       {pinnedMapKeys.length === 0 && <em>No namespaces yet...</em>}
@@ -114,15 +119,17 @@ export const LSResult = () => {
       {!!pinnedMap &&
         pinnedMapKeys.map((key) => {
           // @ts-ignore
-          const data = pinnedMap ? pinnedMap[key] : null
+          const data: any = pinnedMap ? pinnedMap[key] : null
           const shouldBeDisplayed = checkByTitleOrDescr({
             // @ts-ignore
             title: pinnedMap[key].title,
             // @ts-ignore
             description: pinnedMap[key].description || '',
           })
+          // @ts-ignore
+          const hasActiveId = !!data && checkHasActiveId(data.ids || [])
 
-          if (!shouldBeDisplayed) return null
+          if (!shouldBeDisplayed && !hasActiveId) return null
           return !!data ? (
             <div key={key} className={clsx(classes.collapsibleWrapper, 'collapsible-wrapper')}>
               <CollabsibleContent
@@ -130,7 +137,7 @@ export const LSResult = () => {
                 inactiveTitleColor="#949494"
                 isRightSide
                 // @ts-ignore
-                title={`${data.title} ${data.ids.length}/${data.limit}`}
+                title={`${hasActiveId ? `🔥 ` : ''}${data.title} ${data.ids.length}/${data.limit}`}
                 // @ts-ignore
                 contentRenderer={(_collabsiblePs) => <Namespace key={`${key}-${pinnedMap[key].ts}`} data={data} />}
               />
