@@ -46,6 +46,7 @@ export const MobileDialogIfNecessary = () => {
         }}
       >
         <ActiveNote
+          // key={state.activeNote?.id}
           note={state.activeNote}
           isTagsNessesary
           descriptionRenderer={({ description }) => {

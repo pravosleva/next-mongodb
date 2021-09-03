@@ -6,7 +6,7 @@ const widgetWidthMobile = 280
 // const widgetTogglerWidthMobile = 160
 const offsetTop = {
   md: 90,
-  sm: 56,
+  sm: 120,
 }
 
 export const useStyles = makeStyles((theme: Theme) =>

@@ -58,7 +58,7 @@ const CloseBtn = ({ children, onClick }) => (
   </div>
 )
 
-const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
+// const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => {
   const {
     state,
@@ -212,7 +212,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
         <div className="grid wrapper" style={{ marginBottom: '8px' }}>
           <div
             style={{
-              lineHeight: '42px',
+              lineHeight: '55px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',

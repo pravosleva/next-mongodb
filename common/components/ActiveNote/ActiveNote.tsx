@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useMemo, memo } from 'react'
+import { useMemo } from 'react'
 // import { openLinkInNewTab } from '~/utils/openLinkInNewTab'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -170,12 +170,12 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   )
 }
 
-function areEqual(prevProps: any, nextProps: any) {
-  // NOTE: return true, if render unnecessary
-  return (
-    (!!prevProps.note?._id && !nextProps.note?._id) ||
-    (prevProps.note._id === nextProps.note._id && prevProps.note.updatedAt === nextProps.note.updatedAt)
-  )
-}
-export const ActiveNote = memo(MyComponent, areEqual)
-// export const ActiveNote = MyComponent
+// function areEqual(prevProps: any, nextProps: any) {
+//   // NOTE: return true, if render unnecessary
+//   return (
+//     (!!prevProps.note?._id && !nextProps.note?._id) ||
+//     (prevProps.note._id === nextProps.note._id && prevProps.note.updatedAt === nextProps.note.updatedAt)
+//   )
+// }
+// export const ActiveNote = memo(MyComponent, areEqual)
+export const ActiveNote = MyComponent

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, memo } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import clsx from 'clsx'
 import { httpClient } from '~/utils/httpClient'
 import { useStyles } from './styles'
@@ -161,6 +161,7 @@ export const Badge0 = ({ id }: TProps) => {
   )
 }
 
-const areEqual = (pp: any, np: any) => pp.id === np.id
+// const areEqual = (pp: any, np: any) => pp.id === np.id
 
-export const Badge = memo(Badge0, areEqual)
+// export const Badge = memo(Badge0, areEqual)
+export const Badge = Badge0

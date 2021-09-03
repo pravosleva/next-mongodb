@@ -74,11 +74,13 @@ export const TheNotePage = ({ initNote: note }: any) => {
   const { query } = router
   const [isLoading, setIsLoading] = useState(false)
   const tryDertyHack = useCallback(() => {
+    // console.log('--- tryDertyHack ---', router.query.id)
     try {
       setIsLoading(true)
       httpClient
         .getNote(query.id)
         .then((data) => {
+          // console.log('--- OK ---', query.id)
           seNoteData({ ...data, id: data._id })
         })
         .catch((err) => {
@@ -90,7 +92,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
     } catch (err) {
       console.log(err)
     }
-  }, [setIsLoading, seNoteData])
+  }, [setIsLoading, seNoteData, query?.id])
   // ---
 
   const { pinnedMap, handleUnpinFromLS } = useGlobalAppContext()
@@ -272,6 +274,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
           >
             {!!noteData && (
               <ActiveNote
+                key={noteData?._id || Math.random()}
                 note={noteData}
                 descriptionRenderer={({ description }) => {
                   return (

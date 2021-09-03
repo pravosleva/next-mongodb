@@ -8,7 +8,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     btnsBox: {
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(3),
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'end',
@@ -18,7 +18,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
         marginRight: theme.spacing(1),
       },
       '& > *': {
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(3),
       },
       // alignItems: 'center',
     },

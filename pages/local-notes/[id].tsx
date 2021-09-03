@@ -16,11 +16,12 @@ const LocalNote = () => {
   ])
 
   useEffect(() => {
+    // console.log(targetNote)
     if (!!targetNote) {
       // @ts-ignore
       handleSetAsActiveNote({ ...targetNote, _id: targetNote.id, isLocal: true })
     }
-  }, [targetNote])
+  }, [JSON.stringify(targetNote)])
 
   const [specialMsg, setSpecialMsg] = useState<string>('Please wait...')
   useEffect(() => {
