@@ -126,7 +126,31 @@ yarn dev
 
 Open [http://localhost:9000](http://localhost:9000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### `deploy-app-config.json` sample:
+
+```json
+{
+  "prod:build-send-next": {
+    "user": "root",
+    "host": "<HOST>",
+    "port": "22",
+    "files": "./.next/*",
+    "path": "/home/projects/next-mongodb/.next",
+    "pre-deploy-local": "yarn local:cleanup; yarn build",
+    "pre-deploy-remote": "rm -rf /home/projects/next-mongodb/.next/*"
+  },
+  "prod:copy-server-dist": {
+    "user": "root",
+    "host": "<HOST>",
+    "port": "22",
+    "files": "./server-dist/*",
+    "path": "/home/projects/next-mongodb/server-dist",
+    "post-deploy": "pm2 restart 0 --update-env"
+  },
+  "dev": {},
+  "staging": {}
+}
+```
 
 ## mongodb-extra-info
 
