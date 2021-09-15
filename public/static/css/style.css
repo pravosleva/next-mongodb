@@ -452,9 +452,9 @@ h1 {
 .custom-html-style code {
   box-shadow: unset;
 }
-.rc-md-editor {
+/* .rc-md-editor {
   margin-bottom: 15px;
-}
+} */
 .ui.form textarea:not([rows]) {
   max-height: unset;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -201,6 +201,11 @@ export const Navbar = (_props: IProps) => {
     handleSearchByDescriptionClear,
     handleSearchByTitleClear,
   } = useGlobalAppContext()
+  const titleSearchRef = useRef<any>(null)
+  const handleSearchTitleFocus = () => {
+    if (!!titleSearchRef.current) titleSearchRef.current.focus()
+  }
+
   // ---
   const { isDesktop } = useWindowSize()
   const isHomePage = useMemo(() => router.pathname === '/', [router.pathname])
@@ -227,6 +232,7 @@ export const Navbar = (_props: IProps) => {
                     <SearchIcon />
                   </div>
                   <InputBase
+                    inputRef={titleSearchRef}
                     placeholder="Search by title…"
                     classes={{
                       root: classes.inputRoot,
@@ -264,6 +270,7 @@ export const Navbar = (_props: IProps) => {
                       onClick={() => {
                         handleSearchByTitleClear()
                         handleSearchByDescriptionClear()
+                        handleSearchTitleFocus()
                       }}
                     >
                       Clear all

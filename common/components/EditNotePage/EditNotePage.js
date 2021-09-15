@@ -17,6 +17,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Checkbox } from '@material-ui/core'
 import { ThemedButton } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
+// import MDEditor from 'react-markdown-editor-lite'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 const mdParser = new MarkdownIt({
@@ -26,7 +28,7 @@ const mdParser = new MarkdownIt({
 
 const MDEditor = loadable(() => import('react-markdown-editor-lite')) // Ленивая загрузка
 
-export const EditNotePage = ({ note }) => {
+export const EditNotePage = withWidth()(({ note, width }) => {
   const [form, setForm] = useState({
     title: note.title,
     description: note.description,
@@ -120,12 +122,16 @@ export const EditNotePage = ({ note }) => {
 
     return err
   }
-  const { isDesktop } = useWindowSize()
-  const minHeight = useMemo(() => (isDesktop ? '450px' : '300px'), [isDesktop])
+  const isDesktop = useMemo(() => width !== 'xs' && width !== 'sm', [width]) // useWindowSize()
+  const minHeight = useMemo(() => (isDesktop ? '600px' : '300px'), [isDesktop])
 
   return (
     <div className={baseClasses.noPaddingMobile}>
-      <Box my={4} className={baseClasses.noMarginTopBottomMobile}>
+      <Box
+        px={isDesktop ? 0 : 1}
+        my={4}
+        // className={baseClasses.noMarginTopBottomMobile}
+      >
         <h1>
           <span style={{ marginRight: '15px' }}>Edit</span>
           <Rating onRate={handleSetRate} maxRating={5} defaultRating={form.priority} disabled={isSubmitting} />
@@ -137,13 +143,17 @@ export const EditNotePage = ({ note }) => {
       ) : (
         <Form onSubmit={handleSubmit}>
           {isLogged && (
-            <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+            <Box className={clsx(baseClasses.btnsBox)}>
               <ThemedButton type="submit" color="red" variant="contained">
                 Update
               </ThemedButton>
             </Box>
           )}
-          <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
+          <Box
+            px={isDesktop ? 0 : 1}
+            style={{ marginBottom: '8px' }}
+            className={baseClasses.standardMobileResponsiveBlock}
+          >
             <TextField
               size="small"
               // label="Title"
@@ -157,13 +167,13 @@ export const EditNotePage = ({ note }) => {
               autoComplete="off"
             />
           </Box>
-          <Box my={4} className={baseClasses.standardMobileResponsiveBlock}>
+          <Box px={isDesktop ? 0 : 1} className={baseClasses.standardMobileResponsiveBlock}>
             <MDEditor
               style={{
                 boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
                 // border: '1px solid rgba(34,36,38,.15)',
                 border: 'none',
-                borderRadius: '4px',
+                borderRadius: '8px',
                 minHeight,
               }}
               value={form.description}
@@ -184,7 +194,7 @@ export const EditNotePage = ({ note }) => {
             />
           </Box>
           {isLogged && (
-            <Box my={4} className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}>
+            <Box className={clsx(baseClasses.btnsBox)}>
               <ThemedButton type="submit" color="red" variant="contained">
                 Update
               </ThemedButton>
@@ -202,4 +212,4 @@ export const EditNotePage = ({ note }) => {
       )}
     </div>
   )
-}
+})

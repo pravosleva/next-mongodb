@@ -8,24 +8,36 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
     },
     btnsBox: {
-      marginTop: theme.spacing(3),
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'end',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      '& > *:not(:last-child)': {
-        marginRight: theme.spacing(1),
+      // margin: theme.spacing(1, 0, 1, 0),
+
+      width: '100%',
+      display: 'grid',
+      gridGap: theme.spacing(1),
+
+      [theme.breakpoints.only('xs')]: {
+        padding: theme.spacing(1),
+        gridTemplateColumns: 'repeat(2,1fr)',
       },
-      '& > *': {
-        marginBottom: theme.spacing(3),
+      [theme.breakpoints.only('sm')]: {
+        padding: theme.spacing(1),
+        gridTemplateColumns: 'repeat(4,1fr)',
       },
-      // alignItems: 'center',
+      [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(1, 0, 1, 0),
+        gridTemplateColumns: 'repeat(5,1fr)',
+      },
+      [theme.breakpoints.only('lg')]: {
+        padding: theme.spacing(1, 0, 1, 0),
+        gridTemplateColumns: 'repeat(5,1fr)',
+      },
     },
     standardMobileResponsiveBlock: {
-      [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(0, 1, 0, 1),
-      },
+      // [theme.breakpoints.down('sm')]: {
+      //   padding: theme.spacing(1, 0, 1, 0),
+      // },
+      // [theme.breakpoints.up('md')]: {
+      //   padding: theme.spacing(1, 0, 1, 0),
+      // },
     },
     noMarginTopBottomMobile: {
       [theme.breakpoints.down('sm')]: {

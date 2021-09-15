@@ -43,7 +43,7 @@ export function useWindowSize() {
         window.removeEventListener('resize', handleResize)
       }
     }
-  }, []) // Empty array ensures that effect is only run on mount
+  }, [typeof window]) // Empty array ensures that effect is only run on mount
 
   return windowSize
 }

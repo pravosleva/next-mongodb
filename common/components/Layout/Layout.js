@@ -18,7 +18,10 @@ import { useWindowSize } from '~/common/hooks'
 
 export const Layout = ({ children }) => {
   const router = useRouter()
-  const isTheNotePage = router.pathname === '/notes/[id]' || router.pathname === '/local-notes/[id]'
+  const isTheNotePage =
+    router.pathname === '/notes/[id]' ||
+    router.pathname === '/local-notes/[id]' ||
+    router.pathname === '/notes/[id]/edit'
   const classes = useStyles()
   const baseClasses = useBaseStyles()
   const { isDesktop, isMobile } = useWindowSize()
