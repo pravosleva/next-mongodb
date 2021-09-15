@@ -782,7 +782,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
         initState,
         // @ts-ignore
         // page: state.localPage,
-        page: state.pagination.currentPage,
+        page: state?.pagination?.currentPage || 1,
         handleSearchByDescriptionSetText,
         handleSearchByTitleSetText,
         handleUpdateOneNote,

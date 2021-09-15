@@ -1,11 +1,17 @@
-import { forwardRef, useMemo, useCallback } from 'react'
-import { Button as MuiButton, Dialog, DialogActions, DialogContent } from '@material-ui/core'
+import { forwardRef, useMemo, useCallback, useRef } from 'react'
+import { Button as MuiButton, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
 import Slide from '@material-ui/core/Slide'
 import { useFreshNote, useGlobalAppContext, useWindowSize } from '~/common/hooks'
 import { ActiveNote } from './ActiveNote'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { dialogRenderers } from '~/common/react-markdown-renderers'
+import clsx from 'clsx'
+import { useStyles } from './styles'
+// @ts-ignore
+import { animateScroll } from 'react-scroll'
+import Icon from '@mdi/react'
+import { mdiArrowDown } from '@mdi/js'
 
 const TransitionUp = forwardRef(function Transition(props, ref) {
   // @ts-ignore
@@ -22,13 +28,15 @@ export const MobileDialogIfNecessary = () => {
   const handleCloseModal = useCallback(() => {
     handleResetActiveNote()
   }, [handleResetActiveNote])
+  const classes = useStyles()
+  const containerRef = useRef<any>(null)
 
   if (!isMobile) return null
   return (
     <Dialog
       open={isOpened}
       onClose={handleCloseModal}
-      scroll="paper"
+      // scroll="paper"
       aria-labelledby={`scroll-dialog-title-activeNote-mobile_${freshNote?._id}`}
       // fullWidth
       fullScreen
@@ -36,16 +44,25 @@ export const MobileDialogIfNecessary = () => {
       // @ts-ignore
       TransitionComponent={TransitionUp}
     >
-      {/* <DialogTitle id={`scroll-dialog-title-activeNote-mobile_${freshNote?._id}`}>{freshNote?.title}</DialogTitle> */}
+      <DialogTitle
+        id={`scroll-dialog-title-activeNote-mobile_${freshNote?._id}`}
+        className={clsx({ [classes.truncate]: true })}
+      >
+        {freshNote?.title}
+      </DialogTitle>
       <DialogContent
+        ref={containerRef}
         dividers={true}
         // className={classes.dialogMDContent}
         style={{
           padding: '0px',
-          borderTop: 'none',
+          // borderTop: 'none',
+          position: 'relative',
         }}
+        id="dialog-content"
       >
         <ActiveNote
+          noHeader
           // key={state.activeNote?.id}
           note={state.activeNote}
           isTagsNessesary
@@ -63,7 +80,27 @@ export const MobileDialogIfNecessary = () => {
           }}
         />
       </DialogContent>
-      <DialogActions>
+      <DialogActions
+        style={{
+          justifyContent: 'space-between',
+        }}
+      >
+        <MuiButton
+          color="default"
+          size="large"
+          variant="outlined"
+          onClick={() => {
+            if (!!containerRef.current) {
+              // containerRef.current.scrollIntoView(false)
+              animateScroll.scrollToBottom({
+                containerId: 'dialog-content',
+              })
+            }
+          }}
+          startIcon={<Icon path={mdiArrowDown} size={0.7} />}
+        >
+          Bottom
+        </MuiButton>
         <MuiButton
           color="primary"
           size="large"

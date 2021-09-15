@@ -4,9 +4,8 @@ import { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { Rating } from 'semantic-ui-react'
-import { useFreshNote } from '~/common/hooks'
+import { useFreshNote, useWindowSize } from '~/common/hooks'
 // import { Scrollbars } from 'react-custom-scrollbars'
-// import { useWindowSize } from '~/hooks'
 import { baseRenderers } from '~/common/react-markdown-renderers'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import clsx from 'clsx'
@@ -30,9 +29,16 @@ interface IProps {
   descriptionRenderer?: React.FC<any>
   isTagsNessesary?: boolean
   shouldTitleBeTruncated?: boolean
+  noHeader?: boolean
 }
 
-const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, shouldTitleBeTruncated }: IProps) => {
+const MyComponent = ({
+  noHeader,
+  note: initialNote,
+  descriptionRenderer,
+  isTagsNessesary,
+  shouldTitleBeTruncated,
+}: IProps) => {
   const baseClasses = useBaseStyles()
   const classes = useStyles()
   const freshNote = useFreshNote(initialNote)
@@ -48,18 +54,25 @@ const MyComponent = ({ note: initialNote, descriptionRenderer, isTagsNessesary, 
   const { isLogged } = useAuthContext()
   const { handleUnpinFromLS, isIdPinned } = useGlobalAppContext()
   const isPinned = useMemo(() => isIdPinned(_id), [_id, isIdPinned])
+  const { isMobile } = useWindowSize()
 
   return (
     <div
       className={clsx('todo-item', baseClasses.customizableListingWrapper, {
         'todo-item_private': isPrivate,
         'todo-item_local': isLocal,
+        // 'full-height': true,
       })}
+      style={{
+        minHeight: isMobile ? '100%' : 'auto',
+      }}
     >
-      <div style={{ marginBottom: '0px', userSelect: 'none' }}>
-        <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
-      </div>
-      {!!_id && (
+      {!noHeader && (
+        <div style={{ marginBottom: '0px', userSelect: 'none' }}>
+          <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
+        </div>
+      )}
+      {!!_id && !noHeader && (
         <div
           style={{
             userSelect: 'none',
