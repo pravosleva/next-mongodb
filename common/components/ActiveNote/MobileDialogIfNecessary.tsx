@@ -57,7 +57,6 @@ export const MobileDialogIfNecessary = () => {
         style={{
           padding: '0px',
           // borderTop: 'none',
-          position: 'relative',
         }}
         id="dialog-content"
       >
@@ -68,7 +67,7 @@ export const MobileDialogIfNecessary = () => {
           isTagsNessesary
           descriptionRenderer={({ description }) => {
             return (
-              <div className="description-markdown">
+              <div className="description-markdown" style={{ marginTop: '16px' }}>
                 <ReactMarkdown
                   // @ts-ignore
                   plugins={[gfm, { singleTilde: false }]}

@@ -48,7 +48,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
 
     // Customizable listing wrapper:
     customizableListingWrapper: {
-      paddingTop: 0,
+      // paddingTop: 0,
       '& ul': {
         // border: '1px solid red',
         listStyleImage: 'url(/static/svg/yellow-dot.svg)',

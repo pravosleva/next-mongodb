@@ -294,7 +294,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         )}
         <Confirm open={confirm} onCancel={handleClose} onConfirm={handleDelete} />
       </div>
-      {MemoizedBtnsBox}
+      <div style={{ marginBottom: isMobile ? '40px' : '0px' }}>{MemoizedBtnsBox}</div>
     </div>
   )
 }

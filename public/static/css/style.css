@@ -326,12 +326,19 @@ h1 {
   border-top: 8px solid #19857b;
 }
 
+.active-note-external-sticky-wrapper .description-markdown {
+  overflow-y: auto;
+  margin: 0;
+}
 .description-markdown {
-  margin-top: 8px;
+  margin-top: 0px;
   margin-bottom: 8px;
   white-space: pre-wrap;
   word-break: break-word;
-  overflow-y: auto;
+}
+.description-markdown p {
+  margin-top: 0px !important;
+  margin-bottom: 8px;
 }
 .description-markdown h1 {
   margin-bottom: 25px;
