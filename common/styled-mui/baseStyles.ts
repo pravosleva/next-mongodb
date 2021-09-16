@@ -56,15 +56,20 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
 
       '& ul, ol': {
         '& > li': {
-          marginBottom: '10px',
+          // lineHeight: '25px',
+          marginBottom: '5px',
           paddingLeft: '5px',
           '& > p': {
             display: 'inline',
           },
+          '& > blockquote': {
+            marginTop: '0px !important',
+            marginBottom: '0px !important',
+          },
           '& input[type="checkbox"]': {
             // display: 'block',
-            transform: 'translateY(4px)',
-            marginBottom: '10px',
+            // transform: 'translateY(-50%)',
+            // marginBottom: '10px',
           },
         },
         // '& > li:not(:last-child)': {

@@ -28,7 +28,7 @@ export const ImageInNewTab = ({ alt, src }: IProps) => {
   }
 
   return (
-    <div style={{ margin: '0 0 1em' }}>
+    <div style={{ margin: '0 0 8px' }}>
       <img className="small" alt={alt} src={src} onClick={handleClick} />
     </div>
   )

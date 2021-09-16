@@ -194,7 +194,7 @@ export const EditNotePage = withWidth()(({ note, width }) => {
             />
           </Box>
           {isLogged && (
-            <Box className={clsx(baseClasses.btnsBox)}>
+            <Box className={clsx(baseClasses.btnsBox)} style={{ marginBottom: isDesktop ? '0px' : '40px' }}>
               <ThemedButton type="submit" color="red" variant="contained">
                 Update
               </ThemedButton>

@@ -338,7 +338,20 @@ h1 {
 }
 .description-markdown p {
   margin-top: 0px !important;
+}
+.description-markdown p:not(:last-child) {
   margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .description-markdown > *:last-child {
+    margin-bottom: 0px !important;
+  }
+}
+@media (max-width: 767px) {
+  .description-markdown > *:last-child {
+    margin-bottom: 16px !important;
+  }
 }
 .description-markdown h1 {
   margin-bottom: 25px;
