@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import dbConnect from '~/utils/dbConnect'
 import Note from '~/models/Note'
 import { isNumeric } from '~/utils/isNumeric'
@@ -12,7 +13,7 @@ if (!JWT_SECRET) throw new Error('Check envs: JWT_SECRET was not provided')
 
 const mainApi = async (req, res) => {
   const {
-    query: { q_title, q_description, limit, page },
+    query: { q_title, q_titles, q_description, limit, page },
     method,
   } = req
 
@@ -35,6 +36,18 @@ const mainApi = async (req, res) => {
 
   switch (method) {
     case 'GET':
+      if (!!q_titles) {
+        // options.title = { $regex: q_title, $options: 'i' }
+        // OR:
+        // options.title = {
+        //   $search: q_titles
+        //     .split(',')
+        //     .map((str) => '"' + str + '"')
+        //     .join(' '),
+        // }
+        options.title = { $in: q_titles.split(',') }
+        // options.title = { $all: q_titles.split(',') }
+      }
       if (!!q_title) {
         options.title = { $regex: q_title, $options: 'i' }
       }
@@ -64,8 +77,10 @@ const mainApi = async (req, res) => {
             }
             status = 200
           } catch (error) {
-            if (!!error?._message) {
-              response.msg = error._message
+            console.log('-- ERR --')
+            console.log(error)
+            if (!!error || !!error?._message) {
+              response.msg = typeof error._message === 'string' ? error._message : JSON.stringify(error._message)
             }
             // res.status(400).json({ success: false });
             status = 400
@@ -85,7 +100,7 @@ const mainApi = async (req, res) => {
             }
             response.success = true
           } catch (error) {
-            if (!!error?._message) {
+            if (!!error || !!error?._message) {
               response.msg = typeof error._message === 'string' ? error._message : JSON.stringify(error._message)
             }
             // res.status(400).json({ success: false });
@@ -94,6 +109,7 @@ const mainApi = async (req, res) => {
         }
       } else {
         status = 400
+        response.msg = 'no page'
       }
       break
     case 'POST':

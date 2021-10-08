@@ -4,6 +4,7 @@ export enum ELSFields {
   LocalNotes = 'my-local-notes',
   PinnedNotesSearchField = 'pinned-notes.search-field',
   MainSearch = 'main.search',
+  SubscribedTags = 'tags.subscribed',
 }
 
 export type TPagination = {

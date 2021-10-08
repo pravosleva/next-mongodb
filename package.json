@@ -70,6 +70,7 @@
     "jsonwebtoken": "^8.5.1",
     "local-storage": "^2.0.0",
     "markdown-it": "^12.0.2",
+    "material-ui-chip-input": "^2.0.0-beta.2",
     "mongoose": "^5.9.6",
     "next": "^9.3.6",
     "next-pwa": "^5.2.21",
