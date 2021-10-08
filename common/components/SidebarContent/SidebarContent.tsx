@@ -7,6 +7,7 @@ import { CollabsibleContent } from '~/common/components/CollabsibleContent'
 import { LocalNotes } from '~/common/components/LocalNotes'
 import { getLSSpace } from '~/utils/getLSSpace'
 import { ELSFields } from '~/common/context'
+import { SubscribeTags } from '~/common/components/SubscribeTags'
 
 export const SidebarContent = () => {
   const classes = useStyles()
@@ -101,6 +102,9 @@ export const SidebarContent = () => {
           </>
         )}
       />
+
+      <h3>Tags tst</h3>
+      <SubscribeTags />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { BlockquoteRenderer } from './BlockquoteRenderer'
 import {
   // CodeRendererSynthwave84,
   CodeRendererMaterialOceanic,
-  CodeRendererMaterialDark,
+  // CodeRendererMaterialDark,
 } from './CodeRenderer'
 import { HeadingRenderer } from './HeadingRenderer'
 import { ImageRenderer } from './ImageRenderer'
@@ -27,7 +27,8 @@ export const baseRenderers = {
 
 export const theNotePageRenderers = {
   blockquote: BlockquoteRenderer,
-  code: CodeRendererMaterialDark,
+  // code: CodeRendererMaterialDark,
+  code: CodeRendererMaterialOceanic,
   heading: HeadingRenderer,
   html: HtmlRenderer,
   image: ImageRenderer,

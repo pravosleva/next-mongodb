@@ -12,11 +12,14 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
+      marginBottom: theme.spacing(2),
     },
     stepper: {
       // border: '1px solid red',
-      borderRadius: '4px',
-      padding: theme.spacing(1, 0, 1, 0),
+      // borderRadius: '4px',
+      // padding: theme.spacing(1, 0, 1, 0),
+      padding: theme.spacing(0),
+      marginBottom: theme.spacing(3),
       backgroundColor: 'transparent',
     },
     descriptionContent: {
@@ -30,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
     },
     actionsContainer: {
-      marginBottom: theme.spacing(1),
+      // marginBottom: theme.spacing(1),
     },
     resetContainer: {
       // padding: theme.spacing(1),

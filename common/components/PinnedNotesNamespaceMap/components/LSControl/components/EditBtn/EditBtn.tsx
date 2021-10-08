@@ -266,7 +266,7 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
         />
       )}
       {showDiffs && (
-        <div style={{ color: '#ff1744' }}>
+        <div style={{ color: '#ff1744', margin: '16px 0px 8px 0px' }}>
           <b>
             <em>Diffs:</em>
           </b>
