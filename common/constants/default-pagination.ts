@@ -1,3 +1,3 @@
 export const data = {
-  limit: 15,
+  limit: 7,
 }

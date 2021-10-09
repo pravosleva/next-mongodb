@@ -83,6 +83,13 @@ export const defaultTheme = {
         },
       },
     },
+    MuiPagination: {
+      root: {
+        '& > ul > li': {
+          padding: '0 4px 8px 4px',
+        },
+      },
+    },
   },
 }
 

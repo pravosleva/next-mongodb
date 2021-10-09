@@ -16,6 +16,7 @@ export const PinnedNotes = () => {
     (id: string) => {
       if (router.pathname !== '/') {
         router.push(`/notes/${id}`)
+        return
       }
 
       if (!!state.activeNote && state.activeNote?._id === id) {

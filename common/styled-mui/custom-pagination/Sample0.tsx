@@ -14,7 +14,15 @@ export const Sample0 = (defaulProps: any) => {
 
   return (
     <div className={classes.root}>
-      <Pagination shape="round" {...defaulProps} />
+      <Pagination
+        // shape="round"
+        size="small"
+        {...defaulProps}
+        showLastButton={false}
+        showFirstButton={false}
+        siblingCount={3}
+        boundaryCount={5}
+      />
     </div>
   )
 }

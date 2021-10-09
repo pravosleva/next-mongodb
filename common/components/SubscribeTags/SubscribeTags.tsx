@@ -1,9 +1,13 @@
 /* eslint-disable no-console */
 import ChipInput from 'material-ui-chip-input'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { ELSFields } from '~/common/context/GlobalAppContext/interfaces'
-import { useGlobalAppContext } from '~/common/context/GlobalAppContext'
+import { useGlobalAppContext, useNotifsContext } from '~/common/hooks'
 import buildUrl from 'build-url'
+import { useRouter } from 'next/router'
+import { httpClient } from '~/utils/httpClient'
+import { useStyles } from './styles'
+import clsx from 'clsx'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT || ''
 
@@ -13,6 +17,53 @@ export const SubscribeTags = () => {
   const renderSCountRef = useRef<number>(0)
   // @ts-ignore
   const [notes, setNotes] = useState<any[]>([])
+  const router = useRouter()
+  const { state, handleSetAsActiveNote } = useGlobalAppContext()
+  const { addDangerNotif } = useNotifsContext()
+  const { activeNote } = useMemo(() => state, [JSON.stringify(state)])
+  const classes = useStyles()
+
+  const handleClick = useCallback(
+    (id: string) => {
+      if (router.pathname !== '/') {
+        router.push(`/notes/${id}`)
+        return
+      }
+
+      if (!!state.activeNote && state.activeNote?._id === id) {
+        // addDefaultNotif({ title: 'Unnecessary', message: 'Note is active' })
+        return
+      }
+
+      const fromState = state.notes.find(({ _id }: any) => _id === id)
+      if (!!fromState) {
+        handleSetAsActiveNote(fromState)
+      } else {
+        // addDefaultNotif({
+        //   title: 'TODO',
+        //   message: (
+        //     <ul style={{ paddingLeft: '10px' }}>
+        //       <li>Get note by id: {id}</li>
+        //       <li>Set as Active Note</li>
+        //     </ul>
+        //   ),
+        // })
+
+        httpClient
+          .getNote(id)
+          .then((data) => {
+            handleSetAsActiveNote(data)
+          })
+          .catch((err) => {
+            addDangerNotif({
+              title: 'Error',
+              message: typeof err === 'string' ? err : err.message || 'No err.message',
+            })
+          })
+      }
+    },
+    [JSON.stringify(state.notes), state.activeNote, handleSetAsActiveNote]
+  )
 
   useEffect(() => {
     renderSCountRef.current += 1
@@ -47,7 +98,7 @@ export const SubscribeTags = () => {
 
     const fetchData = async () => {
       const queryParams: any = {
-        limit: 50,
+        limit: 100,
         // page: 1,
       }
       queryParams.q_titles = chips.join(',')
@@ -61,11 +112,19 @@ export const SubscribeTags = () => {
       })
       // setIsLoading(false)
       // @ts-ignore
-      const { data, pagination } = await res.json()
+      try {
+        const {
+          data,
+          // pagination,
+        } = await res.json()
 
-      if (Array.isArray(data)) setNotes(data)
-
-      // dispatch({ type: 'NOTES_RESPONSE@SET', payload: { notes: data, pagination } })
+        if (Array.isArray(data)) setNotes(data)
+      } catch (err: any) {
+        addDangerNotif({
+          title: 'Error',
+          message: typeof err === 'string' ? err : err.message || 'No err.message',
+        })
+      }
     }
 
     let _sendReqTimeout: any
@@ -88,18 +147,45 @@ export const SubscribeTags = () => {
 
   return (
     <>
-      <h4>Tags{notes.length > 0 ? ` (${notes.length})` : ''}</h4>
-      <ChipInput
-        value={chips}
-        onAdd={(chip) => handleAddChip(chip)}
-        onDelete={(chip, index) => handleDeleteChip(chip, index)}
-        fullWidth
-      />
+      <h3>Subscribes{notes.length > 0 ? ` (${notes.length})` : ''}</h3>
+      <div
+        style={{
+          marginBottom: '8px',
+          width: '100%',
+        }}
+      >
+        <ChipInput
+          value={chips}
+          onAdd={(chip) => handleAddChip(chip)}
+          onDelete={(chip, index) => handleDeleteChip(chip, index)}
+          fullWidth
+          // variant="outlined"
+          label="Tags"
+          placeholder="Enter tags..."
+          size="small"
+        />
+      </div>
       {notes.length > 0 && (
-        <ul style={{ paddingLeft: '16px' }}>
-          {notes.map(({ _id }: any) => (
-            <li key={_id}>{_id}</li>
-          ))}
+        <ul className={classes.list}>
+          {notes.map((data: any) => {
+            const { isPrivate, _id, title } = data
+            const isActive = _id === activeNote?._id
+
+            return (
+              <li
+                key={_id}
+                onClick={() => handleClick(_id)}
+                className={clsx(classes.truncate, classes.badge, classes.defaultBadge, {
+                  [classes.activeDefault]: isActive,
+                  [classes.activePrivate]: isActive && isPrivate,
+                  [classes.defaultPrivate]: !isActive && isPrivate,
+                  [classes.defaultNotPrivate]: !isActive && isPrivate,
+                })}
+              >
+                {title}
+              </li>
+            )
+          })}
         </ul>
       )}
     </>

@@ -75,7 +75,7 @@ export const SidebarContent = () => {
         )}
       />
 
-      <h3>Планы</h3>
+      {/* <h3>Планы</h3>
       <CollabsibleContent
         // activeTitleColor="#3882C4"
         // inactiveTitleColor="#a9a9a9"
@@ -103,7 +103,7 @@ export const SidebarContent = () => {
             />
           </>
         )}
-      />
+      /> */}
       <SubscribeTags />
     </div>
   )
