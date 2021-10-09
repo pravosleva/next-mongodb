@@ -161,7 +161,7 @@ export const SubscribeTags = () => {
           fullWidth
           // variant="outlined"
           label="Tags"
-          placeholder="Enter tags..."
+          placeholder="Add tag here..."
           size="small"
         />
       </div>

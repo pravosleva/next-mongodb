@@ -6,7 +6,7 @@ const widgetWidthMobile = 280
 // const widgetTogglerWidthMobile = 160
 const offsetTop = {
   md: 90,
-  sm: 120,
+  sm: 150,
 }
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -60,11 +60,13 @@ export const useStyles = makeStyles((theme: Theme) =>
     fixedDesktopWidget: {
       position: 'fixed',
       [theme.breakpoints.up('md')]: {
-        top: `${offsetTop.md}px`,
+        // top: `${offsetTop.md}px`,
+        top: 0,
         transform: `translateX(${widgetWidthDesktop}px)`,
       },
       [theme.breakpoints.down('sm')]: {
-        top: `${offsetTop.sm}px`,
+        // top: `${offsetTop.sm}px`,
+        top: 0,
         transform: `translateX(${widgetWidthMobile}px)`,
       },
       right: '0px',
@@ -103,11 +105,13 @@ export const useStyles = makeStyles((theme: Theme) =>
       borderTopRightRadius: '0px',
       borderBottomRightRadius: '0px',
       [theme.breakpoints.up('md')]: {
+        top: `${offsetTop.md}px`,
         // width: `${widgetTogglerWidthDesktop}px`,
         // left: `-${widgetTogglerWidthDesktop}px`,
         transform: `translateX(-${widgetWidthDesktop}px)`,
       },
       [theme.breakpoints.down('sm')]: {
+        top: `${offsetTop.sm}px`,
         // width: `${widgetTogglerWidthMobile}px !important`,
         // minWidth: `${widgetTogglerWidthMobile}px`,
         // left: `-${widgetTogglerWidthMobile}px`,
@@ -120,11 +124,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     heightLimit: {
+      maxHeight: '100vh',
       [theme.breakpoints.up('md')]: {
-        maxHeight: `calc(100vh - ${offsetTop.md}px - ${offsetTop.md}px)`,
+        // maxHeight: `calc(100vh - ${offsetTop.md}px - ${offsetTop.md}px)`,
       },
       [theme.breakpoints.down('sm')]: {
-        maxHeight: `calc(100vh - ${offsetTop.sm}px - ${offsetTop.sm}px)`,
+        // maxHeight: `calc(100vh - ${offsetTop.sm}px - ${offsetTop.sm}px)`,
       },
       // border: '1px dashed red',
       // padding: theme.spacing(2, 0, 2, 0),
