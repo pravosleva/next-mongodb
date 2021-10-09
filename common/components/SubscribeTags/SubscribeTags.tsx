@@ -88,14 +88,20 @@ export const SubscribeTags = () => {
 
   return (
     <>
+      <h4>Tags{notes.length > 0 ? ` (${notes.length})` : ''}</h4>
       <ChipInput
         value={chips}
         onAdd={(chip) => handleAddChip(chip)}
         onDelete={(chip, index) => handleDeleteChip(chip, index)}
+        fullWidth
       />
-      <div>
-        <pre>{`options.title = { $in: q_titles.split(',') }`}</pre>
-      </div>
+      {notes.length > 0 && (
+        <ul style={{ paddingLeft: '16px' }}>
+          {notes.map(({ _id }: any) => (
+            <li key={_id}>{_id}</li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }

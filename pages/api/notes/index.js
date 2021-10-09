@@ -45,8 +45,13 @@ const mainApi = async (req, res) => {
         //     .map((str) => '"' + str + '"')
         //     .join(' '),
         // }
-        options.title = { $in: q_titles.split(',') }
+        // options.title = { $in: q_titles.split(',') }
         // options.title = { $all: q_titles.split(',') }
+        // options.title = { $or: q_titles.split(',').map((t) => ({ $regex: new RegExp(t), $options: 'i' })) }
+        options.title = {
+          $regex: new RegExp(q_titles.split(',').join('|')),
+          $options: 'i',
+        }
       }
       if (!!q_title) {
         options.title = { $regex: q_title, $options: 'i' }
@@ -100,6 +105,7 @@ const mainApi = async (req, res) => {
             }
             response.success = true
           } catch (error) {
+            console.log(error)
             if (!!error || !!error?._message) {
               response.msg = typeof error._message === 'string' ? error._message : JSON.stringify(error._message)
             }
