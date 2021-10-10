@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-console */
 import dbConnect from '~/utils/dbConnect'
 import Note from '~/models/Note'
@@ -11,9 +12,21 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 if (!JWT_SECRET) throw new Error('Check envs: JWT_SECRET was not provided')
 
+const getRegExpByWords = (arr) => {
+  // NOTE: SEE also https://coderoad.ru/3041320/Regex-AND-%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%BE%D1%80
+  // Replace regex reserved characters:
+  const modifiedWords = arr.join(' ').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+  // Split your string at spaces & Encapsulate your words inside regex groups:
+  const regexpGroups = modifiedWords.split(' ').map((w) => ['(?=.*' + w + ')'])
+  // Create a regex pattern:
+  const regexp = new RegExp('^' + regexpGroups.join('') + '.*$', 'im')
+
+  return regexp
+}
+
 const mainApi = async (req, res) => {
   const {
-    query: { q_title, q_titles, q_description, limit, page },
+    query: { q_title_all_words, q_title, q_titles, q_description_all_words, q_description, limit, page },
     method,
   } = req
 
@@ -36,29 +49,30 @@ const mainApi = async (req, res) => {
 
   switch (method) {
     case 'GET':
-      if (!!q_titles) {
-        // options.title = { $regex: q_title, $options: 'i' }
+      if (!!q_title_all_words) {
+        const regexp = getRegExpByWords(q_title_all_words.split(','))
+
+        options.title = { $regex: regexp }
+      } else if (!!q_titles) {
         // OR:
-        // options.title = {
-        //   $search: q_titles
-        //     .split(',')
-        //     .map((str) => '"' + str + '"')
-        //     .join(' '),
-        // }
         // options.title = { $in: q_titles.split(',') }
         // options.title = { $all: q_titles.split(',') }
-        // options.title = { $or: q_titles.split(',').map((t) => ({ $regex: new RegExp(t), $options: 'i' })) }
         options.title = {
           $regex: new RegExp(q_titles.split(',').join('|')),
           $options: 'i',
         }
-      }
-      if (!!q_title) {
+      } else if (!!q_title) {
         options.title = { $regex: q_title, $options: 'i' }
       }
-      if (!!q_description) {
+
+      if (!!q_description_all_words) {
+        const regexp = getRegExpByWords(q_description_all_words.split(','))
+
+        options.description = { $regex: regexp }
+      } else if (!!q_description) {
         options.description = { $regex: q_description, $options: 'i' }
       }
+
       if (!isLogged) options.isPrivate = { $ne: true }
 
       if (!!normalizedLimit && isNumeric(normalizedLimit)) {
