@@ -2,7 +2,8 @@
   "name": "Code Samples 2.0",
   "short_name": "Code Samples",
   "theme_color": "#ffffff",
-  "background_color": "#004740",
+  "background_color": "#2D3748",
+  
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
