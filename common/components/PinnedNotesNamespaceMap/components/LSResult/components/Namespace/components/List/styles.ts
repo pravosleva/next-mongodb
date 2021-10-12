@@ -12,7 +12,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
       [theme.breakpoints.down('sm')]: {
         '& li:not(:last-child)': {
-          marginBottom: '1px',
+          // marginBottom: '1px',
+          marginBottom: theme.spacing(1),
         },
       },
     },

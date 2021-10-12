@@ -377,7 +377,7 @@ h1 {
   /* font-size: 1.4em; */
   font-size: 1em;
   max-width: 100%;
-  border-radius: 4px;
+  border-radius: 8px;
   margin: 10px auto 20px auto;
   font-family: Open Sans;
   font-style: italic;
@@ -410,8 +410,11 @@ h1 {
 }
 
 .description-markdown pre {
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 20px !important;
+}
+.description-markdown pre:first-child {
+  margin-top: 0px !important;
 }
 .description-markdown pre code {
   box-shadow: unset;

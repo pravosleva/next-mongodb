@@ -213,7 +213,7 @@ export const Navbar = (_props: IProps) => {
   return (
     // <HideOnScroll {...props}>
     <div className={classes.grow}>
-      <AppBar position="static" style={{ boxShadow: 'none' }}>
+      <AppBar position="static">
         <Container maxWidth="md" className={classes.container}>
           <Toolbar className={classes.toolbar}>
             {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer">
