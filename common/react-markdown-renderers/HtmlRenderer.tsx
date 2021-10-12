@@ -3,6 +3,7 @@ import JsxParser from 'react-jsx-parser'
 import Gist from 'react-gist'
 import { Alert } from './Alert'
 import { ImageInNewTab } from './ImageRenderer'
+import { JSONComparison } from './JSONComparison'
 
 const componentTransforms = {
   Alert: (props: any) => <Alert text={props.value} {...props} />,
@@ -12,6 +13,7 @@ const componentTransforms = {
   YoutubePlayer,
   Gist: ({ gistId }: { gistId: string }) => <Gist id={gistId} />,
   ImageInNewTab: (props: any) => <ImageInNewTab {...props} />,
+  JSONComparison: (props: any) => <JSONComparison {...props} />,
 }
 
 // @ts-ignore

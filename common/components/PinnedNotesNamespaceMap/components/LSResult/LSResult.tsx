@@ -133,7 +133,8 @@ export const LSResult = () => {
           return !!data ? (
             <div key={key} className={clsx(classes.collapsibleWrapper, 'collapsible-wrapper')}>
               <CollabsibleContent
-                activeTitleColor="#3882C4"
+                // activeTitleColor="#3882C4"
+                activeTitleColor="#7687a3"
                 inactiveTitleColor="#949494"
                 isRightSide
                 // @ts-ignore

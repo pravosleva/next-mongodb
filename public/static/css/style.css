@@ -173,14 +173,16 @@ h1 {
   text-shadow: none;
 }
 .note-title-wrapper:hover {
-  color: #2185d0;
+  /* color: #2185d0; */
+  color: #2d3748;
 }
 
 .card {
   transition: all 0.2s linear;
 }
 .active-card-wrapper {
-  border: 2px solid #3882c4 !important;
+  /* border: 2px solid #3882c4 !important; */
+  border: 2px solid #7687a3 !important;
 }
 .active-card-wrapper_local {
   border: 2px solid #19857b !important;
@@ -188,7 +190,8 @@ h1 {
 .private-card-wrapper {
   /* border: 2px dashed red; */
   /* background: linear-gradient(45deg, #ffe1a8 30%, #DFE0E0 90%); */
-  background: linear-gradient(180deg, #a0a0a0 15%, lightgray 90%);
+  /* background: linear-gradient(180deg, #a0a0a0 15%, lightgray 90%); */
+  background: linear-gradient(180deg, #2d3748 15%, #7687a3 90%);
 }
 .private-card-wrapper {
   color: #fff !important;
@@ -196,7 +199,7 @@ h1 {
 }
 
 .active-card-wrapper.private-card-wrapper {
-  border: 2px solid gray !important;
+  border: 2px solid #7687a3 !important;
 }
 
 .navbar {
@@ -290,7 +293,8 @@ h1 {
 
 .todo-item {
   cursor: default;
-  border-top: 8px solid #3882c4;
+  /* border-top: 8px solid #3882c4; */
+  border-top: 8px solid #2d3748;
 }
 @media (min-width: 768px) {
   .todo-item > div {

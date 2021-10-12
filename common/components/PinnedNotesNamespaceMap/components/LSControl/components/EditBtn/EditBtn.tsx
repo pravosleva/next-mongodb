@@ -7,6 +7,7 @@ import { useStyles } from './styles'
 import { ELSFields } from '~/common/context/GlobalAppContext'
 import { useForm, useGlobalAppContext } from '~/common/hooks'
 import { TextField, Grid } from '@material-ui/core'
+import { getJSONDiffs } from '~/utils/getJSONDiffs'
 
 export type TNamespaceData = {
   ids: string[]
@@ -29,33 +30,6 @@ type TStepContentProps = {
     [key: string]: any
     blockedSteps?: number[]
   }
-}
-
-function getDiffs(obj1: any, obj2: any): any {
-  const result: any = {}
-  if (Object.is(obj1, obj2)) {
-    return undefined
-  }
-  if (!obj2 || typeof obj2 !== 'object') {
-    return obj2
-  }
-  Object.keys(obj1 || {})
-    .concat(Object.keys(obj2 || {}))
-    .forEach((key) => {
-      if (Array.isArray(obj1[key]) || Array.isArray(obj2[key])) {
-        return
-      }
-      if (obj2[key] !== obj1[key] && !Object.is(obj1[key], obj2[key])) {
-        result[key] = obj2[key]
-      }
-      if (typeof obj2[key] === 'object' && typeof obj1[key] === 'object') {
-        const value = getDiffs(obj1[key], obj2[key])
-        if (value !== undefined) {
-          result[key] = value
-        }
-      }
-    })
-  return result
 }
 
 const steps = [
@@ -209,7 +183,7 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
   const handleCancel = useCallback(() => {
     resetForm()
   }, [resetForm])
-  const diffs = useMemo(() => getDiffs(data, normalizedData), [data, normalizedData])
+  const diffs = useMemo(() => getJSONDiffs(data, normalizedData), [data, normalizedData])
   const showDiffs = useMemo(() => Object.keys(diffs).length > 0, [diffs])
 
   return (

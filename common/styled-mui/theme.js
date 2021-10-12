@@ -17,7 +17,8 @@ export const defaultTheme = {
   },
   palette: {
     primary: {
-      main: '#3882C4',
+      // main: '#3882C4',
+      main: '#2d3748',
     },
     secondary: {
       main: '#19857b',
