@@ -59,7 +59,7 @@ export const LocalNotes = () => {
         aria-labelledby="customized-dialog-title"
         open={isEditorOpened}
         fullScreen={isFullScreen}
-        // maxWidth="md"
+        // maxWidth="lg"
       >
         <DialogContent style={{ width: isMobile ? '100%' : '400px' }} dividers>
           <CreateNewLocalNoteBtn initialStateForEdit={editorDefaultState} onClose={handleClose} />

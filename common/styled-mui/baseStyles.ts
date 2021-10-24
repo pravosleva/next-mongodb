@@ -6,13 +6,34 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down('sm')]: {
         padding: '0px',
       },
+      // [theme.breakpoints.up('md')]: {
+      //   maxWidth: '1100px',
+      // },
     },
     btnsBox: {
       // margin: theme.spacing(1, 0, 1, 0),
 
       width: '100%',
+      // maxWidth: '700px',
+      // margin: '0 auto',
       display: 'grid',
+      justifyContent: 'center',
+      // '& > button': {
+      //   // maxWidth: '200px',
+      //   borderRadius: '0px',
+      // },
+      // '& > button:first-child': {
+      //   // maxWidth: '200px',
+      //   borderRadius: '8px 0 0 8px',
+      // },
+      // '& > button:last-child': {
+      //   // maxWidth: '200px',
+      //   borderRadius: '0 8px 8px 0',
+      // },
       gridGap: theme.spacing(1),
+      // gridGap: '0px',
+
+      // border: '1px solid red',
 
       [theme.breakpoints.only('xs')]: {
         padding: theme.spacing(1),

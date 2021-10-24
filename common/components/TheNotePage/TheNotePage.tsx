@@ -148,11 +148,13 @@ export const TheNotePage = ({ initNote: note }: any) => {
   }
   const MemoizedBtnsBox = useMemo(
     () => (
-      <div style={{ margin: '0 auto' }}>
+      <div>
         <div
           style={
             {
               // padding: '8px 8px 16px 8px',
+              // width: isMobile ? '100%' : 'calc(100% - 350px)',
+              // width: '100%',
             }
           }
           className={clsx(baseClasses.standardMobileResponsiveBlock, baseClasses.btnsBox)}
@@ -231,7 +233,15 @@ export const TheNotePage = ({ initNote: note }: any) => {
   if (!noteData)
     return (
       <>
-        <div style={{ padding: isMobile ? '16px 8px 0px 8px' : '16px 0px' }}>
+        <div
+          style={{
+            padding: isMobile ? '16px 8px 0px 8px' : '16px 0px',
+            // width: isMobile ? '100%' : 'calc(100% - 350px)',
+            // width: '100%',
+            // border: downLg ? '1px solid red' : 'none',
+            // border: '1px solid red',
+          }}
+        >
           <h1>Oops...</h1>
           <Alert text="Check access" header="Sorry" type={EAlertType.warning} />
         </div>
@@ -267,9 +277,11 @@ export const TheNotePage = ({ initNote: note }: any) => {
             style={{
               maxWidth: isFullWidthContent ? '100%' : '600px',
               // maxWidth: '700px',
-              width: '100%',
+              // width: isMobile ? '100%' : 'calc(100% - 350px)',
               transition: 'all 0.3s linear',
               marginLeft: 'auto',
+              // margin: '0 auto',
+              // border: '1px solid red',
             }}
           >
             {!!noteData && (

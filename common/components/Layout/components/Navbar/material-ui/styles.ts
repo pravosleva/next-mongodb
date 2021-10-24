@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       //   fontSize: '1.4rem',
       // },
       [theme.breakpoints.up('sm')]: {
-        height: '64px',
+        height: '69px',
       },
       [theme.breakpoints.down('xs')]: {
         height: '56px',
@@ -24,6 +24,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       // [theme.breakpoints.down('xs')]: {
       padding: 0,
       // },
+      // border: '1px solid red',
+      height: '100%',
     },
     grow: {
       flexGrow: 1,

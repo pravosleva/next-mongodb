@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import Head from 'next/head'
 import { Navbar } from './components/Navbar'
 import NextNProgress from 'nextjs-progressbar'
@@ -15,6 +16,7 @@ import { useStyles } from './styles'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import { SidebarContent } from '~/common/components/SidebarContent'
 import { useWindowSize } from '~/common/hooks'
+import { useWidgetContext } from '~/common/components/Widget'
 
 export const Layout = ({ children }) => {
   const router = useRouter()
@@ -24,7 +26,10 @@ export const Layout = ({ children }) => {
     router.pathname === '/notes/[id]/edit'
   const classes = useStyles()
   const baseClasses = useBaseStyles()
-  const { isDesktop, isMobile } = useWindowSize()
+  const { isDesktop, isMobile, upMd, upLg, upXl, downMd, downLg, downXl } = useWindowSize()
+
+  const { state, widgetToggler } = useWidgetContext()
+  const hasOpenedWigget = useMemo(() => Object.values(state).some((s) => !!s), [state])
 
   return (
     <>
@@ -63,8 +68,16 @@ export const Layout = ({ children }) => {
           })}
         >
           <div className={classes.contentBox}>
-            <div>{children}</div>
-            {isDesktop && (
+            <div
+              style={{
+                width: isDesktop && hasOpenedWigget ? '100%' : undefined,
+                // minWidth: isDesktop && hasOpenedWigget ? '350px' : undefined,
+                // border: downLg && hasOpenedWigget ? '1px solid red' : undefined,
+              }}
+            >
+              {children}
+            </div>
+            {isDesktop && ( // && !(hasOpenedWigget && downLg)
               <div className={classes.sidebarInLayoutWrapper}>
                 <SidebarContent />
               </div>

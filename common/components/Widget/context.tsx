@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { useUnscrolledBody } from '~/common/hooks'
 
 const WidgetContext = createContext({
   state: {},
@@ -24,13 +25,18 @@ export const WidgetContextProvider = ({ children }: any) => {
           newState[widgetName] = true
         } else {
           for (const key in oldState) {
-            if (widgetName === key && !!oldState[key]) {
-              // @ts-ignore
-              newState[key] = false
-            } else {
-              // @ts-ignore
-              newState[key] = true
-            }
+            // if (widgetName === key && !!oldState[key]) {
+            //   // @ts-ignore
+            //   newState[key] = false
+            // } else {
+            //   // @ts-ignore
+            //   newState[key] = true
+            // }
+
+            // @ts-ignore
+            newState[key] = false
+            // @ts-ignore
+            // newState[widgetName] = false
           }
         }
 
@@ -42,6 +48,14 @@ export const WidgetContextProvider = ({ children }: any) => {
     },
     [setState]
   )
+  const { toggleScrollBody } = useUnscrolledBody(false)
+  useEffect(() => {
+    if (Object.values(state).some((e) => e === true)) {
+      toggleScrollBody(true)
+    } else {
+      toggleScrollBody(false)
+    }
+  }, [state])
 
   return (
     <WidgetContext.Provider

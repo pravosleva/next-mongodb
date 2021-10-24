@@ -62,9 +62,34 @@ class MyApp extends NextApp {
                     <WidgetContextProvider>
                       <Layout>
                         <Component {...pageProps} />
-                        <Widget isMobileOnly widgetName={EWidgetNames.AnyNotes}>
+                        <Widget
+                          isMobileOnly
+                          // forLgOnly
+                          widgetName={EWidgetNames.AnyNotes}
+                          side="right"
+                          togglerStyles={{
+                            top: '50px',
+                          }}
+                        >
                           <SidebarContent />
                         </Widget>
+                        <Widget
+                          widgetName={EWidgetNames.Chat}
+                          side="left"
+                          label="Chat"
+                          togglerStyles={{
+                            top: '50px',
+                          }}
+                          contentWrapperStyles={{
+                            minHeight: '100vh',
+                            width: '100%',
+                            padding: '0px',
+                            // border: '1px solid red',
+                            overflow: 'hidden',
+                          }}
+                          isChatFrame
+                          hideYellowTogglerIfOpened
+                        ></Widget>
                       </Layout>
                     </WidgetContextProvider>
                   </SocketContextProvider>

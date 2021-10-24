@@ -121,7 +121,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
   const notes = useMemo(() => (renderCountRef.current >= 1 ? state.notes : initNotes), [JSON.stringify(state.notes)])
   const { isLogged } = useAuthContext()
   const activeNote = useMemo(() => state.activeNote, [JSON.stringify(state.activeNote)])
-  const { isMobile } = useWindowSize()
+  const { isMobile, isDesktop } = useWindowSize()
   const baseClasses = useBaseStyles()
   const router = useRouter()
 
@@ -216,7 +216,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              margin: '8px 0 0 0',
+              margin: isDesktop ? '8px 0 0 0' : 0,
               padding: '0 8px 0 0',
             }}
           >

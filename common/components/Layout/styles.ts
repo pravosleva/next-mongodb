@@ -7,10 +7,10 @@ export const useStyles = makeStyles((theme: Theme) =>
     minimalHeightSetting: {
       // border: '1px solid red',
       [theme.breakpoints.up('sm')]: {
-        minHeight: 'calc(100vh - 64px)',
+        minHeight: 'calc(100vh - 69px)',
 
         // NOTE: Height limit
-        maxHeight: 'calc(100vh - 64px)',
+        maxHeight: 'calc(100vh - 69px)',
         overflow: 'auto',
       },
       [theme.breakpoints.down('xs')]: {
@@ -28,17 +28,26 @@ export const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       // boxSizing: 'border-box',
       width: '100%',
+      '& > div': {
+        width: '100%',
+      },
       minHeight: 'inherit',
       flexDirection: 'row',
       '& > div:first-child': {
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('xl')]: {
           width: `calc(100% - ${sidebarWidth}px)`,
           minWidth: `calc(100% - ${sidebarWidth}px)`,
           maxWidth: `calc(100% - ${sidebarWidth}px)`,
         },
-        [theme.breakpoints.down('sm')]: {
+        // [theme.breakpoints.down('md')]: {
+        //   width: '70%',
+        //   minWidth: '70%',
+
+        //   // margin: '20px 0px 50px 0px',
+        // },
+        [theme.breakpoints.down('md')]: {
           width: '100%',
-          minWidth: '100%',
+          // minWidth: '100%',
 
           // margin: '20px 0px 50px 0px',
         },
@@ -52,12 +61,13 @@ export const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(0, 0, 0, 1),
 
       overflowY: 'auto',
-      maxHeight: 'calc(100vh - 64px)',
+      maxHeight: 'calc(100vh - 69px)',
       position: 'sticky',
       top: 0,
       boxSizing: 'border-box',
       width: `${sidebarWidth}px`,
       minWidth: `${sidebarWidth}px`,
+      maxWidth: `${sidebarWidth}px`,
       [theme.breakpoints.down('xs')]: {
         display: 'none',
       },
