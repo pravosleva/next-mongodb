@@ -242,11 +242,11 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       const queryParams: any = {
         limit,
       }
-      if (!!debouncedSearchByTitle) {
+      if (!!debouncedSearchByTitle && debouncedSearchByTitle.trim().length > 2) {
         // queryParams.q_title = debouncedSearchByTitle
         queryParams.q_title_all_words = debouncedSearchByTitle.split(' ').join(',')
       }
-      if (!!debouncedSearchByDescription) {
+      if (!!debouncedSearchByDescription && debouncedSearchByDescription.trim().length > 2) {
         queryParams.q_description_all_words = debouncedSearchByDescription.split(' ').join(',')
       }
       if (!!normalizedQuery.page) {

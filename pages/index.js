@@ -134,6 +134,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
               <TextField
                 size="small"
                 label="Title"
+                placeholder="Enter 3 chars..."
                 variant="outlined"
                 value={state.searchByTitle}
                 fullWidth
@@ -155,6 +156,7 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                 size="small"
                 variant="outlined"
                 label="Description"
+                placeholder="Enter 3 chars..."
                 value={state.searchByDescription}
                 fullWidth
                 type="text"

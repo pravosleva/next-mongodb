@@ -108,7 +108,7 @@ h1 {
     max-height: calc(100vh - 60px - 20px - 8px); */
     top: 8px;
     /* max-height: calc(100vh - 8px - 64px - 36px - 20px); */
-    max-height: calc(100vh - 8px - 64px - 8px);
+    max-height: calc(100vh - 8px - 69px - 8px);
   }
   .active-note-external-sticky-wrapper > div {
     max-height: 100%;
@@ -152,7 +152,8 @@ h1 {
     margin-left: auto !important;
   }
 }
-@media (max-width: 1000px) {
+@media (max-width: 767px) {
+  /* NOTE: Should be checked */
   .search-wrapper {
     flex-direction: column;
   }

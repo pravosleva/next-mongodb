@@ -27,9 +27,17 @@ export const useStyles = makeStyles((theme: Theme) =>
       // border: '1px solid red',
       display: 'flex',
       // boxSizing: 'border-box',
-      width: '100%',
+      // [theme.breakpoints.up('md')]: {
+      //   width: `calc(100% - ${sidebarWidth}px)`,
+      // },
       '& > div': {
-        width: '100%',
+        // width: '100%',
+        [theme.breakpoints.up('md')]: {
+          width: `calc(100% - 300px - 8px)`,
+        },
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+        },
       },
       minHeight: 'inherit',
       flexDirection: 'row',

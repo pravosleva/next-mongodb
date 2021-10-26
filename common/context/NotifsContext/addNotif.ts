@@ -3,7 +3,7 @@ import { store, ReactNotificationOptions as IReactNotificationOptions } from 're
 const baseNotif: Partial<IReactNotificationOptions> = {
   // slidingExit: { delay: 300 },
   // animationOut: htmlClasses,
-  container: 'bottom-left',
+  container: 'bottom-right',
   animationIn: ['animate__animated', 'animate__fadeIn'],
   animationOut: ['animate__animated', 'animate__fadeOut'],
   dismiss: {

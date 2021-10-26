@@ -78,7 +78,7 @@ class MyApp extends NextApp {
                           side="left"
                           label="Chat"
                           togglerStyles={{
-                            top: '50px',
+                            bottom: '50px',
                           }}
                           contentWrapperStyles={{
                             minHeight: '100vh',
@@ -89,7 +89,7 @@ class MyApp extends NextApp {
                           }}
                           isChatFrame
                           hideYellowTogglerIfOpened
-                        ></Widget>
+                        />
                       </Layout>
                     </WidgetContextProvider>
                   </SocketContextProvider>

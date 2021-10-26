@@ -278,6 +278,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
               maxWidth: isFullWidthContent ? '100%' : '600px',
               // maxWidth: '700px',
               // width: isMobile ? '100%' : 'calc(100% - 350px)',
+              width: isMobile ? '100%' : isFullWidthContent ? '100%' : '600px',
               transition: 'all 0.3s linear',
               marginLeft: 'auto',
               // margin: '0 auto',

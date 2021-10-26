@@ -186,7 +186,7 @@ export const useStyles = makeStyles((theme: Theme) =>
 
         // marginRight: '0px !important',
         position: 'absolute',
-        top: '0px',
+        // top: '0px',
         boxShadow: 'none',
 
         borderTopLeftRadius: '0px',
@@ -198,13 +198,13 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         left: '0px',
         [theme.breakpoints.up('md')]: {
-          top: `${offsetTop.md}px`,
+          bottom: `${offsetTop.md}px`,
           // width: `${widgetTogglerWidthDesktop}px`,
           // left: `-${widgetTogglerWidthDesktop}px`,
           transform: `translateX(${widgetWidthDesktop}px)`,
         },
         [theme.breakpoints.down('sm')]: {
-          top: `${offsetTop.sm}px`,
+          bottom: `${offsetTop.sm}px`,
           // width: `${widgetTogglerWidthMobile}px !important`,
           // minWidth: `${widgetTogglerWidthMobile}px`,
           // left: `-${widgetTogglerWidthMobile}px`,
