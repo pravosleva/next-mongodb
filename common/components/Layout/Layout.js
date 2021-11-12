@@ -29,7 +29,7 @@ export const Layout = ({ children }) => {
   const { isDesktop, isMobile, upMd, upLg, upXl, downMd, downLg, downXl } = useWindowSize()
 
   const { state, widgetToggler } = useWidgetContext()
-  const hasOpenedWigget = useMemo(() => Object.values(state).some((s) => !!s), [state])
+  // const hasOpenedWigget = useMemo(() => Object.values(state).some((s) => !!s), [state])
 
   return (
     <>
@@ -69,11 +69,13 @@ export const Layout = ({ children }) => {
         >
           <div className={classes.contentBox}>
             <div
-              style={{
-                width: isDesktop && hasOpenedWigget ? '100%' : undefined,
-                // minWidth: isDesktop && hasOpenedWigget ? '350px' : undefined,
-                // border: downLg && hasOpenedWigget ? '1px solid red' : undefined,
-              }}
+              style={
+                {
+                  // width: isDesktop && hasOpenedWigget ? '100%' : undefined,
+                  // minWidth: isDesktop && hasOpenedWigget ? '350px' : undefined,
+                  // border: downLg && hasOpenedWigget ? '1px solid red' : undefined,
+                }
+              }
             >
               {children}
             </div>

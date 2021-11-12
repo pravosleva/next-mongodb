@@ -184,7 +184,8 @@ h1 {
 }
 .active-card-wrapper {
   /* border: 2px solid #3882c4 !important; */
-  border: 2px solid #7687a3 !important;
+  /* border: 2px solid #7687a3 !important; */
+  border: 2px solid #2d3748 !important;
 }
 .active-card-wrapper_local {
   border: 2px solid #19857b !important;
@@ -194,6 +195,7 @@ h1 {
   /* background: linear-gradient(45deg, #ffe1a8 30%, #DFE0E0 90%); */
   /* background: linear-gradient(180deg, #a0a0a0 15%, lightgray 90%); */
   background: linear-gradient(180deg, #2d3748 15%, #7687a3 90%);
+  border-radius: inherit;
 }
 .private-card-wrapper {
   color: #fff !important;
@@ -201,7 +203,8 @@ h1 {
 }
 
 .active-card-wrapper.private-card-wrapper {
-  border: 2px solid #7687a3 !important;
+  /* border: 2px solid #7687a3 !important; */
+  border: 2px solid #2d3748 !important;
 }
 
 .navbar {
@@ -351,6 +354,9 @@ h1 {
 
 @media (min-width: 768px) {
   .description-markdown > *:last-child {
+    margin-bottom: 0px !important;
+  }
+  .description-markdown > *:last-child > * {
     margin-bottom: 0px !important;
   }
 }

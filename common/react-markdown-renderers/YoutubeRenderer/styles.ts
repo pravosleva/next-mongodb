@@ -8,9 +8,9 @@ export const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     backgroundColor: '#000',
     borderRadius: '8px',
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '25px',
-    },
+    // [theme.breakpoints.down('sm')]: {
+    //   marginBottom: '25px',
+    // },
   },
   reactYoutube: {
     position: 'absolute',
@@ -26,6 +26,6 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       maxWidth: '850px',
     },
-    marginBottom: '20px',
+    // marginBottom: '20px',
   },
 }))

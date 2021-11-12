@@ -263,7 +263,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
     },
 
     standardCard: {
-      backgroundColor: '#FFF',
+      // backgroundColor: '#FFF',
       border: '2px solid #fff',
       borderRadius: '8px',
       boxShadow: 'unset',

@@ -233,7 +233,7 @@ export const Navbar = (_props: IProps) => {
                   </div>
                   <InputBase
                     inputRef={titleSearchRef}
-                    placeholder="Title / 3 chrs" // …
+                    placeholder="Title" // …
                     classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
@@ -250,7 +250,7 @@ export const Navbar = (_props: IProps) => {
                     autoFocus
                   />
                   <InputBase
-                    placeholder="Descr / 3 chrs"
+                    placeholder="Description"
                     classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
