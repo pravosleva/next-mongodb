@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "deploy2": "yarn build && bash deploy2.sh",
     "deploy:prod:build-send-restart": "yarn deploy:prod:build-send-next && yarn deploy:prod:copy-server-dist",
     "deploy:prod:copy-server-dist": "deploy-app -d prod:copy-server-dist",
     "deploy:prod:build-send-next": "deploy-app -d prod:build-send-next",
