@@ -53,7 +53,9 @@ export const Layout = ({ children }) => {
         options={{ showSpinner: true }}
       />
       <Navbar />
-      <div className={classes.minimalHeightSetting}>
+      {/* isTheNotePage && <div className="bg-fixed" /> */}
+      <div className="bg-fixed" />
+      <div className={clsx(classes.minimalHeightSetting)}>
         <Container
           style={
             {

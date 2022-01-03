@@ -33,18 +33,23 @@ export const NotifsContextProvider = ({ children }: any) => {
   // @ts-ignore
   const isMobile = useMemo(() => (!!width ? width <= 767 : false), [width])
   const addInfoNotif = (note: Partial<IReactNotificationOptions>) => {
+    if (!window || !document || document?.hidden) return
     _addInfoNotif({ ...note })
   }
   const addSuccessNotif = (note: Partial<IReactNotificationOptions>) => {
+    if (!window || !document || document?.hidden) return
     _addSuccessNotif(note)
   }
   const addDangerNotif = (note: Partial<IReactNotificationOptions>) => {
+    if (!window || !document || document?.hidden) return
     _addDangerNotif(note)
   }
   const addDefaultNotif = (note: Partial<IReactNotificationOptions>) => {
+    if (!window || !document || document?.hidden) return
     _addDefaultNotif(note)
   }
   const addWarningNotif = (note: Partial<IReactNotificationOptions>) => {
+    if (!window || !document || document?.hidden) return
     _addWarningNotif(note)
   }
 
