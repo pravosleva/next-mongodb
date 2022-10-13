@@ -788,11 +788,11 @@ skew to change the 'thickness' of the glitch.*/
 body {
   overflow-x: hidden;
   font-family: Montserrat;
-  min-height: inherit;
+  /* min-height: inherit; */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   margin: 0;
   padding: 0;
-  min-height: calc(100vh - 25px);
+  /* min-height: calc(100vh - 25px); */
 }
 body {
   position: relative;

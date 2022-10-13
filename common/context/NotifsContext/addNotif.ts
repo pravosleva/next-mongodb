@@ -14,14 +14,28 @@ const baseNotif: Partial<IReactNotificationOptions> = {
 
 type TTypes = 'success' | 'danger' | 'warning' | 'default' | 'info'
 
-const addNotif = (props: Partial<IReactNotificationOptions>, type: TTypes): void => {
-  // @ts-ignore
-  store.addNotification({
-    ...baseNotif,
-    type,
+const isBrowserTabActive = (): boolean => {
+  let res = false
 
-    ...props,
-  })
+  try {
+    if (typeof document !== 'undefined' && !document.hidden) res = true
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err)
+  }
+
+  return res
+}
+
+const addNotif = (props: Partial<IReactNotificationOptions>, type: TTypes): void => {
+  if (isBrowserTabActive())
+    // @ts-ignore
+    store.addNotification({
+      ...baseNotif,
+      type,
+
+      ...props,
+    })
 }
 
 export const addDangerNotif = (props: Partial<IReactNotificationOptions>): void => {

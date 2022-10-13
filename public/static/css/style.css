@@ -9,17 +9,6 @@ body {
 }
 body .bg-fixed {
   width: 100%;
-  /* background-image: url(/static/img/meta-tags-prev1300b.jpg); */
-  /* background-image: url(/static/img/YAMA_DSC2546_TP_V.webp); */
-  /* background-image: url(/static/img/1.webp); */
-  background-image: url(/static/img/6.26.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  /* background-color: rgb(105, 168, 226); #69A8E2 */
-  /* background-color: rgb(105, 168, 226); */
-  background-color: rgba(255, 255, 255, 0.75);
-  background-blend-mode: lighten;
 
   position: fixed;
   z-index: -1;
@@ -41,6 +30,17 @@ body .bg-fixed_the-note-page {
 }
 @media (min-width: 768px) {
   body .bg-fixed {
+    /* background-image: url(/static/img/meta-tags-prev1300b.jpg); */
+    /* background-image: url(/static/img/YAMA_DSC2546_TP_V.webp); */
+    /* background-image: url(/static/img/1.webp); */
+    background-image: url(/static/img/6.26.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-color: rgb(105, 168, 226); #69A8E2 */
+    /* background-color: rgb(105, 168, 226); */
+    background-color: rgba(255, 255, 255, 0.75);
+    background-blend-mode: lighten;
     height: calc(100vh - 69px);
     /* clip-path: polygon(80% 0, 100% 0, 100% 85%, 20% 100%, 0 100%, 0 15%); */
     /* clip-path: polygon(20% 0, 100% 0, 100% 90%, 80% 100%, 0 100%, 0 10%); */
@@ -57,8 +57,9 @@ body .bg-fixed_the-note-page {
 }
 @media (max-width: 767px) {
   body .bg-fixed {
-    height: calc(100vh - 56px);
-    clip-path: polygon(80% 0, 100% 0, 100% 80%, 20% 100%, 0 100%, 0 20%);
+    /* height: calc(100vh - 56px); */
+    /* height: 100vh; */
+    /* clip-path: polygon(80% 0, 100% 0, 100% 80%, 20% 100%, 0 100%, 0 20%); */
   }
   body .bg-fixed_the-note-page {
     height: calc(100vh - 56px);
@@ -191,16 +192,20 @@ h1 {
 .active-card-wrapper {
   /* border: 2px solid #3882c4 !important; */
   /* border: 2px solid #7687a3 !important; */
-  border: 2px solid #2d3748 !important;
+  border: 2px solid #FFF !important;
+  outline: 2px solid #0095fa;
 }
 .active-card-wrapper_local {
-  border: 2px solid #19857b !important;
+  border: 2px solid #FFF !important;
+  /* outline: 2px solid #19857b; */
+  outline: 2px solid #4CC2B5;
 }
 .private-card-wrapper {
   /* border: 2px dashed red; */
   /* background: linear-gradient(45deg, #ffe1a8 30%, #DFE0E0 90%); */
   /* background: linear-gradient(180deg, #a0a0a0 15%, lightgray 90%); */
-  background: linear-gradient(180deg, #2d3748 15%, #7687a3 90%);
+  /* background: linear-gradient(180deg, #0095fa 15%, #8ddb82 90%); */
+  background: #B8B8B8;
   border-radius: inherit;
 }
 .private-card-wrapper {
@@ -210,7 +215,9 @@ h1 {
 
 .active-card-wrapper.private-card-wrapper {
   /* border: 2px solid #7687a3 !important; */
-  border: 2px solid #2d3748 !important;
+  /* border: 2px solid #2d3748 !important; */
+  border: 2px solid #FFF !important;
+  outline: 2px solid #0095fa;
 }
 
 .navbar {

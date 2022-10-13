@@ -30,7 +30,7 @@ const getIconByType = (type: EType, icon?: string) => {
 export const useStyles = makeStyles((_theme) => ({
   likeBlockuote: {
     '& h2': {
-      lineHeight: '25px',
+      lineHeight: '18px',
     },
     fontSize: '1em',
     maxWidth: '100%',
@@ -64,7 +64,8 @@ export const useStyles = makeStyles((_theme) => ({
   likeBlockuote_success: {
     quotes: `"${getIconByType(EType.success)}" "”" "${getIconByType(EType.success)}" "’"`,
     borderLeft: '8px solid rgba(255,255,255,0.35)',
-    background: 'rgba(120,192,168,1)',
+    // background: 'rgba(120,192,168,1)',
+    background: 'linear-gradient(180deg, #00b273 15%, #009e82 90%)',
     color: '#FFF',
     '&::before': {
       content: 'open-quote',
@@ -74,7 +75,8 @@ export const useStyles = makeStyles((_theme) => ({
   likeBlockuote_warning: {
     quotes: `"${getIconByType(EType.warning)}" "”" "${getIconByType(EType.warning)}" "’"`,
     borderLeft: '8px solid rgba(255,255,255,0.35)',
-    background: 'rgba(255,142,83,1)',
+    // background: 'rgba(255,142,83,1)',
+    background: 'linear-gradient(180deg, #ff6c52 15%, #f27900 90%)',
     color: '#FFF',
     '&::before': {
       content: 'open-quote',
@@ -84,7 +86,8 @@ export const useStyles = makeStyles((_theme) => ({
   likeBlockuote_danger: {
     quotes: `"${getIconByType(EType.danger)}" "”" "${getIconByType(EType.danger)}" "’"`,
     borderLeft: '8px solid rgba(255,255,255,0.35)',
-    background: 'rgba(244,67,44,1)',
+    // background: 'rgba(244,67,44,1)',
+    background: 'linear-gradient(180deg, #d63435 15%, #fd5951 90%)',
     color: '#FFF',
     '&::before': {
       content: 'open-quote',
@@ -94,7 +97,9 @@ export const useStyles = makeStyles((_theme) => ({
   likeBlockuote_info: {
     quotes: `"${getIconByType(EType.info)}" "”" "${getIconByType(EType.info)}" "’"`,
     borderLeft: '8px solid rgba(255,255,255,0.35)',
-    background: 'rgba(56,130,196,1)',
+    // borderLeft: '8px solid #3FAEFD',
+    // background: 'rgba(56,130,196,1)',
+    background: 'linear-gradient(180deg, #0095fa 15%, #00d2e4 90%)',
     color: '#FFF',
     '&::before': {
       content: 'open-quote',
