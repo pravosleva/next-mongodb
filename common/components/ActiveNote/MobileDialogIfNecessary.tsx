@@ -1,5 +1,12 @@
 import { forwardRef, useMemo, useCallback, useRef } from 'react'
-import { Button as MuiButton, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
+import {
+  Button as MuiButton,
+  ButtonGroup as MuiButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@material-ui/core'
 import Slide from '@material-ui/core/Slide'
 import { useFreshNote, useGlobalAppContext, useWindowSize } from '~/common/hooks'
 import { ActiveNote } from './ActiveNote'
@@ -11,7 +18,7 @@ import { useStyles } from './styles'
 // @ts-ignore
 import { animateScroll } from 'react-scroll'
 import Icon from '@mdi/react'
-import { mdiArrowDown } from '@mdi/js'
+import { mdiArrowDown, mdiArrowUp } from '@mdi/js'
 
 const TransitionUp = forwardRef(function Transition(props, ref) {
   // @ts-ignore
@@ -84,22 +91,40 @@ export const MobileDialogIfNecessary = () => {
           justifyContent: 'space-between',
         }}
       >
-        <MuiButton
-          color="default"
-          size="large"
-          variant="outlined"
-          onClick={() => {
-            if (!!containerRef.current) {
-              // containerRef.current.scrollIntoView(false)
-              animateScroll.scrollToBottom({
-                containerId: 'dialog-content',
-              })
-            }
-          }}
-          startIcon={<Icon path={mdiArrowDown} size={0.7} />}
-        >
-          Bottom
-        </MuiButton>
+        <MuiButtonGroup>
+          <MuiButton
+            color="default"
+            size="large"
+            variant="outlined"
+            onClick={() => {
+              if (!!containerRef.current) {
+                // containerRef.current.scrollIntoView(false)
+                animateScroll.scrollToBottom({
+                  containerId: 'dialog-content',
+                })
+              }
+            }}
+            // startIcon={<Icon path={mdiArrowDown} size={0.7} />}
+          >
+            <Icon path={mdiArrowDown} size={0.7} />
+          </MuiButton>
+          <MuiButton
+            color="default"
+            size="large"
+            variant="outlined"
+            onClick={() => {
+              if (!!containerRef.current) {
+                // containerRef.current.scrollIntoView(false)
+                animateScroll.scrollToTop({
+                  containerId: 'dialog-content',
+                })
+              }
+            }}
+            // startIcon={<Icon path={mdiArrowDown} size={0.7} />}
+          >
+            <Icon path={mdiArrowUp} size={0.7} />
+          </MuiButton>
+        </MuiButtonGroup>
         <MuiButton
           color="primary"
           size="large"
