@@ -290,18 +290,24 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     normalizedQuery,
   ])
   useEffect(() => {
-    if (!!router.query.page) {
-      router.push('/')
-    }
+    if (!!router.query.page) router.push('/')
   }, [debouncedSearchByTitle, debouncedSearchByDescription])
 
-  const handleSearchByTitleClear = () => {
+  const setFieldToLS = useCallback((fieldName: string, value: any, asJson: boolean) => {
+    const stuff = asJson ? JSON.stringify(value) : String(value)
+
+    ls(fieldName, stuff)
+
+    return Promise.resolve()
+  }, [])
+
+  const handleSearchByTitleClear = useCallback(() => {
     dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: '' })
     setFieldToLS(ELSFields.MainSearch, { searchByTitle: '' }, true)
-  }
-  const handleSearchByDescriptionClear = () => {
+  }, [setFieldToLS, dispatch])
+  const handleSearchByDescriptionClear = useCallback(() => {
     dispatch({ type: 'SEARCH_BY_DESCRIPTION@SET', payload: '' })
-  }
+  }, [dispatch])
   // const handleSearchByAnythingClear = () => {
   //   dispatch({ type: 'SEARCH_BY_ANYTHING@RESET' })
   // }
@@ -311,33 +317,34 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     // handleSearchByAnythingClear()
   }, [router.pathname])
 
-  const setFieldToLS = (fieldName: string, value: any, asJson: boolean) => {
-    const stuff = asJson ? JSON.stringify(value) : String(value)
-
-    ls(fieldName, stuff)
-
-    return Promise.resolve()
-  }
-
   const handleSetAsActiveNote = useCallback(
     (note: any) => {
       dispatch({ type: 'ACTIVE_NOTE@SET', payload: note })
     },
     [dispatch]
   )
-  const handleResetActiveNote = () => {
+  const handleResetActiveNote = useCallback(() => {
     dispatch({ type: 'ACTIVE_NOTE@RESET' })
-  }
-  const initState = (state: any) => {
-    dispatch({ type: 'INIT_STATE', payload: state })
-  }
-  const handleSearchByDescriptionSetText = (text: string) => {
-    dispatch({ type: 'SEARCH_BY_DESCRIPTION@SET', payload: text })
-  }
-  const handleSearchByTitleSetText = (text: string) => {
-    dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: text })
-    setFieldToLS(ELSFields.MainSearch, { searchByTitle: text }, true)
-  }
+  }, [dispatch])
+  const initState = useCallback(
+    (state: any) => {
+      dispatch({ type: 'INIT_STATE', payload: state })
+    },
+    [dispatch]
+  )
+  const handleSearchByDescriptionSetText = useCallback(
+    (text: string) => {
+      dispatch({ type: 'SEARCH_BY_DESCRIPTION@SET', payload: text })
+    },
+    [dispatch]
+  )
+  const handleSearchByTitleSetText = useCallback(
+    (text: string) => {
+      dispatch({ type: 'SEARCH_BY_TITLE@SET', payload: text })
+      setFieldToLS(ELSFields.MainSearch, { searchByTitle: text }, true)
+    },
+    [setFieldToLS, dispatch]
+  )
 
   const handleUpdateOneNote = useCallback(
     (note: any) => {
@@ -369,7 +376,7 @@ export const GlobalAppContextProvider = ({ children }: any) => {
   const [localNotesPinnedNamespaceMap, setLocalNotesPinnedNamespaceMap] = useState<any | null>(null)
   const [localNotes, setLocalNotes] = useState<any | null>(null)
   const { addInfoNotif, addDangerNotif, addWarningNotif } = useNotifsContext()
-  const getFieldFromLS = (fieldName: ELSFields, shouldBeJson: boolean): Promise<any> => {
+  const getFieldFromLS = useCallback((fieldName: ELSFields, shouldBeJson: boolean): Promise<any> => {
     // @ts-ignore
     if (!ls(fieldName)) return Promise.reject('Fuckup')
 
@@ -388,12 +395,15 @@ export const GlobalAppContextProvider = ({ children }: any) => {
     }
 
     return Promise.resolve(dataFromLS)
-  }
-  const createEmptyMap = (lsFieldName: ELSFields, initialJson: any = {}, cb: (lsData: any) => void) => {
-    setFieldToLS(lsFieldName, initialJson, true).then(() => {
-      if (!!cb) cb(initialJson)
-    })
-  }
+  }, [])
+  const createEmptyMap = useCallback(
+    (lsFieldName: ELSFields, initialJson: any = {}, cb: (lsData: any) => void) => {
+      setFieldToLS(lsFieldName, initialJson, true).then(() => {
+        if (!!cb) cb(initialJson)
+      })
+    },
+    [setFieldToLS]
+  )
   useEffect(() => {
     // 1. Namespaces: Main global notes pinned namespace map
     getFieldFromLS(ELSFields.MainPinnedNamespaceMap, true)
@@ -471,253 +481,280 @@ export const GlobalAppContextProvider = ({ children }: any) => {
       })
     return result
   }
-  const removeNamespace = (namespace: any, lsField: ELSFields) => {
-    getFieldFromLS(lsField, true)
-      .then((lsData) => {
-        if (!lsData[namespace]) {
-          addDangerNotif({ title: `!lsData[${namespace}]}` })
-          return
-        }
-        const newData = {}
+  const removeNamespace = useCallback(
+    (namespace: any, lsField: ELSFields) => {
+      getFieldFromLS(lsField, true)
+        .then((lsData) => {
+          if (!lsData[namespace]) {
+            addDangerNotif({ title: `!lsData[${namespace}]}` })
+            return
+          }
+          const newData = {}
 
-        for (const _namespace in lsData) {
-          // @ts-ignore
-          if (_namespace !== namespace) newData[_namespace] = lsData[_namespace]
-        }
-        setFieldToLS(lsField, newData, true).then(() => {
-          setPinnedMap(newData)
+          for (const _namespace in lsData) {
+            // @ts-ignore
+            if (_namespace !== namespace) newData[_namespace] = lsData[_namespace]
+          }
+          setFieldToLS(lsField, newData, true).then(() => {
+            setPinnedMap(newData)
+          })
         })
-      })
-      .catch((err) => {
-        addDangerNotif({ title: `cDM: ${lsField}`, message: getMsgStr(err) })
-      })
-  }
-  const addItemToLS = ({ namespace, id }: any, lsField: ELSFields) => {
-    if (!namespace || !id) {
-      // addDangerNotif({ title: 'addItemToLs(): Incorrect params', message: '!namespace || !id' })
-      addInfoNotif({ title: 'Select namespace...', message: 'TODO' })
-      return
-    }
+        .catch((err) => {
+          addDangerNotif({ title: `cDM: ${lsField}`, message: getMsgStr(err) })
+        })
+    },
+    [setFieldToLS, setPinnedMap]
+  )
+  const addItemToLS = useCallback(
+    ({ namespace, id }: any, lsField: ELSFields) => {
+      if (!namespace || !id) {
+        // addDangerNotif({ title: 'addItemToLs(): Incorrect params', message: '!namespace || !id' })
+        addInfoNotif({ title: 'Select namespace...', message: 'TODO' })
+        return
+      }
 
-    getFieldFromLS(lsField, true)
-      .then((lsData) => {
-        if (!lsData[namespace]) throw new Error(`No namespace "${namespace}" in ls`)
-        if (!lsData[namespace].limit) throw new Error(`No limit in "${namespace}"`)
-        const namespaceData = { ...lsData[namespace] }
-        const { ids, limit } = namespaceData
-        const newArr = [...new Set([id, ...ids])]
-        const lastN = newArr.slice(0, limit)
+      getFieldFromLS(lsField, true)
+        .then((lsData) => {
+          if (!lsData[namespace]) throw new Error(`No namespace "${namespace}" in ls`)
+          if (!lsData[namespace].limit) throw new Error(`No limit in "${namespace}"`)
+          const namespaceData = { ...lsData[namespace] }
+          const { ids, limit } = namespaceData
+          const newArr = [...new Set([id, ...ids])]
+          const lastN = newArr.slice(0, limit)
 
-        const newNamespaceData = { ...namespaceData, ids: lastN, ts: new Date().getTime() }
-        const newLsData = { ...lsData, [namespace]: newNamespaceData }
-
-        setFieldToLS(lsField, newLsData, true)
-        setPinnedMap(newLsData)
-
-        addInfoNotif({ title: 'Note pinned', message: id })
-      })
-      .catch((err) => {
-        const message = getMsgStr(err)
-
-        // V1:
-        // setFieldToLS(ELSFields.MainPinnedNamespaceMap, [id], true)
-        // setPinnedIds([id])
-
-        // V2:
-        addDangerNotif({ title: 'addItemToLS()', message })
-      })
-  }
-  const replaceNamespaceInLS = ({ namespace, normalizedData }: any, lsField: ELSFields) => {
-    // eslint-disable-next-line no-console
-
-    getFieldFromLS(lsField, true)
-      .then((lsData) => {
-        if (!!lsData[namespace]) {
-          // 1. REPLACE
-          const newNameSpaceData = { ...normalizedData, ts: new Date().getTime() }
-          const newLsData = { ...lsData, [namespace]: newNameSpaceData }
+          const newNamespaceData = { ...namespaceData, ids: lastN, ts: new Date().getTime() }
+          const newLsData = { ...lsData, [namespace]: newNamespaceData }
 
           setFieldToLS(lsField, newLsData, true)
           setPinnedMap(newLsData)
-          addInfoNotif({ title: 'LS data updated', message: namespace })
-        } else {
-          // 2. ADD NEW?
-          addWarningNotif({ title: 'replaceNamespaceInLS()', message: 'TODO: ADD NEW?' })
-        }
-      })
-      .catch((err) => {
-        addDangerNotif({ title: 'replaceNamespaceInLS()', message: getMsgStr(err) })
-      })
-  }
 
-  const handlePinToLS = (arg: any, lsField: ELSFields) => {
-    // eslint-disable-next-line no-console
-    addItemToLS(arg, lsField)
-  }
-  const removeItemFromLS = (id: string, lsField: ELSFields) => {
-    getFieldFromLS(lsField, true)
-      .then((lsData) => {
-        // 1. Find namespace:
-        // const nss = Object.keys(lsData)
-        let targetNSName = null
-        for (const ns in lsData) {
-          const ids = lsData[ns].ids
-          if (!ids) continue
-          if (ids.includes(id)) targetNSName = ns
-        }
-        if (!targetNSName) throw new Error('WTF? targetNSName not found')
-        // 2. Filter
-        const targetNS = lsData[targetNSName]
-        if (!targetNS.ids) throw new Error('WTF? !targetNS.ids')
+          addInfoNotif({ title: 'Note pinned', message: id })
+        })
+        .catch((err) => {
+          const message = getMsgStr(err)
 
-        const newIds = targetNS.ids.filter((_id: string) => _id !== id)
-        const newTargetNS = { ...targetNS, ids: newIds }
-        const newLsData = { ...lsData, [targetNSName]: newTargetNS }
+          // V1:
+          // setFieldToLS(ELSFields.MainPinnedNamespaceMap, [id], true)
+          // setPinnedIds([id])
 
-        setFieldToLS(lsField, newLsData, true)
-        setPinnedMap(newLsData)
-      })
-      .catch((err) => {
-        addDangerNotif({ title: 'Error', message: getMsgStr(err) })
-      })
-  }
-  const isPinnedToLS = async (id: string, lsField: ELSFields) => {
-    let result = false
-    let detectedNamespace
+          // V2:
+          addDangerNotif({ title: 'addItemToLS()', message })
+        })
+    },
+    [setFieldToLS, setPinnedMap, addDangerNotif]
+  )
+  const replaceNamespaceInLS = useCallback(
+    ({ namespace, normalizedData }: any, lsField: ELSFields) => {
+      // eslint-disable-next-line no-console
 
-    await getFieldFromLS(lsField, true)
-      .then((lsData) => {
-        for (const key in lsData) {
-          if (lsData[key].ids.includes(id)) {
-            result = true
-            detectedNamespace = key
+      getFieldFromLS(lsField, true)
+        .then((lsData) => {
+          if (!!lsData[namespace]) {
+            // 1. REPLACE
+            const newNameSpaceData = { ...normalizedData, ts: new Date().getTime() }
+            const newLsData = { ...lsData, [namespace]: newNameSpaceData }
+
+            setFieldToLS(lsField, newLsData, true)
+            setPinnedMap(newLsData)
+            addInfoNotif({ title: 'LS data updated', message: namespace })
+          } else {
+            // 2. ADD NEW?
+            addWarningNotif({ title: 'replaceNamespaceInLS()', message: 'TODO: ADD NEW?' })
           }
-        }
-        // addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
-        // result = arr.includes(id)
-      })
-      .catch(() => {
-        result = false
-      })
+        })
+        .catch((err) => {
+          addDangerNotif({ title: 'replaceNamespaceInLS()', message: getMsgStr(err) })
+        })
+    },
+    [getFieldFromLS, setFieldToLS, setPinnedMap, addInfoNotif, addWarningNotif]
+  )
 
-    return result ? Promise.resolve(detectedNamespace) : Promise.reject(false)
-  }
+  const handlePinToLS = useCallback(
+    (arg: any, lsField: ELSFields) => {
+      // eslint-disable-next-line no-console
+      addItemToLS(arg, lsField)
+    },
+    [addItemToLS]
+  )
+  const removeItemFromLS = useCallback(
+    (id: string, lsField: ELSFields) => {
+      getFieldFromLS(lsField, true)
+        .then((lsData) => {
+          // 1. Find namespace:
+          // const nss = Object.keys(lsData)
+          let targetNSName = null
+          for (const ns in lsData) {
+            const ids = lsData[ns].ids
+            if (!ids) continue
+            if (ids.includes(id)) targetNSName = ns
+          }
+          if (!targetNSName) throw new Error('WTF? targetNSName not found')
+          // 2. Filter
+          const targetNS = lsData[targetNSName]
+          if (!targetNS.ids) throw new Error('WTF? !targetNS.ids')
+
+          const newIds = targetNS.ids.filter((_id: string) => _id !== id)
+          const newTargetNS = { ...targetNS, ids: newIds }
+          const newLsData = { ...lsData, [targetNSName]: newTargetNS }
+
+          setFieldToLS(lsField, newLsData, true)
+          setPinnedMap(newLsData)
+        })
+        .catch((err) => {
+          addDangerNotif({ title: 'Error', message: getMsgStr(err) })
+        })
+    },
+    [getFieldFromLS, setFieldToLS, setPinnedMap, addDangerNotif]
+  )
+  const isPinnedToLS = useCallback(
+    async (id: string, lsField: ELSFields) => {
+      let result = false
+      let detectedNamespace
+
+      await getFieldFromLS(lsField, true)
+        .then((lsData) => {
+          for (const key in lsData) {
+            if (lsData[key].ids.includes(id)) {
+              result = true
+              detectedNamespace = key
+            }
+          }
+          // addInfoNotif({ title: 'TST', message: `${String(arr.includes(id))}` })
+          // result = arr.includes(id)
+        })
+        .catch(() => {
+          result = false
+        })
+
+      return result ? Promise.resolve(detectedNamespace) : Promise.reject(false)
+    },
+    [getFieldFromLS]
+  )
   // ---
 
   // --- LOCAL NOTES:
-  const saveLocalNote = ({
-    id: __id,
-    title,
-    description,
-    isPrivate,
-    cbSuccess,
-  }: {
-    id?: string
-    title: string
-    description: string
-    isPrivate: boolean
-    cbSuccess?: (notes: any[]) => void
-  }) => {
-    if (!title || !description) {
-      addDangerNotif({ title: 'ERR: saveLocalNote', message: 'Укажите необходимые параметры' })
-      return
-    }
-
-    const id = __id || String(new Date().getTime())
-
-    const newNote = {
-      id,
+  const saveLocalNote = useCallback(
+    ({
+      id: __id,
       title,
       description,
       isPrivate,
-    }
+      cbSuccess,
+    }: {
+      id?: string
+      title: string
+      description: string
+      isPrivate: boolean
+      cbSuccess?: (notes: any[]) => void
+    }) => {
+      if (!title || !description) {
+        addDangerNotif({ title: 'ERR: saveLocalNote', message: 'Укажите необходимые параметры' })
+        return
+      }
 
-    getFieldFromLS(ELSFields.LocalNotes, true)
-      .then((arr: any[]) => {
-        let newArr: any[] = []
+      const id = __id || String(new Date().getTime())
 
-        if (!Array.isArray(arr)) {
-          newArr = [newNote]
-        } else {
-          newArr = [newNote, ...arr]
-        }
+      const newNote = {
+        id,
+        title,
+        description,
+        isPrivate,
+      }
 
-        setFieldToLS(ELSFields.LocalNotes, newArr, true)
-          .then(() => {
-            setLocalNotes(newArr)
-            if (!!cbSuccess) cbSuccess(newArr)
-          })
-          .then(() => {
-            addInfoNotif({ title: 'Local note saved', message: id })
-          })
-      })
-      .catch((err) => {
-        const message = typeof err === 'string' ? err : err.message || 'No err.message'
+      getFieldFromLS(ELSFields.LocalNotes, true)
+        .then((arr: any[]) => {
+          let newArr: any[] = []
 
-        addDangerNotif({ title: 'ERR: saveLocalNote', message })
-      })
-  }
-  const removeLocalNote = (_id: string) => {
-    getFieldFromLS(ELSFields.LocalNotes, true)
-      .then((arr: any[]) => {
-        if (!Array.isArray) {
-          addDangerNotif({ title: 'ERR: removeLocalNote', message: 'Данные повреждены' })
-          return
-        }
+          if (!Array.isArray(arr)) {
+            newArr = [newNote]
+          } else {
+            newArr = [newNote, ...arr]
+          }
 
-        const targetIndex = arr.findIndex(({ id }) => id === _id)
-
-        if (targetIndex === -1) {
-          addDangerNotif({ title: 'ERR: removeLocalNote', message: 'Элемент не найден' })
-          return
-        }
-
-        const newArr = arr.filter(({ id }) => _id !== id)
-
-        setFieldToLS(ELSFields.LocalNotes, newArr, true)
-          .then(() => {
-            setLocalNotes(newArr)
-          })
-          .then(() => {
-            addInfoNotif({ title: 'Local note removed', message: _id })
-          })
-      })
-      .catch((err) => {
-        const message = typeof err === 'string' ? err : err.message || 'No err.message'
-
-        addDangerNotif({ title: 'ERR: removeLocalNote', message })
-      })
-  }
-  const addNewLSData = (lsData: any[]) => {
-    getFieldFromLS(ELSFields.LocalNotes, true)
-      .then((oldLSData: any[]) => {
-        if (!Array.isArray(oldLSData)) throw new Error("WTF? oldData isn't an Array")
-
-        // NOTE: Have to filter by unique id
-
-        const ds = new Map<string, any>()
-        for (const note of [...oldLSData, ...lsData]) ds.set(note.id, note) // NOTE: Rewrite old
-
-        const newArr: any[] = []
-        for (const note of ds.keys()) newArr.push(ds.get(note))
-
-        setFieldToLS(ELSFields.LocalNotes, newArr, true)
-          .then(() => {
-            setLocalNotes(newArr)
-          })
-          .then(() => {
-            addInfoNotif({
-              title: 'Data added',
-              message: `Old (${oldLSData.length}) + New (${lsData.length}), Total (${newArr.length})`,
+          setFieldToLS(ELSFields.LocalNotes, newArr, true)
+            .then(() => {
+              setLocalNotes(newArr)
+              if (!!cbSuccess) cbSuccess(newArr)
             })
-          })
-      })
-      .catch((err) => {
-        addDangerNotif({
-          message: typeof err === 'string' ? err : err.message || 'No err.message',
+            .then(() => {
+              addInfoNotif({ title: 'Local note saved', message: id })
+            })
         })
-      })
-  }
+        .catch((err) => {
+          const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+          addDangerNotif({ title: 'ERR: saveLocalNote', message })
+        })
+    },
+    [getFieldFromLS, setFieldToLS, setLocalNotes, addInfoNotif, addDangerNotif]
+  )
+  const removeLocalNote = useCallback(
+    (_id: string) => {
+      getFieldFromLS(ELSFields.LocalNotes, true)
+        .then((arr: any[]) => {
+          if (!Array.isArray) {
+            addDangerNotif({ title: 'ERR: removeLocalNote', message: 'Данные повреждены' })
+            return
+          }
+
+          const targetIndex = arr.findIndex(({ id }) => id === _id)
+
+          if (targetIndex === -1) {
+            addDangerNotif({ title: 'ERR: removeLocalNote', message: 'Элемент не найден' })
+            return
+          }
+
+          const newArr = arr.filter(({ id }) => _id !== id)
+
+          setFieldToLS(ELSFields.LocalNotes, newArr, true)
+            .then(() => {
+              setLocalNotes(newArr)
+            })
+            .then(() => {
+              addInfoNotif({ title: 'Local note removed', message: _id })
+            })
+        })
+        .catch((err) => {
+          const message = typeof err === 'string' ? err : err.message || 'No err.message'
+
+          addDangerNotif({ title: 'ERR: removeLocalNote', message })
+        })
+    },
+    [setFieldToLS, setLocalNotes, addInfoNotif, addDangerNotif]
+  )
+  const addNewLSData = useCallback(
+    (lsData: any[]) => {
+      getFieldFromLS(ELSFields.LocalNotes, true)
+        .then((oldLSData: any[]) => {
+          if (!Array.isArray(oldLSData)) throw new Error("WTF? oldData isn't an Array")
+
+          // NOTE: Have to filter by unique id
+
+          const ds = new Map<string, any>()
+          for (const note of [...oldLSData, ...lsData]) ds.set(note.id, note) // NOTE: Rewrite old
+
+          const newArr: any[] = []
+          for (const note of ds.keys()) newArr.push(ds.get(note))
+
+          setFieldToLS(ELSFields.LocalNotes, newArr, true)
+            .then(() => {
+              setLocalNotes(newArr)
+            })
+            .then(() => {
+              addInfoNotif({
+                title: 'Data added',
+                message: `Old (${oldLSData.length}) + New (${lsData.length}), Total (${newArr.length})`,
+              })
+            })
+        })
+        .catch((err) => {
+          addDangerNotif({
+            message: typeof err === 'string' ? err : err.message || 'No err.message',
+          })
+        })
+    },
+    [getFieldFromLS, setFieldToLS, setLocalNotes, addInfoNotif, addDangerNotif]
+  )
   const isIdPinned = useCallback(
     (id: string) => {
       if (!pinnedMap) return false

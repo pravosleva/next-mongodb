@@ -28,6 +28,6 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   marginBottomIfOpened: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
 }))
