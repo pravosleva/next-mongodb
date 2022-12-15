@@ -51,6 +51,7 @@ type TProps = {
   }[]
   onClose?: () => void
   onCancel: () => void
+  onRemoveId: (namespase: string, id: string) => void
 
   // REST:
   [key: string]: any

@@ -27,5 +27,18 @@ export const useForm = (initialState = {}): TProps => {
     }
   }
 
-  return { formData, handleInputChange, resetForm }
+  const setValue = (key: string, value: any) => {
+    setFormData((data) => {
+      // eslint-disable-next-line no-console
+      // console.log('old data:')
+      // eslint-disable-next-line no-console
+      // console.log(data)
+      return {
+        ...data,
+        [key]: value,
+      }
+    })
+  }
+
+  return { formData, handleInputChange, resetForm, setValue }
 }

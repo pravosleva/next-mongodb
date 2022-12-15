@@ -123,7 +123,7 @@ export const LSControl = () => {
                 !!pinnedMap[key] && (
                   <div style={{ border: '1px solid lightgray', padding: '8px', borderRadius: '0px 0px 8px 8px' }}>
                     <b>
-                      <em>Before:</em>
+                      <em>Current state</em>
                     </b>
                     <pre style={{ margin: '0px', fontSize: '10px', whiteSpace: 'pre-wrap' }}>
                       {/* @ts-ignore */}

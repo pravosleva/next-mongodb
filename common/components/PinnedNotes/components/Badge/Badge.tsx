@@ -5,7 +5,7 @@ import { useStyles } from './styles'
 import { useAuthContext } from '~/common/hooks'
 import { CircularProgress } from '@material-ui/core'
 
-export const Badge = ({ id, isActive, onClick, children, ...rest }: any) => {
+export const Badge = ({ id, isActive, onClick, children, leftSymbol, ...rest }: any) => {
   const classes = useStyles()
   const [data, setData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -46,6 +46,7 @@ export const Badge = ({ id, isActive, onClick, children, ...rest }: any) => {
       })}
       {...rest}
     >
+      {!!leftSymbol && `${leftSymbol} `}
       {isLoading && <CircularProgress size={8} color="inherit" style={{ marginRight: '5px' }} />}
       {!!errorMsg && errorMsg}
       {isLoaded && data?.title}

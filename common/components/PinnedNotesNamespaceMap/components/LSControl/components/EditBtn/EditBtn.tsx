@@ -7,7 +7,9 @@ import { useStyles } from './styles'
 import { ELSFields } from '~/common/context/GlobalAppContext'
 import { useForm, useGlobalAppContext } from '~/common/hooks'
 import { TextField, Grid } from '@material-ui/core'
-import { getJSONDiffs } from '~/utils/getJSONDiffs'
+// import { getJSONDiffs } from '~/utils/getJSONDiffs'
+import { Badge } from '~/common/components/PinnedNotes/components/Badge'
+import { useStyles as useListStyles } from '~/common/components/PinnedNotes/styles'
 
 export type TNamespaceData = {
   ids: string[]
@@ -30,6 +32,7 @@ type TStepContentProps = {
     [key: string]: any
     blockedSteps?: number[]
   }
+  onRemoveId: (namespace: string, id: string) => void
 }
 
 const steps = [
@@ -90,7 +93,9 @@ const steps = [
   {
     title: 'Set Limit',
     description: 'Количество заметок при привышении которого более старые будут удалены',
-    content: ({ data, onInputChange, normalizedForm, formData, formErrors }: TStepContentProps) => {
+    content: ({ data, onInputChange, /* normalizedForm, */ formData, formErrors, onRemoveId }: TStepContentProps) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const listClasses = useListStyles()
       return (
         <>
           <TextField
@@ -111,7 +116,32 @@ const steps = [
             autoFocus
             style={{ marginBottom: '8px' }}
           />
-          <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>{JSON.stringify(normalizedForm, null, 2)}</pre>
+          {/* <pre style={{ fontSize: '10px', whiteSpace: 'pre-wrap' }}>{JSON.stringify(normalizedForm, null, 2)}</pre> */}
+          {formData.ids?.length > 0 && (
+            <ul className={listClasses.list}>
+              {formData.ids.map((id: any) => {
+                return (
+                  <Badge
+                    key={id}
+                    id={id}
+                    isActive={false}
+                    onClick={() => {
+                      onRemoveId(data.title, id)
+                      // eslint-disable-next-line no-console
+                      // console.log('In progress...')
+                    }}
+                    leftSymbol="🚫"
+                    style={{
+                      // color: '#f44336',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {id}
+                  </Badge>
+                )
+              })}
+            </ul>
+          )}
         </>
       )
     },
@@ -135,7 +165,7 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
   const handleClose = useCallback(() => {
     setIsFormOpened(false)
   }, [setIsFormOpened])
-  const { formData, handleInputChange, resetForm } = useForm({ ...initialState, ...data })
+  const { formData, handleInputChange, resetForm, setValue } = useForm({ ...initialState, ...data })
   const getNormalizedForm = useCallback((formData) => {
     const normalizedForm: Partial<TNamespaceData> | any = {}
 
@@ -152,7 +182,11 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
 
     return normalizedForm
   }, [])
-  const normalizedData = useMemo(() => getNormalizedForm(formData), [formData])
+  const normalizedData = useMemo(() => getNormalizedForm(formData), [JSON.stringify(formData)])
+  // useEffect(() => {
+  //   // eslint-disable-next-line no-console
+  //   console.log(normalizedData)
+  // }, [normalizedData])
   const getFormErrorsObj = (normalizedData: TNamespaceData) => {
     const result: { [key: string]: any } = {
       blockedSteps: [],
@@ -183,8 +217,22 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
   const handleCancel = useCallback(() => {
     resetForm()
   }, [resetForm])
-  const diffs = useMemo(() => getJSONDiffs(data, normalizedData), [data, normalizedData])
-  const showDiffs = useMemo(() => Object.keys(diffs).length > 0, [diffs])
+  // const diffs = useMemo(() => getJSONDiffs(data, normalizedData), [data, normalizedData, normalizedData?.ids.length])
+  // const showDiffs = useMemo(() => Object.keys(diffs).length > 0, [diffs])
+  const handleRemoveIdFromNamespace = useCallback(
+    (_ns: string, id: string) => {
+      // eslint-disable-next-line no-console
+      // handleUnpinFromLS(id, ELSFields.MainPinnedNamespaceMap)
+      const newIds = formData.ids.filter((_id: string) => _id !== id)
+      // eslint-disable-next-line no-console
+      // console.log(newIds)
+      setValue('ids', newIds)
+    },
+    [
+      // handleUnpinFromLS,
+      setValue,
+    ]
+  )
 
   return (
     <div className={classes.wrapper}>
@@ -227,6 +275,7 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
         </>
       ) : (
         <Stepper
+          onRemoveId={handleRemoveIdFromNamespace}
           onClose={handleClose}
           onSave={handleSave}
           steps={steps}
@@ -239,17 +288,16 @@ export const EditBtn = ({ namespace, data, leftBtn }: TProps) => {
           formErrors={formErrors}
         />
       )}
-      {showDiffs && (
+      {/*showDiffs && (
         <div style={{ color: '#ff1744', margin: '16px 0px 8px 0px' }}>
           <b>
             <em>Diffs:</em>
           </b>
           <pre style={{ margin: '0px', fontSize: '10px', whiteSpace: 'pre-wrap' }}>
-            {/* @ts-ignore */}
             {JSON.stringify(diffs, null, 2)}
           </pre>
         </div>
-      )}
+      )*/}
     </div>
   )
 }
