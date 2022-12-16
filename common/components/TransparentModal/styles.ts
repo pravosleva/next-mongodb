@@ -9,11 +9,11 @@ export const useStyles = makeStyles((_theme) => ({
     '& > div > div': {
       backgroundColor: 'transparent !important',
       boxShadow: 'none',
+
+      margin: '0px',
     },
   },
   dialogContent: {
-    // border: '1px solid red',
-    // margin: '0 auto',
     backgroundColor: 'transparent',
   },
   dialogTitle: {

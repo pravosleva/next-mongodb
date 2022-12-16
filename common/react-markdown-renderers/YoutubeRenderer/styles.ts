@@ -7,10 +7,12 @@ export const useStyles = makeStyles((theme) => ({
     height: '0',
     overflow: 'hidden',
     backgroundColor: '#000',
-    borderRadius: '8px',
-    // [theme.breakpoints.down('sm')]: {
-    //   marginBottom: '25px',
-    // },
+    [theme.breakpoints.down('md')]: {
+      borderRadius: '0px',
+    },
+    [theme.breakpoints.up('md')]: {
+      borderRadius: '8px',
+    },
   },
   reactYoutube: {
     position: 'absolute',

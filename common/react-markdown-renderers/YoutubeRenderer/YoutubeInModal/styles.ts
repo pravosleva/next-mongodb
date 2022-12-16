@@ -48,6 +48,8 @@ export const useStyles = makeStyles((theme) => ({
     bottom: 0,
     left: 0,
     right: 0,
+    // [theme.breakpoints.down('sm')]: {},
+    // [theme.breakpoints.up('md')]: {},
   },
   arrowBox: {
     color: '#FFF',
