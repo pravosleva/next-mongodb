@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     badgeContent: {
       cursor: 'pointer',
-      fontSize: '12px',
+      fontSize: '13px',
       transition: 'all 0.2s linear',
       backgroundColor: 'rgba(0,0,0,0.05)',
       '&:hover': {

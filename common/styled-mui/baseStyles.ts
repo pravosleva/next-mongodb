@@ -276,7 +276,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       },
       '& h4': {
         [theme.breakpoints.up('md')]: {
-          fontSize: '13px !important',
+          fontSize: '16px !important',
         },
       },
     },

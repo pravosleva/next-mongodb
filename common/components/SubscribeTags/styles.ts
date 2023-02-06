@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     badge: {
       cursor: 'pointer',
-      fontSize: '12px',
+      fontSize: '13px',
       padding: theme.spacing(1),
       [theme.breakpoints.up('md')]: {
         borderRadius: '8px',

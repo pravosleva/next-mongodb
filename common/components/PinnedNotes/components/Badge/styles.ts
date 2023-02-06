@@ -4,7 +4,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     badge: {
-      fontSize: '12px',
+      fontSize: '13px',
       padding: theme.spacing(1),
       [theme.breakpoints.up('md')]: {
         borderRadius: '8px',

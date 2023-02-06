@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useMemo } from 'react'
+import { useMemo, memo } from 'react'
 // import { openLinkInNewTab } from '~/utils/openLinkInNewTab'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -23,6 +23,15 @@ import {
 } from '@mdi/js'
 import { PinNote } from '~/common/components/PinNote'
 import { ELSFields } from '~/common/context/GlobalAppContext'
+
+const MainSpace = memo(({ description }: { description: string }) => {
+  return (
+    <div className="description-markdown">
+      {/* @ts-ignore */}
+      <ReactMarkdown plugins={[gfm, { singleTilde: false }]} renderers={baseRenderers} children={description} />
+    </div>
+  )
+})
 
 interface IProps {
   note: any
@@ -105,10 +114,7 @@ const MyComponent = ({
             // autoHideDuration={500}
           >
           */
-          <div className="description-markdown">
-            {/* @ts-ignore */}
-            <ReactMarkdown plugins={[gfm, { singleTilde: false }]} renderers={baseRenderers} children={description} />
-          </div>
+          <MainSpace description={description} />
         ))}
       {/* <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(note, null, 2)}</pre> */}
 
@@ -191,4 +197,4 @@ const MyComponent = ({
 //   )
 // }
 // export const ActiveNote = memo(MyComponent, areEqual)
-export const ActiveNote = MyComponent
+export const ActiveNote = memo(MyComponent)

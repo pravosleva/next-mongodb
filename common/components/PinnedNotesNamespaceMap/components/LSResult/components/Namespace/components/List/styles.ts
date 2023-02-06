@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     badge: {
-      fontSize: '12px',
+      fontSize: '13px',
       padding: theme.spacing(1),
       backgroundColor: 'transparent',
       borderRadius: theme.spacing(1),
