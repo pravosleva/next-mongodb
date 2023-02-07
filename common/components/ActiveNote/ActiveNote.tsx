@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import { useMemo, memo } from 'react'
+import { useMemo, memo, useState, useCallback } from 'react'
 // import { openLinkInNewTab } from '~/utils/openLinkInNewTab'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { Rating } from 'semantic-ui-react'
 import { useFreshNote, useWindowSize } from '~/common/hooks'
 // import { Scrollbars } from 'react-custom-scrollbars'
-import { baseRenderers } from '~/common/react-markdown-renderers'
+import { CodeRendererSynthwave84, baseRenderers } from '~/common/react-markdown-renderers'
 import { useBaseStyles } from '~/common/styled-mui/baseStyles'
 import clsx from 'clsx'
 import { Button } from '@material-ui/core'
@@ -20,9 +20,13 @@ import MdiIcon from '@mdi/react'
 import {
   // mdiPin,
   mdiPinOff,
+  mdiTools,
+  mdiChevronDown,
+  mdiChevronUp,
 } from '@mdi/js'
 import { PinNote } from '~/common/components/PinNote'
 import { ELSFields } from '~/common/context/GlobalAppContext'
+import { getNormalizedDateTime3 } from '~/utils/timeConverter'
 
 const MainSpace = memo(({ description }: { description: string }) => {
   return (
@@ -63,7 +67,21 @@ const MyComponent = ({
   const { isLogged } = useAuthContext()
   const { handleUnpinFromLS, isIdPinned } = useGlobalAppContext()
   const isPinned = useMemo(() => isIdPinned(_id), [_id, isIdPinned])
-  const { isMobile } = useWindowSize()
+  const { isMobile, isDesktop } = useWindowSize() // upMd, upLg, upXl, downMd, downLg, downXl
+
+  const createTimeNormalized = useMemo<string | null>(
+    () => (!!freshNote ? getNormalizedDateTime3(new Date(freshNote.createdAt).getTime()) : null),
+    [freshNote?.createdAt]
+  )
+  const updateTimeNormalized = useMemo<string | null>(
+    () => (!!freshNote ? getNormalizedDateTime3(new Date(freshNote.updatedAt).getTime()) : null),
+    [freshNote?.updatedAt]
+  )
+
+  const [isServiceInfoOpened, setIsServiceInfoOpened] = useState<boolean>(false)
+  const handleToggleServiceInfo = useCallback(() => {
+    setIsServiceInfoOpened((s) => !s)
+  }, [])
 
   return (
     <div
@@ -81,46 +99,57 @@ const MyComponent = ({
           <h2 className={clsx({ [classes.truncate]: shouldTitleBeTruncated })}>{title}</h2>
         </div>
       )}
-      {!!_id && !noHeader && (
+      {!!freshNote && !!_id && !noHeader && (
         <div
           style={{
             userSelect: 'none',
-            // border: '1px solid transparent',
-            minHeight: '50px',
-            height: '50px',
             display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
+            flexDirection: 'column',
             borderBottom: '1px solid lightgray',
           }}
         >
-          <Rating key={priority} maxRating={5} rating={priority} disabled />
+          <div
+            style={{
+              // border: '1px solid transparent',
+              minHeight: '30px',
+              // height: '50px',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}
+          >
+            <Rating key={priority} maxRating={5} rating={priority} disabled />
+          </div>
+          <div className={classes.timeSectionWrapper}>
+            <div>Crd: {createTimeNormalized || typeof createTimeNormalized}</div>
+            {isDesktop && (
+              <Button
+                variant="text"
+                size="small"
+                color="primary"
+                onClick={handleToggleServiceInfo}
+                // startIcon={<MdiIcon path={mdiPinOff} size={0.7} />}
+                startIcon={<MdiIcon path={mdiTools} size={0.7} />}
+                endIcon={<MdiIcon path={isServiceInfoOpened ? mdiChevronUp : mdiChevronDown} size={0.7} />}
+                // disabled={!isPinned}
+              >
+                Tools
+              </Button>
+            )}
+            <div>Upd: {updateTimeNormalized || typeof updateTimeNormalized}</div>
+          </div>
         </div>
       )}
       {!!description &&
-        (!!descriptionRenderer ? (
-          descriptionRenderer({ description })
-        ) : (
-          /*
-          <Scrollbars
-            autoHeight
-            autoHeightMin={500}
-            // autoHeightMax={!!height ? (height || 0) - 180 : 200}
-            // This will activate auto hide
-            autoHide
-            // Hide delay in ms
-            // autoHideTimeout={1000}
-            // Duration for hide animation in ms.
-            // autoHideDuration={500}
-          >
-          */
-          <MainSpace description={description} />
-        ))}
-      {/* <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(note, null, 2)}</pre> */}
-
+        (!!descriptionRenderer ? descriptionRenderer({ description }) : <MainSpace description={description} />)}
+      {isServiceInfoOpened && (
+        <div className={classes.serviceCodeSectionWrapper}>
+          <CodeRendererSynthwave84 language="json" value={JSON.stringify(freshNote, null, 2)} />
+        </div>
+      )}
       {!!_id && isTagsNessesary && (
         <>
-          <div style={{ borderBottom: '1px solid lightgray' }} />
+          <div style={{ borderBottom: '1px solid lightgray', padding: '0px' }} />
           <div className={clsx(baseClasses.actionsBoxLeft, baseClasses.standardCardFooter)}>
             {!initialNote?.isLocal ? (
               <Button

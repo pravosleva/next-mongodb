@@ -1,0 +1,5 @@
+.rc-md-navigation.visible {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+}

@@ -12,6 +12,7 @@ const env = dotenv.parse(fs.readFileSync(envFileName))
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer')
 
 const nextConfig = {
+  productionBrowserSourceMaps: true,
   pwa: {
     // dest: 'public', // NOTE: By default to .next
     runtimeCaching,

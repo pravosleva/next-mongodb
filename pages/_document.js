@@ -13,7 +13,8 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
           <link rel="stylesheet" href="/static/css/old.styles.css" />
           <link rel="stylesheet" href="/static/css/old.build.editor-js.css" />
-          <link rel="stylesheet" href="/static/css/react-notifications-component.css" />
+          <link rel="stylesheet" href="/static/css/fix.react-notifications-component.css" />
+          <link rel="stylesheet" href="/static/css/fix.react-markdown-editor-lite.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic" />
 
           <meta name="application-name" content="Code Samples 2.0" />
