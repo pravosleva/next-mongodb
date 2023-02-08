@@ -24,7 +24,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       // minHeight: '50px',
       marginBottom: theme.spacing(1),
-      color: 'lightgray',
+      color: '#adb5bd',
+      textShadow: 'none',
     },
     serviceCodeSectionWrapper: {
       width: '100%',

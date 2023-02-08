@@ -116,6 +116,7 @@ const MyComponent = ({
               display: 'flex',
               justifyContent: 'flex-start',
               alignItems: 'center',
+              textShadow: 'none',
             }}
           >
             <Rating key={priority} maxRating={5} rating={priority} disabled />

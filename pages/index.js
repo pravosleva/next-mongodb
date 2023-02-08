@@ -25,6 +25,7 @@ import { PinNote } from '~/common/components/PinNote'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import { getNormalizedQuery, TNormalizedQuery } from '~/utils/getNormalizedQuery'
+import { getHighlightedTitleHTML } from '~/utils/string-tools/getHighlightedTitleHTML'
 
 const InputFieldFlexContainer = ({ children }) => (
   <div
@@ -272,15 +273,11 @@ const Index = ({ notes: initNotes, pagination: initPag, errMsg: ssrErrMsg }) => 
                       className={clsx(baseClasses.standardCardHeader, baseClasses.cursorPointer)}
                       onClick={() => handleSetAsActiveNote(note)}
                     >
-                      <h4>
-                        {note.title}
-                        {/* !!note.id ? (
-                          <span>
-                            {' '}
-                            <Rating disabled size="large" /> <span className="muted">{note.priority}</span>
-                          </span>
-                        ) : null */}
-                      </h4>
+                      <h4
+                        dangerouslySetInnerHTML={{
+                          __html: getHighlightedTitleHTML({ str: note.title, searchString: state.searchByTitle }),
+                        }}
+                      />
                     </div>
                     {isMobile && (
                       <div className={clsx(baseClasses.actionsBoxRight, baseClasses.standardCardFooter)}>

@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useGlobalAppContext } from '~/common/hooks'
 import MdiIcon from '@mdi/react'
-import { mdiPin } from '@mdi/js'
+import { mdiPin, mdiClose } from '@mdi/js'
 import { ELSFields } from '~/common/context/GlobalAppContext'
 
 export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolean; [key: string]: any }) => {
@@ -11,6 +11,12 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
   // const onSubmit = (data: any) => console.log(data)
   // const ref = useRef(null)
   const [isOpened, setIsOpened] = useState<boolean>(false)
+  const handleClose = useCallback(() => {
+    setIsOpened(false)
+  }, [setIsOpened])
+  const handleOpen = useCallback(() => {
+    setIsOpened(true)
+  }, [setIsOpened])
   const { handlePinToLS, pinnedMap } = useGlobalAppContext()
   const pinnedMapKeys = useMemo(() => Object.keys(pinnedMap || {}), [pinnedMap])
   // @ts-ignore
@@ -33,11 +39,7 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
           variant="outlined"
           size="small"
           color="default"
-          onClick={() => {
-            // @ts-ignore
-            // handlePinToLS({ id })
-            setIsOpened(true)
-          }}
+          onClick={handleOpen}
           startIcon={<MdiIcon path={mdiPin} size={0.7} />}
           // disabled={isIdPinned(note._id)}
           {...rest}
@@ -75,14 +77,17 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
                 size="small"
               />
             )}
-            style={
-              {
-                // margin: '0 8px 0 0',
-                // transform: 'translateY(-6px)',
-                // maxHeight: '10px !important',
-              }
-            }
           />
+          <Button
+            variant="text"
+            size="small"
+            color={isLocal ? 'secondary' : 'primary'}
+            onClick={handleClose}
+            endIcon={<MdiIcon path={mdiClose} size={0.7} />}
+            {...rest}
+          >
+            Cancel
+          </Button>
           {!!selectedNamespace && (
             <Button
               // disabled={isNotesLoading}
@@ -92,7 +97,7 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
               onClick={() => {
                 // @ts-ignore
                 handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.MainPinnedNamespaceMap)
-                setIsOpened(false)
+                handleClose()
               }}
               endIcon={<MdiIcon path={mdiPin} size={0.7} />}
               // disabled={isIdPinned(note._id)}

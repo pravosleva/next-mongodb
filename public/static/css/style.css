@@ -205,12 +205,29 @@ h1 {
   /* background: linear-gradient(45deg, #ffe1a8 30%, #DFE0E0 90%); */
   /* background: linear-gradient(180deg, #a0a0a0 15%, lightgray 90%); */
   /* background: linear-gradient(180deg, #0095fa 15%, #8ddb82 90%); */
-  background: #B8B8B8;
+  /* background: #B8B8B8; */
+  background: #adb5bd;
   border-radius: inherit;
 }
 .private-card-wrapper {
   color: #fff !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); */
+  /* text-shadow: 0 0 3px #fe5f55; */
+  text-shadow: 0 0 3px rgba(0,0,0,.4);
+}
+
+/* HIGHLIGHT TAG */
+.card > div > h4 > b.tag {
+  color: #0095fa;
+}
+.card.private-card-wrapper > div > h4 > b.tag {
+  color: #ffd60a;
+}
+.card > div > h4 > b.tag.search-coincidence,
+.card.private-card-wrapper > div > h4 > b.tag.search-coincidence {
+  /* color: #f28482; */
+  color: #fe5f55;
+  text-shadow: 0 0 5px #FFF;
 }
 
 .active-card-wrapper.private-card-wrapper {
@@ -341,7 +358,7 @@ h1 {
 }
 .todo-item_private {
   /* border-top: 8px solid #f44336; */
-  border-top: 8px solid gray;
+  border-top: 8px solid #adb5bd;
 }
 .todo-item_local {
   /* border-top: 8px solid #f44336; */
