@@ -72,7 +72,14 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       // paddingTop: 0,
       '& ul': {
         // border: '1px solid red',
-        listStyleImage: 'url(/static/svg/yellow-dot.svg)',
+        // listStyleImage: 'url(/static/svg/yellow-dot.svg)',
+        listStyle: 'outside',
+        listStyleType: "'✪'", // 'disc',
+        '& > li::marker': {
+          // transform: 'translateY(-2px)',
+          color: '#4183c4',
+          // content: '✪',
+        },
       },
 
       '& ul, ol': {
@@ -90,6 +97,9 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
           '& input[type="checkbox"]': {
             // display: 'block',
             // transform: 'translateY(-50%)',
+            [theme.breakpoints.down('sm')]: {
+              transform: 'translateY(25%)',
+            },
             // marginBottom: '10px',
           },
         },
