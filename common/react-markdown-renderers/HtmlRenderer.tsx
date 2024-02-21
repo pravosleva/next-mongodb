@@ -4,6 +4,7 @@ import Gist from 'react-gist'
 import { Alert } from './Alert'
 import { ImageInNewTab } from './ImageRenderer'
 import { JSONComparison } from './JSONComparison'
+import { ImagesGalleryBox } from './ImagesGalleryBox'
 
 const componentTransforms = {
   Alert: (props: any) => <Alert text={props.value} {...props} />,
@@ -14,6 +15,7 @@ const componentTransforms = {
   Gist: ({ gistId }: { gistId: string }) => <Gist id={gistId} />,
   ImageInNewTab: (props: any) => <ImageInNewTab {...props} />,
   JSONComparison: (props: any) => <JSONComparison {...props} />,
+  ImagesGalleryBox: (props: any) => <ImagesGalleryBox {...props} />,
 }
 
 // @ts-ignore
