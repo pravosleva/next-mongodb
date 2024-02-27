@@ -3,7 +3,7 @@ import { useStyles } from './styles'
 import { isValidJson } from '~/utils/isValidJson'
 // import { Gallery, Image } from 'react-grid-gallery'
 import Lightbox from 'react-image-lightbox'
-// import 'react-image-lightbox/style.css'
+import 'react-image-lightbox/style.css'
 import { CircularIndeterminate } from '~/common/components/CircularIndeterminate'
 
 // interface ICustomImage extends Image {
@@ -73,6 +73,7 @@ export const ImagesGalleryBox = memo(({ itemsJson }: TProps) => {
           return <img key={src} src={src} alt={caption} onClick={() => handleClick(i)} />
         })}
       </div>
+
       {/* <Gallery
         // key={Math.random()}
         images={[...normalizedItems]}
@@ -83,8 +84,8 @@ export const ImagesGalleryBox = memo(({ itemsJson }: TProps) => {
         margin={0}
         rowHeight={210}
       /> */}
+
       {!!currentImage && (
-        /* @ts-ignore */
         <Lightbox
           mainSrc={currentImage.original}
           imageTitle={currentImage.caption}

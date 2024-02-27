@@ -73,7 +73,7 @@ class MyApp extends NextApp {
                         >
                           <SidebarContent />
                         </Widget>
-                        <Widget
+                        {/* <Widget
                           widgetName={EWidgetNames.Chat}
                           side="left"
                           label="Chat"
@@ -89,7 +89,7 @@ class MyApp extends NextApp {
                           }}
                           isChatFrame
                           hideYellowTogglerIfOpened
-                        />
+                        /> */}
                       </Layout>
                     </WidgetContextProvider>
                   </SocketContextProvider>

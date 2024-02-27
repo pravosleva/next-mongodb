@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     wrapper: {
       // border: '1px dashed red',
       '& > .ReactGridGallery > div': {
-        gap: '16px',
+        gap: '8px',
       },
       '& > .ReactGridGallery img': {
         maxWidth: '100%',
@@ -19,8 +19,8 @@ export const useStyles = makeStyles((theme: Theme) =>
 
       // GRID:
       display: 'grid',
-      columnGap: '16px',
-      rowGap: '16px',
+      columnGap: '8px',
+      rowGap: '8px',
 
       // @ts-ignore
       [theme.breakpoints.down('sm')]: {
@@ -39,10 +39,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       '& > img': {
         // border: '1px dashed red',
         height: '200px',
-        minWidth: '100%',
+        width: '100%',
         objectFit: 'cover',
 
-        borderRadius: '16px',
+        borderRadius: '8px',
         WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
         cursor: 'pointer',
       },
