@@ -35,7 +35,8 @@ type TNormalizedItem = {
     value: string
     title: string
   }[]
-  caption: string
+  title?: string
+  caption?: string
 }
 export type TProps = {
   itemsJson: string
@@ -69,8 +70,8 @@ export const ImagesGalleryBox = memo(({ itemsJson }: TProps) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.srLWrapperLayout}>
-        {normalizedItems.map(({ src, caption }, i) => {
-          return <img key={src} src={src} alt={caption} onClick={() => handleClick(i)} />
+        {normalizedItems.map(({ src, title }, i) => {
+          return <img key={src} src={src} alt={title || 'img'} onClick={() => handleClick(i)} />
         })}
       </div>
 
@@ -88,7 +89,8 @@ export const ImagesGalleryBox = memo(({ itemsJson }: TProps) => {
       {!!currentImage && (
         <Lightbox
           mainSrc={currentImage.original}
-          imageTitle={currentImage.caption}
+          imageTitle={currentImage.title}
+          imageCaption={currentImage.caption}
           mainSrcThumbnail={currentImage.src}
           nextSrc={nextImage.original}
           nextSrcThumbnail={nextImage.src}
