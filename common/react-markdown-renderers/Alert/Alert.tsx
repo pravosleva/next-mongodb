@@ -1,6 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
-import { EType, useStyles } from './styles'
+import { useStyles } from './styles'
+import { EType } from './types'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { theNotePageRenderers } from '~/common/react-markdown-renderers'

@@ -235,7 +235,8 @@ export const TheNotePage = ({ initNote: note }: any) => {
       <>
         <div
           style={{
-            padding: isMobile ? '16px 8px 0px 8px' : '16px 0px',
+            marginTop: '16px',
+            // padding: isMobile ? '16px 8px 0px 8px' : '16px 0px',
             // width: isMobile ? '100%' : 'calc(100% - 350px)',
             // width: '100%',
             // border: downLg ? '1px solid red' : 'none',

@@ -1350,9 +1350,9 @@ input.todoEditorElement:focus {
 .todo-item {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  /* padding: 10px; */
   box-shadow: 0px 0px 8px rgba(144, 164, 183, 0.6);
-  border-radius: 8px;
+  border-radius: 16px;
   position: relative;
   cursor: pointer;
 

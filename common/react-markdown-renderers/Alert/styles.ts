@@ -1,14 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { theme } from '~/common/styled-mui/theme'
+import { EType } from './types'
 
-export enum EType {
-  success = 'success',
-  warning = 'warning',
-  danger = 'danger',
-  info = 'info',
-  default = 'default',
-  custom = 'custom',
-}
 const getIconByType = (type: EType, icon?: string) => {
   switch (true) {
     case type === EType.success:

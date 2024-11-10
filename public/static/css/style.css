@@ -331,6 +331,10 @@ h1 {
   /* border-top: 8px solid #3882c4; */
   border-top: 8px solid #2d3748;
 }
+
+.todo-item > div {
+  padding: 8px;
+}
 @media (min-width: 768px) {
   .todo-item > div {
     padding: 8px;
@@ -371,7 +375,7 @@ h1 {
 }
 .description-markdown {
   margin-top: 0px;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -379,6 +383,9 @@ h1 {
   margin-top: 0px !important;
 }
 .description-markdown p:not(:last-child) {
+  margin-bottom: 8px;
+}
+.description-markdown > *:not() {
   margin-bottom: 8px;
 }
 
