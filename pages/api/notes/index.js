@@ -26,7 +26,16 @@ const getRegExpByWords = (arr) => {
 
 const mainApi = async (req, res) => {
   const {
-    query: { q_title_all_words, q_title, q_titles, q_description_all_words, q_description, limit, page },
+    query: {
+      q_title_all_words,
+      q_title,
+      q_titles,
+      q_description_all_words,
+      q_description,
+      limit,
+      page,
+      sort_by_create_date,
+    },
     method,
   } = req
 
@@ -78,8 +87,12 @@ const mainApi = async (req, res) => {
       if (!!normalizedLimit && isNumeric(normalizedLimit)) {
         if (!!normalizedPage && isNumeric(normalizedPage)) {
           try {
+            const _opts = {}
+            if (sort_by_create_date === '1') _opts.createdAt = 'desc'
+            else _opts.updatedAt = 'desc'
+
             const notes = await Note.find(options)
-              .sort({ priority: 'desc', createdAt: 'desc' })
+              .sort({ priority: 'desc', ..._opts })
               .limit(normalizedLimit)
               .skip((normalizedPage - 1) * normalizedLimit)
               .exec()
@@ -106,7 +119,11 @@ const mainApi = async (req, res) => {
           }
         } else {
           try {
-            const notes = await Note.find(options).sort({ priority: 'desc', createdAt: 'desc' }).limit(normalizedLimit)
+            const _opts = {}
+            if (sort_by_create_date === '1') _opts.createdAt = 'desc'
+            else _opts.updatedAt = 'desc'
+
+            const notes = await Note.find(options).sort({ priority: 'desc', ..._opts }).limit(normalizedLimit)
             const count = await Note.find(options).countDocuments()
 
             // res.status(200).json({ success: true, data: notes })

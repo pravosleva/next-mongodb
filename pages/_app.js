@@ -3,6 +3,7 @@ import 'semantic-ui-css/semantic.min.css'
 import { Layout } from '~/common/components/Layout'
 import 'react-markdown-editor-lite/lib/index.css'
 import '~/public/static/css/style.css'
+import '~/public/static/css/link-as-rippled-btn.css'
 import {
   AuthContextProvider,
   GlobalAppContextProvider,

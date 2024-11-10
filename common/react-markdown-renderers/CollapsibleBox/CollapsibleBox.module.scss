@@ -1,0 +1,10 @@
+.collapsible > input[type=checkbox]:not(:checked) ~ .content {
+  max-height: 0;
+  visibility: hidden;
+}
+
+.noMarginBottomForLastChild {
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
