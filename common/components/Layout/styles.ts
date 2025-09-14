@@ -7,14 +7,14 @@ export const useStyles = makeStyles((theme: Theme) =>
     minimalHeightSetting: {
       // border: '1px solid red',
       [theme.breakpoints.up('sm')]: {
-        minHeight: 'calc(100vh - 69px)',
+        minHeight: 'calc(100svh - 60px)',
 
         // NOTE: Height limit
-        maxHeight: 'calc(100vh - 69px)',
+        maxHeight: 'calc(100svh - 60px)',
         overflow: 'auto',
       },
       [theme.breakpoints.down('xs')]: {
-        minHeight: 'calc(100vh - 56px)',
+        minHeight: 'calc(100svh - 56px)',
       },
     },
     forExample: {
@@ -69,7 +69,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(0, 0, 0, 1),
 
       overflowY: 'auto',
-      maxHeight: 'calc(100vh - 69px)',
+      maxHeight: 'calc(100svh - 60px)',
       position: 'sticky',
       top: 0,
       boxSizing: 'border-box',

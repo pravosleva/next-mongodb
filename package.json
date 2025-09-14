@@ -1,6 +1,6 @@
 {
-  "name": "notes-app",
-  "version": "0.1.0",
+  "name": "code-samples.space",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "deploy2": "yarn build && bash deploy2.sh",
@@ -12,6 +12,7 @@
     "make-js-server": "bash ./bin/transpile-server.sh && yarn transpile-socket-logic",
     "transpile-socket-logic": "node_modules/.bin/tsc --project ./tsconfig.socket-logic.json --downlevelIteration",
     "dev": "yarn make-js-server && PORT=9000 NODE_ENV=development node server-dist/run.js",
+    "dev:2": "yarn make-js-server && dotenvx run -f .env.dev -- node server-dist/run.js",
     "build": "yarn make-js-server && NODE_ENV=production BUNDLE_ANALYZE=browser next build",
     "start:prod": "yarn make-js-server && PORT=9000 NODE_ENV=production node server-dist/run.js",
     "restart": "fuser -k -n tcp 9000 && PORT=9000 NODE_ENV=production node ./server-dist/run.js",
@@ -23,7 +24,8 @@
     "format": "node_modules/.bin/prettier --write \"**/*.{js,jsx,ts,tsx}\" !.next !node_modules",
     "postinstall": "husky install .config/husky",
     "deploy-app:init": "node_modules/.bin/deploy-app init",
-    "test": "echo test"
+    "test": "echo test",
+    "_pwa:assets-gen": "pwa-assets-generator --preset minimal-2023 public/static/pwa/terminal-svgrepo-com.svg"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
@@ -49,6 +51,7 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@mdi/js": "^5.9.55",
     "@mdi/react": "^1.5.0",
+    "@vite-pwa/assets-generator": "^0.2.6",
     "@welldone-software/why-did-you-render": "^6.1.1",
     "add": "^2.0.6",
     "animate.css": "^4.1.1",
@@ -85,6 +88,7 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "16.13.1",
     "react-emoji-render": "^1.2.4",
+    "react-error-boundary": "^6.0.0",
     "react-gist": "^1.2.2",
     "react-headroom": "^3.1.0",
     "react-hooks-form": "^2.0.1",
@@ -113,6 +117,7 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.10",
     "@babel/runtime": "^7.12.5",
+    "@dotenvx/dotenvx": "^1.49.0",
     "@types/cookies": "^0.7.6",
     "@types/es6-promisify": "^6.0.0",
     "@types/qrcode": "^1.4.0",

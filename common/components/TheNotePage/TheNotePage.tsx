@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import fetch from 'isomorphic-unfetch'
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import { useRouter } from 'next/router'
 import { Confirm, Loader } from 'semantic-ui-react'
 // import { Button as MuiButton } from '@material-ui/core'
@@ -38,7 +38,7 @@ import { mdiReload } from '@mdi/js'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 
-export const TheNotePage = ({ initNote: note }: any) => {
+export const TheNotePage = memo(({ initNote: note }: any) => {
   const [confirm, setConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
@@ -236,6 +236,7 @@ export const TheNotePage = ({ initNote: note }: any) => {
         <div
           style={{
             marginTop: '16px',
+            padding: isMobile ? '0 16px 0 16px' : '0px',
             // padding: isMobile ? '16px 8px 0px 8px' : '16px 0px',
             // width: isMobile ? '100%' : 'calc(100% - 350px)',
             // width: '100%',
@@ -311,4 +312,4 @@ export const TheNotePage = ({ initNote: note }: any) => {
       <div style={{ marginBottom: isMobile ? '40px' : '0px' }}>{MemoizedBtnsBox}</div>
     </div>
   )
-}
+})

@@ -114,7 +114,7 @@ export const Widget: React.FC<TProps> = ({
                 src="http://pravosleva.ru/express-helper/chat/#?room=code-samples.space"
                 style={{
                   width: isDesktop ? `${widgetWidthDesktop}px` : '100vw',
-                  height: '100vh',
+                  height: '100dvh',
                   border: 'none',
                 }}
               />

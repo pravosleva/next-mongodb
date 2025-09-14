@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useEffect, useMemo } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { Form, Loader } from 'semantic-ui-react'
@@ -19,6 +20,9 @@ import { ThemedButton } from '~/common/styled-mui/custom-button'
 import clsx from 'clsx'
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 // import MDEditor from 'react-markdown-editor-lite'
+import { useGlobalAppContext, useNotifsContext } from '~/common/hooks'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorFallback } from '~/mui/ErrorFallback'
 
 const NEXT_APP_API_ENDPOINT = process.env.NEXT_APP_API_ENDPOINT
 const mdParser = new MarkdownIt({
@@ -41,6 +45,11 @@ export const EditNotePage = withWidth()(({ note, width }) => {
   const { isLogged } = useAuthContext()
   const baseClasses = useBaseStyles()
 
+  const {
+    state: { activeNote },
+    handleSetAsActiveNote,
+  } = useGlobalAppContext()
+
   useEffect(() => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
@@ -51,6 +60,7 @@ export const EditNotePage = withWidth()(({ note, width }) => {
     }
   }, [errors, isSubmitting])
 
+  const { addSuccessNotif, addDangerNotif } = useNotifsContext()
   const updateNote = async () => {
     try {
       const body = {}
@@ -76,7 +86,23 @@ export const EditNotePage = withWidth()(({ note, width }) => {
         },
         body: JSON.stringify(body),
       })
-      router.push(`/notes/${router.query.id}`)
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.success && !!json.data?._id) {
+            addSuccessNotif({ title: `Saved ${json.data._id}` })
+            return json.data
+          }
+          console.error(json)
+          throw new Error('Incorrect data format')
+        })
+        .then((data) => {
+          handleSetAsActiveNote(data)
+          router.push(`/notes/${router.query.id}`)
+        })
+        .catch((err) => {
+          addDangerNotif({ title: `Errored! ${err?.message || 'No message'}` })
+          console.error(err)
+        })
     } catch (_err) {
       // console.log(err)
       // TODO: logger
@@ -130,7 +156,7 @@ export const EditNotePage = withWidth()(({ note, width }) => {
       <Box
         px={isDesktop ? 0 : 1}
         my={4}
-        // className={baseClasses.noMarginTopBottomMobile}
+      // className={baseClasses.noMarginTopBottomMobile}
       >
         <h1>
           <span style={{ marginRight: '15px' }}>Edit</span>
@@ -168,30 +194,35 @@ export const EditNotePage = withWidth()(({ note, width }) => {
             />
           </Box>
           <Box px={isDesktop ? 0 : 1} className={baseClasses.standardMobileResponsiveBlock}>
-            <MDEditor
-              style={{
-                boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
-                // border: '1px solid rgba(34,36,38,.15)',
-                border: 'none',
-                borderRadius: '8px',
-                minHeight,
-              }}
-              value={form.description}
-              renderHTML={(text) => mdParser.render(text)}
-              onChange={({ text }) => {
-                handleChange({ target: { value: text, name: 'description' } })
-              }}
-              config={{
-                view: { menu: false, md: true, html: isDesktop },
-                canView: {
-                  menu: false,
-                  md: true,
-                  html: isDesktop,
-                  fullScreen: true,
-                  hideMenu: true,
-                },
-              }}
-            />
+            <ErrorBoundary
+              FallbackComponent={ErrorFallback}
+            // onReset={handleClearText}
+            >
+              <MDEditor
+                style={{
+                  boxShadow: '0px 0px 8px rgba(144, 164, 183, 0.6)',
+                  // border: '1px solid rgba(34,36,38,.15)',
+                  border: 'none',
+                  borderRadius: '8px',
+                  minHeight,
+                }}
+                value={form.description}
+                renderHTML={(text) => mdParser.render(text)}
+                onChange={({ text }) => {
+                  handleChange({ target: { value: text, name: 'description' } })
+                }}
+                config={{
+                  view: { menu: false, md: true, html: isDesktop },
+                  canView: {
+                    menu: false,
+                    md: true,
+                    html: isDesktop,
+                    fullScreen: true,
+                    hideMenu: true,
+                  },
+                }}
+              />
+            </ErrorBoundary>
           </Box>
           {isLogged && (
             <Box className={clsx(baseClasses.btnsBox)} style={{ marginBottom: isDesktop ? '0px' : '40px' }}>

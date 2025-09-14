@@ -1,4 +1,5 @@
 .notification__item {
+  border-radius: 8px;
   font-family: Fira Sans, Montserrat, sans-serif;
 }
 
@@ -9,8 +10,8 @@
 }
 
 .notification__item--info {
-  background-color: #3882c4 !important;
-  border-left: 8px solid #124c7f !important;
+  background-color: #3882C4 !important;
+  border-left: 8px solid rgba(56, 130, 196, 1) !important;
   /* light: 69A8E2 */
 }
 

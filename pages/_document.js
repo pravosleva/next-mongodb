@@ -10,6 +10,11 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link rel="icon" href="/static/pwa/favicon.ico" sizes="48x48" />
+          <link rel="icon" href="/static/pwa/file-code-01.svg" sizes="any" type="image/svg+xml" />
+          <link rel="apple-touch-icon" href="/static/pwa/apple-touch-icon-180x180.png"></link>
+          <link rel="manifest" href="./static/manifest.json" crossorigin="use-credentials" />
+          <link rel="shortcut icon" href="/static/pwa/favicon.ico" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
           <link rel="stylesheet" href="/static/css/old.styles.css" />
           <link rel="stylesheet" href="/static/css/old.build.editor-js.css" />
@@ -29,21 +34,33 @@ export default class MyDocument extends Document {
           <meta name="msapplication-tap-highlight" content="no" />
           <meta name="theme-color" content="#000000" />
 
-          <link rel="apple-touch-icon" href="/static/icons/touch-icon-iphone.png" />
-          <link rel="apple-touch-icon" sizes="152x152" href="/static/icons/touch-icon-ipad.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/touch-icon-iphone-retina.png" />
-          <link rel="apple-touch-icon" sizes="167x167" href="/static/icons/touch-icon-ipad-retina.png" />
-
-          <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png" />
-          <link rel="manifest" href="/static/manifest.json" />
-          <link rel="mask-icon" href="/static/icons/safari-pinned-tab.svg" color="#5bbad5" />
-          <link rel="shortcut icon" href="/favicon.ico" />
           {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" /> */}
         </Head>
         <body>
           <Main />
           <NextScript />
+          {/* <script
+            id="vite-plugin-pwa:register-sw"
+            dangerouslySetInnerHTML={{
+              __html: `
+              if('serviceWorker' in navigator){
+                // window.addEventListener('load', () => {
+                //   navigator.serviceWorker.register('./sw.js', { scope: './' })
+                // })
+                if(!self.define){
+                  let e,s={};
+                  const i=(i,r)=>(i=new URL(i+".js",r).href,s[i]||new Promise((s=>{
+                    if("document"in self){
+                      const e=document.createElement("script");
+                      e.src=i,e.onload=s,document.head.appendChild(e)
+                    } else e=i,importScripts(i),s()})
+                  )
+                    .then((()=>{let e=s[i];if(!e)throw new Error(\`Module \${i} didn’t register its module\`);
+                      return e})));
+                  self.define=(r,n)=>{const t=e||("document"in self?document.currentScript.src:"")||location.href;if(s[t])return;let l={};const o=e=>i(e,t),u={module:{uri:t},exports:l,require:o};s[t]=Promise.all(r.map((e=>u[e]||o(e)))).then((e=>(n(...e),l)))}}define(["./workbox-5ffe50d4"],(function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"assets/chunk.0.react-dom-DcfgeyRI.js",revision:null},{url:"assets/chunk.1.@mui_material-CKGrLUDc.js",revision:null},{url:"assets/chunk.2.dayjs-BPUg6-v7.js",revision:null},{url:"assets/chunk.3.react-google-charts-zCIuIbqL.js",revision:null},{url:"assets/chunk.4.react-hook-form-BWQihaOz.js",revision:null},{url:"assets/index-DmWz6co7.css",revision:null},{url:"assets/index-W7qP1xfX.js",revision:null},{url:"index.html",revision:"680d72cd3e997a1cbf2b904cb76d6535"},{url:"registerSW.js",revision:"402b66900e731ca748771b6fc5e7a068"},{url:"stats.html",revision:"4d87088189f27a31eecdaa4282ea7afa"},{url:"site.webmanifest",revision:"d1c72fd2420cfc608d73e0c2a307ec06"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html")))}));
+              }`,
+            }}
+          ></script> */}
         </body>
       </Html>
     )

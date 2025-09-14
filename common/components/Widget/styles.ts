@@ -218,12 +218,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       transform: 'translateX(0px)',
     },
     heightLimit: {
-      maxHeight: '100vh',
+      maxHeight: '100dvh',
       [theme.breakpoints.up('md')]: {
-        // maxHeight: `calc(100vh - ${offsetTop.md}px - ${offsetTop.md}px)`,
+        // maxHeight: `calc(100dvh - ${offsetTop.md}px - ${offsetTop.md}px)`,
       },
       [theme.breakpoints.down('sm')]: {
-        // maxHeight: `calc(100vh - ${offsetTop.sm}px - ${offsetTop.sm}px)`,
+        // maxHeight: `calc(100dvh - ${offsetTop.sm}px - ${offsetTop.sm}px)`,
       },
       // border: '1px dashed red',
       // padding: theme.spacing(2, 0, 2, 0),

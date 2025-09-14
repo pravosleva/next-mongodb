@@ -38,13 +38,9 @@ class MyApp extends NextApp {
       <>
         <Head>
           <meta charSet="utf-8" />
-          <link rel="icon" href="/static/favicon.ico" />
+          <link rel="icon" href="/static/pwa/favicon.ico" />
           <title>Code Samples 2.0</title>
           {/* PWA primary color */}
-          {/* <meta name="theme-color" content={theme.palette.primary.main} /> */}
-          <meta name="theme-color" content="#000" />
-          <meta name="viewport" content="width=device-width" />
-          {/* <meta name="viewport" content="initial-scale=1, maximum-scale=1" /> */}
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
@@ -82,7 +78,7 @@ class MyApp extends NextApp {
                             bottom: '50px',
                           }}
                           contentWrapperStyles={{
-                            minHeight: '100vh',
+                            minHeight: '100dvh',
                             width: '100%',
                             padding: '0px',
                             // border: '1px solid red',

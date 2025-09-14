@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, memo } from 'react'
 import Icon from '@mdi/react'
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import ReactMarkdown from 'react-markdown'
@@ -11,55 +11,70 @@ import clsx from 'clsx'
 // import slugify from 'slugify'
 
 type TProps = {
-  header: string;
-  text: string;
-  actionsJson?: string;
+  header: string
+  text: string
+  actionsJson?: string
   // t: (v: string) => string;
 }
 
-export const CollapsibleBox = ({ header, text, actionsJson }: TProps) => {
+export const CollapsibleBox = memo(({ header, text, actionsJson }: TProps) => {
   const isActionsRequired = useMemo(() => typeof actionsJson === 'string', [actionsJson])
-  const isActionsValid = useMemo(() => !!actionsJson && isActionsRequired && isValidJson(actionsJson), [isActionsRequired, actionsJson])
-  const parsedActions = useMemo(() => (!!actionsJson && isActionsRequired && isActionsValid)
-    ? JSON.parse(actionsJson)
-    : null, [actionsJson, isActionsRequired, isActionsValid])
+  const isActionsValid = useMemo(() => !!actionsJson && isActionsRequired && isValidJson(actionsJson), [
+    isActionsRequired,
+    actionsJson,
+  ])
+  const parsedActions = useMemo(
+    () => (!!actionsJson && isActionsRequired && isActionsValid ? JSON.parse(actionsJson) : null),
+    [actionsJson, isActionsRequired, isActionsValid]
+  )
   const [isOpened, setIsOpened] = useState(false)
   const handleToggle = useCallback(() => {
     setIsOpened((s) => !s)
   }, [setIsOpened])
   const classes = useStyles()
 
-  const handleClickLink = useCallback(({ link, label }: { link: string; label: string }) => (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.stopPropagation()
-    const hasLocalLinkClicked = (label === 'LOCAL_LINK' && typeof link === 'string' && link[0] === '#') || false
-    // const hasNewTabLinkClicked = (label === 'NEW_TAB_LINK' && typeof link === 'string' && !!link) || false
-    // const hasCurrentTabLinkClicked = (label === 'CURRENT_TAB_LINK' && typeof link === 'string' && !!link) || false
+  const handleClickLink = useCallback(
+    ({ link, label }: { link: string; label: string }) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.stopPropagation()
+      const hasLocalLinkClicked = (label === 'LOCAL_LINK' && typeof link === 'string' && link[0] === '#') || false
+      // const hasNewTabLinkClicked = (label === 'NEW_TAB_LINK' && typeof link === 'string' && !!link) || false
+      // const hasCurrentTabLinkClicked = (label === 'CURRENT_TAB_LINK' && typeof link === 'string' && !!link) || false
 
-    switch (true) {
-      case hasLocalLinkClicked:{
+      switch (true) {
+        case hasLocalLinkClicked: {
           e.preventDefault()
           try {
             const elmId = link.substring(1)
             const elm = document.getElementById(elmId)
 
-            if (!!elm) elm.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" })
-            else throw new Error(`Element not found: ${link}`)
+            if (!!elm) {
+              setTimeout(() => {
+                elm.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                  inline: 'nearest',
+                })
+              }, 0)
+            } else throw new Error(`Element not found: ${link}`)
           } catch (err: any) {
+            // eslint-disable-next-line no-console
             console.log(err?.message || 'No err.message')
           }
           break
         }
-      // case hasNewTabLinkClicked: {
-      //   break
-      // }
-      // case hasCurrentTabLinkClicked: {
-      //   break
-      // }
-      default:
-        break
-    }
-  }, [])
-  // const togglerSlug = slugify(header).toLowerCase() 
+        // case hasNewTabLinkClicked: {
+        //   break
+        // }
+        // case hasCurrentTabLinkClicked: {
+        //   break
+        // }
+        default:
+          break
+      }
+    },
+    []
+  )
+  // const togglerSlug = slugify(header).toLowerCase()
 
   return (
     <div
@@ -74,7 +89,7 @@ export const CollapsibleBox = ({ header, text, actionsJson }: TProps) => {
         // color: textColor,
         backgroundColor: '#fff',
         boxShadow: '0 8px 6px -6px rgba(0,0,0,0.3)',
-        marginBottom: '20px',
+        marginBottom: '8px',
 
         cursor: 'pointer',
         userSelect: 'none',
@@ -105,19 +120,12 @@ export const CollapsibleBox = ({ header, text, actionsJson }: TProps) => {
             alignItems: 'center',
           }}
         >
-          {
-            isOpened
-              ? <Icon path={mdiChevronUp} />
-              : <Icon path={mdiChevronDown} />
-          }
+          {isOpened ? <Icon path={mdiChevronUp} /> : <Icon path={mdiChevronDown} />}
         </div>
       </div>
-      
+
       {isOpened && (
-        <div
-          style={{ fontSize: '0.8em' }}
-          className={clsx(classes.noMarginBottomForLastChild)}
-        >
+        <div style={{ fontSize: '0.8em' }} className={clsx(classes.noMarginBottomForLastChild)}>
           <ReactMarkdown
             // @ts-ignore
             plugins={[gfm, { singleTilde: false }]}
@@ -127,49 +135,51 @@ export const CollapsibleBox = ({ header, text, actionsJson }: TProps) => {
         </div>
       )}
 
-      {
-        isOpened && !!parsedActions && (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              gap: '16px',
-            }}
-          >
-            {
-              parsedActions.map(({ link, label, target }: { link: 'string'; label: 'string'; target?: '_blank' | '_self' }, i: number) => {
-                return (
-                  <a
-                    key={`${link}-${i}`}
-                    className={clsx('link-as-rippled-btn', 'truncate')}
-                    href={link}
-                    onClick={handleClickLink({ link, label })}
-                    style={{
-                      color: '#fff',
-                      borderRadius: '8px',
-                    }}
-                    target={target || '_self'}
-                  >
-                    {label}
-                  </a>
-                )
-              })
+      {isOpened && !!parsedActions && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: '16px',
+          }}
+        >
+          {parsedActions.map(
+            ({ link, label, target }: { link: 'string'; label: 'string'; target?: '_blank' | '_self' }, i: number) => {
+              return (
+                <a
+                  key={`${link}-${i}`}
+                  className={clsx('link-as-rippled-btn', 'truncate')}
+                  href={link}
+                  onClick={handleClickLink({ link, label })}
+                  style={{
+                    color: '#fff',
+                    borderRadius: '8px',
+                  }}
+                  target={target || '_self'}
+                >
+                  {label}
+                </a>
+              )
             }
-          </div>
-        )
-      }
-      {
-        isOpened && isActionsRequired && !isActionsValid && (
-          <>
-            <pre style={{ marginBottom: '0px !important' }}>{JSON.stringify({
-              isActionsRequired,
-              isActionsValid,
-            }, null, 2)}</pre>
-            <div>Incorrect props</div>
-          </>
-        )
-      }
+          )}
+        </div>
+      )}
+      {isOpened && isActionsRequired && !isActionsValid && (
+        <>
+          <pre style={{ marginBottom: '0px !important' }}>
+            {JSON.stringify(
+              {
+                isActionsRequired,
+                isActionsValid,
+              },
+              null,
+              2
+            )}
+          </pre>
+          <div>Incorrect props</div>
+        </>
+      )}
     </div>
   )
-}
+})

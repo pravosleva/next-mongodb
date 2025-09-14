@@ -244,12 +244,13 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-end',
-      '& > *': {
-        marginBottom: theme.spacing(1),
-      },
-      '& > *:not(:first-child)': {
-        marginLeft: theme.spacing(1),
-      },
+      // '& > *': {
+      //   marginBottom: theme.spacing(1),
+      // },
+      // '& > *:not(:first-child)': {
+      //   marginLeft: theme.spacing(1),
+      // },
+      gap: theme.spacing(1),
       alignItems: 'center',
     },
     actionsBoxLeft: {
@@ -259,12 +260,13 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',
-      '& > *': {
-        marginBottom: theme.spacing(1),
-      },
-      '& > *:not(:last-child)': {
-        marginRight: theme.spacing(1),
-      },
+      // '& > *': {
+      //   marginBottom: theme.spacing(1),
+      // },
+      // '& > *:not(:last-child)': {
+      //   marginRight: theme.spacing(1),
+      // },
+      gap: theme.spacing(1),
       alignItems: 'center',
     },
 
@@ -275,7 +277,7 @@ export const useBaseStyles = makeStyles((theme: Theme) =>
     standardCard: {
       // backgroundColor: '#FFF',
       border: '2px solid #fff',
-      borderRadius: '8px',
+      borderRadius: '16px',
       boxShadow: 'unset',
       // transition: 'box-shadow 0.3s linear',
       '&:hover': {

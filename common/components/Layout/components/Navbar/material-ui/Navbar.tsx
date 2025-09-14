@@ -177,7 +177,14 @@ export const Navbar = (_props: IProps) => {
         <p>Notifications</p>
       </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
-        <>
+        <div
+        // style={{
+        //   display: 'flex',
+        //   flexDirection: 'row',
+        //   alignItems: 'center',
+        //   gap: '16px',
+        // }}
+        >
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
@@ -186,8 +193,8 @@ export const Navbar = (_props: IProps) => {
           >
             <AccountCircle />
           </IconButton>
-          <p>Profile</p>
-        </>
+          <div>Profile</div>
+        </div>
       </MenuItem>
     </Menu>
   )
@@ -247,7 +254,7 @@ export const Navbar = (_props: IProps) => {
                       handleSearchByTitleSetText(e.target.value)
                     }}
                     // disabled={isLoading}
-                    autoFocus
+                    // autoFocus
                   />
                   <InputBase
                     placeholder="Description"
@@ -255,7 +262,7 @@ export const Navbar = (_props: IProps) => {
                       root: classes.inputRoot,
                       input: classes.inputInput,
                     }}
-                    inputProps={{ 'aria-label': 'search' }}
+                    inputProps={{ 'aria-label': 'search-d' }}
                     value={state.searchByDescription}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       // @ts-ignore

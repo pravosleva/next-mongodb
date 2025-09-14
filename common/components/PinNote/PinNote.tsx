@@ -81,7 +81,7 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
           <Button
             variant="text"
             size="small"
-            color={isLocal ? 'secondary' : 'primary'}
+            color="secondary" // {isLocal ? 'secondary' : 'primary'}
             onClick={handleClose}
             endIcon={<MdiIcon path={mdiClose} size={0.7} />}
             {...rest}
@@ -93,7 +93,7 @@ export const PinNote = ({ id, isLocal, ...rest }: { id: string; isLocal?: boolea
               // disabled={isNotesLoading}
               variant="contained"
               size="small"
-              color={isLocal ? 'secondary' : 'primary'}
+              color="secondary" // {isLocal ? 'secondary' : 'primary'}
               onClick={() => {
                 // @ts-ignore
                 handlePinToLS({ id, namespace: selectedNamespace }, ELSFields.MainPinnedNamespaceMap)

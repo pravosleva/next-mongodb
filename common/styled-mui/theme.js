@@ -20,8 +20,9 @@ export const defaultTheme = {
   },
   palette: {
     primary: {
+      main: '#1976d2',
       // main: '#3882C4',
-      main: '#2d3748',
+      // main: '#2d3748',
     },
     secondary: {
       main: '#19857b',
@@ -77,6 +78,9 @@ export const defaultTheme = {
       root: {
         borderRadius: '8px',
         // borderWidth: '2px !important',
+      },
+      contained: {
+        boxShadow: 'none',
       },
       outlined: {
         borderColor: '#D0D0D0',

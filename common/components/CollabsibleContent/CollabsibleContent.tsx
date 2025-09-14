@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import { useStyles } from './styles'
 import clsx from 'clsx'
 import Icon from '@mdi/react'
@@ -15,51 +15,50 @@ interface IProps {
   isRightSide?: boolean
 }
 
-export const CollabsibleContent = ({
-  title,
-  activeTitleColor,
-  inactiveTitleColor,
-  contentRenderer,
-  isOpenedByDefault,
-  isRightSide,
-}: IProps): any => {
-  const classes = useStyles()
-  const [isOpened, setIsOpened] = useState<boolean>(isOpenedByDefault || false)
-  const handleToggle = useCallback(() => {
-    setIsOpened((s: boolean) => !s)
-  }, [setIsOpened])
-  const handleClose = useCallback(() => {
-    setIsOpened(false)
-  }, [setIsOpened])
+export const CollabsibleContent = memo(
+  ({ title, activeTitleColor, inactiveTitleColor, contentRenderer, isOpenedByDefault, isRightSide }: IProps): any => {
+    const classes = useStyles()
+    const [isOpened, setIsOpened] = useState<boolean>(isOpenedByDefault || false)
+    const handleToggle = useCallback(() => {
+      setIsOpened((s: boolean) => !s)
+    }, [setIsOpened])
+    const handleClose = useCallback(() => {
+      setIsOpened(false)
+    }, [setIsOpened])
 
-  return (
-    <div className={classes.wrapper}>
-      <div
-        style={{
-          color:
-            !!activeTitleColor && !!inactiveTitleColor ? (isOpened ? activeTitleColor : inactiveTitleColor) : 'inherit',
-        }}
-        className={
-          (classes.titleBox,
-          clsx({
-            [classes.titleBoxLeft]: !isRightSide,
-            [classes.titleBoxRight]: isRightSide,
-            [classes.marginBottomIfOpened]: isOpened,
-          }))
-        }
-        onClick={handleToggle}
-      >
-        {!isRightSide && (
-          <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
-        )}
-        <div>
-          <b>{title}</b>
+    return (
+      <div className={classes.wrapper}>
+        <div
+          style={{
+            color:
+              !!activeTitleColor && !!inactiveTitleColor
+                ? isOpened
+                  ? activeTitleColor
+                  : inactiveTitleColor
+                : 'inherit',
+          }}
+          className={
+            (classes.titleBox,
+            clsx({
+              [classes.titleBoxLeft]: !isRightSide,
+              [classes.titleBoxRight]: isRightSide,
+              [classes.marginBottomIfOpened]: isOpened,
+            }))
+          }
+          onClick={handleToggle}
+        >
+          {!isRightSide && (
+            <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
+          )}
+          <div>
+            <b>{title}</b>
+          </div>
+          {isRightSide && (
+            <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
+          )}
         </div>
-        {isRightSide && (
-          <div>{isOpened ? <Icon path={mdiChevronUp} size={0.7} /> : <Icon path={mdiChevronDown} size={0.7} />}</div>
-        )}
+        {isOpened && contentRenderer({ handleClose, handleToggle })}
       </div>
-      {isOpened && contentRenderer({ handleClose, handleToggle })}
-    </div>
-  )
-}
+    )
+  }
+)

@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, useCallback, useRef } from 'react'
+import { forwardRef, useMemo, useCallback, useRef, memo } from 'react'
 import {
   Button as MuiButton,
   ButtonGroup as MuiButtonGroup,
@@ -25,7 +25,7 @@ const TransitionUp = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-export const MobileDialogIfNecessary = () => {
+export const MobileDialogIfNecessary = memo(() => {
   const { state, handleResetActiveNote } = useGlobalAppContext()
   const { isMobile } = useWindowSize()
   const activeNote = useMemo(() => state.activeNote, [state.activeNote?._id])
@@ -137,4 +137,4 @@ export const MobileDialogIfNecessary = () => {
       </DialogActions>
     </Dialog>
   )
-}
+})

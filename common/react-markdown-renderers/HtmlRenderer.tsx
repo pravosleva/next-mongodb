@@ -7,6 +7,7 @@ import { ImageInNewTab } from './ImageRenderer'
 import { JSONComparison } from './JSONComparison'
 import { ImagesGalleryBox, ImagesGalleryBox2 } from './ImagesGalleryBox'
 import { CollapsibleBox } from './CollapsibleBox'
+import { CardsExample } from './CardsExample'
 
 const componentTransforms = {
   Alert: (props: any) => <Alert text={props.value} {...props} />,
@@ -21,6 +22,7 @@ const componentTransforms = {
   ImagesGalleryBox: (props: any) => <ImagesGalleryBox {...props} />,
   ImagesGalleryBox2: (props: any) => <ImagesGalleryBox2 {...props} />,
   CollapsibleBox: (props: any) => <CollapsibleBox {...props} />,
+  CardsExample: (props: any) => <CardsExample {...props} />,
 }
 
 // @ts-ignore

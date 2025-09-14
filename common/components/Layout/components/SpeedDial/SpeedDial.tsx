@@ -38,6 +38,16 @@ export const SpeedDial = () => {
       // { icon: <FileCopyIcon />, name: 'Copy' },
       // { icon: <SaveIcon />, name: 'Save' },
       {
+        icon: <KeyboardArrowUpIcon />,
+        name: 'Top',
+        onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+          e.preventDefault()
+          handleScrollTop()
+          handleCloseMe()
+        },
+        isVisible: isMoreThanTrackedY,
+      },
+      {
         icon: <HomeIcon />,
         name: 'Home',
         onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -63,16 +73,6 @@ export const SpeedDial = () => {
           router.push('/new')
         },
         isVisible: router.pathname !== '/new' && isLogged,
-      },
-      {
-        icon: <KeyboardArrowUpIcon />,
-        name: 'Top',
-        onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-          e.preventDefault()
-          handleScrollTop()
-          handleCloseMe()
-        },
-        isVisible: isMoreThanTrackedY,
       },
       {
         icon: <ExitToAppIcon />,

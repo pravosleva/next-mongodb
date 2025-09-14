@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       //   fontSize: '1.4rem',
       // },
       [theme.breakpoints.up('sm')]: {
-        height: '69px',
+        height: '60px',
       },
       [theme.breakpoints.down('xs')]: {
         height: '56px',
@@ -26,6 +26,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       // },
       // border: '1px solid red',
       height: '100%',
+      minHeight: '60px',
     },
     grow: {
       flexGrow: 1,
@@ -41,7 +42,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     search: {
       position: 'relative',
-      borderRadius: theme.shape.borderRadius,
+      borderRadius: '24px', // theme.shape.borderRadius,
       backgroundColor: fade(theme.palette.common.white, 0.15),
       '&:hover': {
         backgroundColor: fade(theme.palette.common.white, 0.25),
@@ -58,7 +59,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     searchIcon: {
-      padding: theme.spacing(0, 2),
+      // padding: theme.spacing(0, 2),
+      padding: '2px 16px 0px 16px',
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -73,7 +75,8 @@ export const useStyles = makeStyles((theme: Theme) =>
         color: '#FFF',
         opacity: '0.42',
         transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-        padding: '8px 8px 8px calc(1em + 32px) !important',
+        // padding: '8px 8px 8px calc(1em + 32px) !important',
+        textAlign: 'left',
       },
     },
     inputInput: {

@@ -89,7 +89,7 @@ export const Layout = ({ children }) => {
           </div>
         </Container>
       </div>
-      {isMobile && <Footer />}
+      {/* isMobile && <Footer /> */}
       {isMobile && router.pathname !== '/new' && <SpeedDial />}
       <style jsx global>{`
         #nprogress .spinner {
